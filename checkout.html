@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - MyStore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">MyStore</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="categories.html">Categories</a></li>
+            <li><a href="cart.html">Cart</a></li>
+        </ul>
+    </nav>
+
+    <section class="checkout-section">
+        <h2>Checkout</h2>
+
+        <form id="checkout-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="address">Shipping Address</label>
+            <input type="text" id="address" name="address" required>
+
+            <h3>Select Payment Method</h3>
+            <div class="payment-options">
+                <label class="payment-option">
+                    <input type="radio" name="payment-method" value="credit-card" required>
+                    <span>Credit Card</span>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="payment-method" value="paypal">
+                    <span>PayPal</span>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="payment-method" value="upi">
+                    <span>UPI</span>
+                </label>
+            </div>
+            <button type="submit" class="btn">Submit Payment</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 V-STORE. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - MyStore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">MyStore</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="categories.html">Categories</a></li>
+            <li><a href="cart.html">Cart</a></li>
+        </ul>
+    </nav>
+
+    <!-- Thank You Section -->
+    <section class="thank-you-section">
+        <h2>Thank You for Your Order!</h2>
+        <p>Your order has been successfully placed.</p>
+
+        <h3>Order Summary</h3>
+        <div id="order-summary">
+            <!-- Order details will be dynamically inserted here -->
+        </div>
+
+        <h3>Shipping Information</h3>
+        <div id="shipping-info">
+            <!-- Shipping information will be dynamically inserted here -->
+        </div>
+
+        <button onclick="window.location.href='index.html';" class="btn">Back to Home</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 MyStore. All Rights Reserved.</p>
+    </footer>
+
+    <script src="thank-you.js"></script>
+</body>
+</html>

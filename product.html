@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Products</h1>
+        <a href="checkout.html">Checkout</a>
+    </header>
+
+    <div class="products">
+        <div class="product" data-id="1" data-name="Product 1" data-price="10">
+            <h2>Product 1</h2>
+            <p>Price: $10</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+
+        <div class="product" data-id="2" data-name="Product 2" data-price="20">
+            <h2>Product 2</h2>
+            <p>Price: $20</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <div id="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items"></ul>
+        <p>Total: $<span id="total-price">0</span></p>
+        <a href="checkout.html" class="btn">Proceed to Checkout</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

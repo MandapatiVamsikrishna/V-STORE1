@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - MyStore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">MyStore</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="categories.html">Categories</a></li>
+            <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li> <!-- Cart count -->
+        </ul>
+    </nav>
+
+    <section class="payment-section">
+        <h2>Payment Details</h2>
+
+        <h3>Order Summary</h3>
+        <ul id="order-summary">
+            <!-- Cart items will be displayed here dynamically -->
+        </ul>
+        <p>Total: $<span id="total-price-summary">0</span></p>
+
+        <form id="checkout-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="address">Shipping Address</label>
+            <input type="text" id="address" name="address" required>
+
+            <h3>Select Payment Method</h3>
+            <label><input type="radio" name="payment-method" value="credit-card" required> Credit Card</label>
+            <label><input type="radio" name="payment-method" value="paypal"> PayPal</label>
+            <label><input type="radio" name="payment-method" value="upi"> UPI</label>
+
+            <!-- UPI Payment Options -->
+            <div id="upi-options" style="display: none;">
+                <label><input type="radio" name="upi-option" value="phonepe"> PhonePe</label>
+                <label><input type="radio" name="upi-option" value="gpay"> Google Pay</label>
+                <label><input type="radio" name="upi-option" value="other"> Other UPI</label>
+            </div>
+
+            <!-- Credit Card Details -->
+            <div id="credit-card-details" style="display: none;">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+                <label for="card-expiry">Expiry Date</label>
+                <input type="text" id="card-expiry" placeholder="MM/YY">
+                <label for="card-cvc">CVC</label>
+                <input type="text" id="card-cvc" placeholder="123">
+            </div>
+
+            <!-- PayPal Details -->
+            <div id="paypal-details" style="display: none;">
+                <p>You will be redirected to PayPal to complete the payment.</p>
+            </div>
+
+            <!-- UPI Details -->
+            <div id="upi-details" style="display: none;">
+                <label for="upi-id">Enter UPI ID</label>
+                <input type="text" id="upi-id" placeholder="example@upi">
+            </div>
+
+            <button type="submit" class="btn">Submit Payment</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 V-STORE. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
