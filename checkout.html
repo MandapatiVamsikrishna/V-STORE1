@@ -32,14 +32,47 @@
                     <input type="radio" name="payment-method" value="credit-card" required>
                     <span>Credit Card</span>
                 </label>
+                <div id="credit-card-details" class="payment-details">
+                    <div class="card-details-grid">
+                        <div>
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456">
+                        </div>
+                        <div>
+                            <label for="card-name">Name on Card</label>
+                            <input type="text" id="card-name" name="card-name">
+                        </div>
+                        <div>
+                            <label for="expiry-date">Expiry Date</label>
+                            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY">
+                        </div>
+                        <div>
+                            <label for="cvv">CVV</label>
+                            <input type="number" id="cvv" name="cvv" placeholder="123">
+                        </div>
+                    </div>
+                </div>
+
                 <label class="payment-option">
                     <input type="radio" name="payment-method" value="paypal">
                     <span>PayPal</span>
                 </label>
+                <div id="paypal-details" class="payment-details">
+                    <p>You will be redirected to PayPal to complete your payment</p>
+                </div>
+
                 <label class="payment-option">
                     <input type="radio" name="payment-method" value="upi">
                     <span>UPI</span>
                 </label>
+                <div id="upi-details" class="payment-details">
+                    <label for="upi-id">UPI ID</label>
+                    <input type="text" id="upi-id" name="upi-id" placeholder="yourname@upi">
+                    <div id="upi-platform-display" class="upi-platform" style="display: none;">
+                        <img id="upi-platform-icon" src="" alt="UPI Platform">
+                        <span id="upi-platform-name"></span>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="btn">Submit Payment</button>
         </form>
@@ -49,6 +82,6 @@
         <p>&copy; 2024 V-STORE. All Rights Reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

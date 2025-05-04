@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Login - ShopNow</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
+    <nav>
+        <div class="logo">V-STORE</div>
+        <ul>
+            <li><a href="index.html">Guest</a></li>
+            
+        </ul>
+    </nav>
 </head>
 <body>
     <div class="container">
@@ -15,23 +22,8 @@
             <button type="submit">Login</button>
             <p id="login-message"></p>
         </form>
-        <p>Don't have an account? <a href="#">Register</a></p>
+        <p>Don't have an account? <p><a href="registration.html" class="register-link">Register</a></p>
+        
     </div>
-
-    <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Hardcoded login credentials (you can replace this with a real backend)
-            if (email === 'user@example.com' && password === 'password') {
-                alert('Login successful! Redirecting to products...');
-                window.location.href = 'index.html'; // Redirect to products page
-            } else {
-                document.getElementById('login-message').textContent = 'Invalid email or password.';
-            }
-        });
-    </script>
 </body>
 </html>
