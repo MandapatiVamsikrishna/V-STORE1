@@ -1,281 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories - MyStore</title>
-    <link rel="stylesheet" href="style.css">
-    <title>Marquee Tag</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Categories — V-Store</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="logo">V-Store</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="categories.html">Categories</a></li>
-            <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
-            <li><a href="contact.html">Contact</a></li>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-Store</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html" aria-current="page">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Section header -->
+    <section class="categories-section" aria-labelledby="cat-title">
+      <h2 id="cat-title" class="category-title">Product Categories</h2>
+
+      <!-- V-Fresh hero row -->
+      <div class="banner" style="margin-top:1rem;">
+        <div class="logo" style="margin-bottom:.5rem;">V-Fresh</div>
+        <p>Fresh Groceries Delivered to Your Door — use code <strong>WELCOME10</strong> for 10% off.</p>
+        <div class="search-bar" style="margin-top:1rem;">
+          <input type="search" placeholder="Search for groceries…" aria-label="Search groceries" id="search-input" />
+        </div>
+      </div>
+
+      <!-- Marquee (deprecated but kept per your design) -->
+      <div class="main" style="margin-top:.75rem;">
+        <marquee class="marq" bgcolor="Green" direction="left">
+          <div class="geek1">
+            🍎 Fruits &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            🥕 Vegetables &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            🥤 Beverages &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            🍞 Bakery &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            🥛 Dairy &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            🍗 Meat &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+            🥫 Pantry
+          </div>
+        </marquee>
+      </div>
+
+      <!-- Sub-navigation for grocery categories -->
+      <nav aria-label="Grocery categories" style="margin:1rem 0;">
+        <ul style="display:flex;flex-wrap:wrap;gap:.75rem;list-style:none;padding:0;">
+          <li><a href="#">Groceries</a></li>
+          <li><a href="fruits.html">Fruits</a></li>
+          <li><a href="vegatables.html">Vegetables</a></li>
+          <li><a href="Diary.html">Dairy</a></li>
+          <li><a href="eggs.html">Eggs</a></li>
+          <li><a href="meat.html">Meat</a></li>
+          <li><a href="#">Seafood</a></li>
+          <li><a href="backery.html">Bakery</a></li>
+          <li><a href="pantery.html">Pantry</a></li>
+          <li><a href="beverages.html">Beverages</a></li>
         </ul>
-    </nav>
+      </nav>
 
-    <!-- Categories Section -->
-    <section class="categories-section">
-        <h2>Product Categories</h2>
-        
-        <!-- Electronics Category -->
-        <div class="logo">V-Fresh</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for groceries...">
-        </div>
-        
-    </header>
+      <!-- Product grid -->
+      <div class="products" id="product-grid">
+        <!-- Product 1 -->
+        <article class="product-card product-item"
+                 data-id="g-001" data-name="Fresh Apples" data-price="2.99" data-category="fruits">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Apples" alt="Fresh Apples" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Fresh Apples</h3>
+            <p class="product-price">$2.99/lb</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-001">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
+            </div>
+          </div>
+        </article>
 
-    <div class="main">
-        <marquee class="marq" bgcolor="Green" direction="left" loop="">
-            <div class="geek1">
-                🍎 Fruits &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                🥕 Vegetables &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                🥤 Beverages &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                🍞 Bakery &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                🥛 Dairy &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                🍗 Meat &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
-                🥫 Pantry
+        <!-- Product 2 -->
+        <article class="product-card product-item"
+                 data-id="g-002" data-name="Organic Milk" data-price="4.99" data-category="dairy">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Milk" alt="Organic Milk" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Organic Milk</h3>
+            <p class="product-price">$4.99</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-002">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-        </marquee>
-    </div>
-            
-        </marquee>
-    
-    
-    <div class="container">
-        <div class="banner">
-            <h1>Fresh Groceries Delivered to Your Door</h1>
-            <p>Get 10% off your first order with code WELCOME10</p>
-        </div>
-        
-        <nav>
-            <ul>
-                <li><a href="#">Groceries</a></li>
-                <li><a href="fruits.html">Fruits</a></li>
-                <li><a href="vegatables.html">Vegetables</a></li>
-                <li><a href="Diary.html">Dairy</a></li>
-                <li><a href="eggs.html">Eggs</a></li>
-                <li><a href="meat.html">Meat</a></li>
-                <li><a href="">Seafood </a></li>
-                <li><a href="backery.html">Bakery</a></li>
-                <li><a href="pantery.html">Pantry</a></li>
-                <li><a href="beverages.html">Beverages</a></li>
-            </ul>
-        </nav>
+          </div>
+        </article>
 
-        <div class="products">
-            <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="C:\Users\Administrator\Downloads\apples (1).jpg" alt="Apple">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Fresh Apples</h3>
-                    <p class="product-price">$2.99/lb</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
+        <!-- Product 3 -->
+        <article class="product-card product-item"
+                 data-id="g-003" data-name="Whole Wheat Bread" data-price="3.49" data-category="bakery">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Bread" alt="Whole Wheat Bread" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Whole Wheat Bread</h3>
+            <p class="product-price">$3.49</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-003">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-            
-            <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="C:\Users\Administrator\Downloads\milk (1).jpg" alt="Milk">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Organic Milk</h3>
-                    <p class="product-price">$4.99</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
+          </div>
+        </article>
+
+        <!-- Product 4 -->
+        <article class="product-card product-item"
+                 data-id="g-004" data-name="Chicken Breast" data-price="5.99" data-category="meat">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Chicken" alt="Chicken Breast" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Chicken Breast</h3>
+            <p class="product-price">$5.99/lb</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-004">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-            
-            <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Bread" alt="Bread">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Whole Wheat Bread</h3>
-                    <p class="product-price">$3.49</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
+          </div>
+        </article>
+
+        <!-- Product 5 -->
+        <article class="product-card product-item"
+                 data-id="g-005" data-name="Bananas" data-price="0.69" data-category="fruits">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Bananas" alt="Bananas" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Bananas</h3>
+            <p class="product-price">$0.69/lb</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-005">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-            
-            <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Chicken" alt="Chicken">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Chicken Breast</h3>
-                    <p class="product-price">$5.99/lb</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
+          </div>
+        </article>
+
+        <!-- Product 6 -->
+        <article class="product-card product-item"
+                 data-id="g-006" data-name="Free Range Eggs" data-price="3.99" data-category="eggs">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Eggs" alt="Free Range Eggs" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Free Range Eggs</h3>
+            <p class="product-price">$3.99/dozen</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-006">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-            
-            <!-- Product 5 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Banana" alt="Banana">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Bananas</h3>
-                    <p class="product-price">$0.69/lb</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
+          </div>
+        </article>
+
+        <!-- Product 7 -->
+        <article class="product-card product-item"
+                 data-id="g-007" data-name="Organic Tomatoes" data-price="3.49" data-category="vegetables">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Tomatoes" alt="Organic Tomatoes" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Organic Tomatoes</h3>
+            <p class="product-price">$3.49/lb</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-007">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-            
-            <!-- Product 6 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Eggs" alt="Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Free Range Eggs</h3>
-                    <p class="product-price">$3.99/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
+          </div>
+        </article>
+
+        <!-- Product 8 -->
+        <article class="product-card product-item"
+                 data-id="g-008" data-name="Whole Grain Pasta" data-price="2.49" data-category="pantry">
+          <div class="product-image">
+            <img src="https://via.placeholder.com/400x300?text=Pasta" alt="Whole Grain Pasta" />
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">Whole Grain Pasta</h3>
+            <p class="product-price">$2.49</p>
+            <div class="product-actions">
+              <div class="quantity-controls" data-qty-for="g-008">
+                <button class="decrement" type="button" aria-label="Decrease quantity">-</button>
+                <span class="quantity">1</span>
+                <button class="increment" type="button" aria-label="Increase quantity">+</button>
+              </div>
+              <button class="add-to-cart" type="button">Add to Cart</button>
             </div>
-            
-            <!-- Product 7 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Tomato" alt="Tomato">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Organic Tomatoes</h3>
-                    <p class="product-price">$3.49/lb</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product 8 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Pasta" alt="Pasta">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Whole Grain Pasta</h3>
-                    <p class="product-price">$2.49</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cart sidebar (kept as-is) -->
+  <aside class="cart-sidebar" aria-live="polite">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="close-cart" type="button" aria-label="Close cart">&times;</button>
     </div>
-    
-    <div class="cart-sidebar">
-        <div class="cart-header">
-            <h2>Your Cart</h2>
-            <button class="close-cart">&times;</button>
-        </div>
-        <div class="cart-items">
-            <!-- Cart items will be added here dynamically -->
-        </div>
-        <div class="cart-total">
-            Total: $<span id="cart-total-amount">0.00</span>
-        </div>
-        <button class="checkout-btn">Proceed to Checkout</button>
+    <div class="cart-items"><!-- filled by JS --></div>
+    <div class="cart-total">
+      Total: $<span id="cart-total-amount">0.00</span>
     </div>
-    
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Shop</h3>
-                <ul>
-                    <li><a href="#">All Products</a></li>
-                    <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Deals & Promotions</a></li>
-                    <li><a href="#">Gift Cards</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Customer Service</h3>
-                <ul>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Shipping Policy</a></li>
-                    <li><a href="#">Returns & Refunds</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>About Us</h3>
-                <ul>
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Sustainability</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Connect With Us</h3>
-                <ul>
-                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="#"><i class="fab fa-pinterest"></i> Pinterest</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
-    
+    <button class="checkout-btn" type="button">Proceed to Checkout</button>
+  </aside>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>&copy; <span id="year"></span> V-Store</p>
+      <form class="newsletter" id="newsletter-form" aria-label="Newsletter signup">
+        <label for="newsletter-email" class="visually-hidden">Email</label>
+        <input id="newsletter-email" type="email" placeholder="Join our newsletter" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </footer>
