@@ -1,62 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Home</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>V-STORE — Home</title>
+  <meta name="description" content="V-STORE: your one-stop shop for top products at great prices." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="logo">V-STORE</div>
-        <ul>
-            <li><a href="login.html">login</a></li>
-            <li><a href="categories.html">Categories</a></li>
-            <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
+  <!-- Skip link for accessibility -->
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <h1>Welcome to V-STORE</h1>
-            <p>Your one-stop shop for the best products!</p>
-        </div>
-    </header>
+  <!-- Navigation Bar -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="/">V-STORE</a>
+
+      <!-- Mobile menu toggle -->
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+        ☰
+      </button>
+
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="login.html">Login</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li>
+          <a href="cart.html" class="cart-link">Cart
+            (<span id="cart-count" class="badge" aria-live="polite">0</span>)
+          </a>
+        </li>
+        <li><a href="contact.html">Contact</a></li>
+        <li>
+          <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero" role="banner">
+    <div class="hero-content">
+      <h1>Welcome to V-STORE</h1>
+      <p>Your one‑stop shop for the best products!</p>
+      <form id="search-form" class="search" role="search" aria-label="Product search">
+        <input id="search-input" type="search" placeholder="Search products…" autocomplete="off" aria-label="Search products" />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Controls row -->
+    <section class="controls" aria-label="Browse controls">
+      <div class="chips" id="category-chips" role="tablist" aria-label="Categories">
+        <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="chip" data-filter="apparel" role="tab">Apparel</button>
+        <button class="chip" data-filter="electronics" role="tab">Electronics</button>
+        <button class="chip" data-filter="home" role="tab">Home</button>
+      </div>
+      <label class="sort">
+        <span class="visually-hidden">Sort</span>
+        <select id="sort-select" aria-label="Sort products">
+          <option value="latest">Latest</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A → Z</option>
+          <option value="name-desc">Name: Z → A</option>
+        </select>
+      </label>
+    </section>
 
     <!-- Featured Products Section -->
     <section class="featured-products">
-        <h2>Featured Products</h2>
-        <div class="product-grid">
-            <div class="product-item" data-id="1" data-name="Product 1" data-price="20">
-                <img src="https://via.placeholder.com/200" alt="Product 1">
-                <h3>Product 1</h3>
-                <p>20</p>
-                <button class="add-to-cart">Add to Cart</button>
-            </div>
-            <div class="product-item" data-id="2" data-name="Product 2" data-price="25">
-                <img src="https://via.placeholder.com/200" alt="Product 2">
-                <h3>Product 2</h3>
-                <p>25</p>
-                <button class="add-to-cart">Add to Cart</button>
-            </div>
-            <div class="product-item" data-id="3" data-name="Product 3" data-price="30">
-                <img src="https://via.placeholder.com/200" alt="Product 3">
-                <h3>Product 3</h3>
-                <p>30</p>
-                <button class="add-to-cart">Add to Cart</button>
-            </div>
-        </div>
+      <h2>Featured Products</h2>
+      <div class="product-grid" id="product-grid">
+        <!-- Product Card 1 -->
+        <article class="product-item" data-id="1" data-name="Product 1" data-price="20" data-category="electronics">
+          <button class="wishlist" aria-label="Add Product 1 to wishlist" title="Add to wishlist">♡</button>
+          <img src="https://via.placeholder.com/200" alt="Product 1" loading="lazy" decoding="async" />
+          <h3 class="product-title">Product 1</h3>
+          <p class="price" data-currency="GBP">£20.00</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <!-- Product Card 2 -->
+        <article class="product-item" data-id="2" data-name="Product 2" data-price="25" data-category="apparel">
+          <button class="wishlist" aria-label="Add Product 2 to wishlist" title="Add to wishlist">♡</button>
+          <img src="https://via.placeholder.com/200" alt="Product 2" loading="lazy" decoding="async" />
+          <h3 class="product-title">Product 2</h3>
+          <p class="price" data-currency="GBP">£25.00</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+
+        <!-- Product Card 3 -->
+        <article class="product-item" data-id="3" data-name="Product 3" data-price="30" data-category="home">
+          <button class="wishlist" aria-label="Add Product 3 to wishlist" title="Add to wishlist">♡</button>
+          <img src="https://via.placeholder.com/200" alt="Product 3" loading="lazy" decoding="async" />
+          <h3 class="product-title">Product 3</h3>
+          <p class="price" data-currency="GBP">£30.00</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+      </div>
     </section>
+  </main>
+
+  <!-- Toast / notifications -->
+  <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>&copy; <span id="year"></span> V-STORE. All Rights Reserved.</p>
+      <form class="newsletter" id="newsletter-form" aria-label="Newsletter signup">
+        <label for="newsletter-email" class="visually-hidden">Email</label>
+        <input id="newsletter-email" type="email" placeholder="Join our newsletter" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </footer>
+
+  <!-- JSON-LD for basic organization (SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "V-STORE",
     
+  }
+  </script>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 V-STORE. All Rights Reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
