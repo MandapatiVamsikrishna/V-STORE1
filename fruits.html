@@ -1,114 +1,219 @@
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FreshMart - Online Grocery Shopping</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <header>
-            <div class="logo">FreshMart</div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for groceries...">
-            </div>
-            <div class="user-actions">
-                <a href="categories.html"><i class="categories"></i>Categories</a>
-                <a href="#" id="cart-toggle"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
-            </div>
-        </header>
-    
-    <div class="container">
-        <h1 class="category-title">Fresh Fruits</h1>
-        
-        <div class="products">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="C:\Users\Administrator\Downloads\apples (1).jpg" alt="Apple">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Red Apples</h3>
-                    <p class="product-price">$2.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Banana" alt="Banana">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Bananas</h3>
-                    <p class="product-price">$0.69/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Orange" alt="Orange">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Oranges</h3>
-                    <p class="product-price">$3.49/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Strawberry" alt="Strawberry">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Strawberries</h3>
-                    <p class="product-price">$4.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Grapes" alt="Grapes">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Red Grapes</h3>
-                    <p class="product-price">$3.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Blueberry" alt="Blueberry">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Blueberries</h3>
-                    <p class="product-price">$5.99/pint</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Fresh Fruits</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
-    <!-- Same footer/cart as index.html -->
-    <footer>
-        <p>&copy; 2024 V-STORE. All Rights Reserved.</p>
-    </footer>
+  </nav>
 
-    <script src="script.js"></script>
-    
+  <!-- Page Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Fresh Fruits</h1>
+      <p class="muted">Filter by category, price, and rating — or search for anything.</p>
+
+      <!-- Search + Sort -->
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search products">
+          <input id="search-input" type="search" placeholder="Search fruits…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Department quick links -->
+  <nav class="dept-nav" aria-label="Departments">
+    <ul class="dept-chips">
+      <li><a aria-current="page" href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a href="diary.html">Diary</a></li>
+      <li><a href="eggs.html">Eggs</a></li>
+      <li><a href="meat.html">Meat</a></li>
+      <li><a href="sea food.html">Seafood</a></li>
+      <li><a href="bakery.html">Bakery</a></li>
+      <li><a href="pantry.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <!-- Optional visual dept grid -->
+ 
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="fruits" checked> Fruits</label></li>
+          <li><label><input type="checkbox" name="cat" value="citrus" checked> Citrus</label></li>
+          <li><label><input type="checkbox" name="cat" value="berries" checked> Berries</label></li>
+          <li><label><input type="checkbox" name="cat" value="grapes" checked> Grapes</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="9999">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <!-- Use data-* for filtering/sorting -->
+        <article class="card product-item" data-id="p-apple" data-name="Red Apples" data-price="2.99" data-category="fruits" data-rating="4.6">
+          <button class="wish" aria-label="Add Red Apples to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=800&auto=format&fit=crop" alt="Red Apples" />
+          </div>
+          <h3 class="title">Red Apples</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£2.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="p-apple"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="p-banana" data-name="Bananas" data-price="0.69" data-category="fruits" data-rating="3.8">
+          <button class="wish" aria-label="Add Bananas to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=800&auto=format&fit=crop" alt="Bananas" />
+          </div>
+          <h3 class="title">Bananas</h3>
+          <div class="meta"><span class="rating">★★★☆☆</span><span class="price">£0.69 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="p-banana"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="p-orange" data-name="Navel Oranges" data-price="3.49" data-category="citrus" data-rating="4.2">
+          <button class="wish" aria-label="Add Navel Oranges to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1547514701-42782101795e?q=80&w=800&auto=format&fit=crop" alt="Oranges" />
+          </div>
+          <h3 class="title">Navel Oranges</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="p-orange"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="p-straw" data-name="Strawberries" data-price="4.99" data-category="berries" data-rating="4.8">
+          <button class="wish" aria-label="Add Strawberries to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.gardentech.com/-/media/project/oneweb/gardentech/images/blog/how-to-grow-your-own-tasty-strawberries/strawberries-header-og.jpg" alt="Strawberries" />
+          </div>
+          <h3 class="title">Strawberries</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£4.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="p-straw"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="p-grapes" data-name="Red Grapes" data-price="3.99" data-category="grapes" data-rating="4.1">
+          <button class="wish" aria-label="Add Red Grapes to wishlist">♡</button>
+          <div class="media">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFFZRn0s7cAU2c_dBoK5iqapNcKqa4OwaC_g&s" alt="Grapes" />
+          </div>
+          <h3 class="title">Red Grapes</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="p-grapes"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="p-blue" data-name="Blueberries" data-price="5.99" data-category="berries" data-rating="4.9">
+          <button class="wish" aria-label="Add Blueberries to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.healthyfood.com/wp-content/uploads/2017/03/Why_we_like_blueberries.jpg" alt="Blueberries" />
+          </div>
+          <h3 class="title">Blueberries</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£5.99 / pint</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="p-blue"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global helpers (theme, nav burger, etc.) if you have them -->
+  <script src="script.js" defer></script>
+  <!-- Page-specific logic -->
+  <script src="dept-fruits.js" defer></script>
 </body>
 </html>
