@@ -1,107 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMart - Online Grocery Shopping</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vegetables — V-STORE</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js" />
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-    <header>
-        <div class="logo">FreshMart</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for groceries...">
-        </div>
-        <div class="user-actions">
-            <a href="categories.html"><i class="categories"></i>Categories</a>
-            <a href="#" id="cart-toggle"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
-        </div>
-    </header>
-    <div class="container">
-        <h1 class="category-title">Fresh Vegetables</h1>
-        
-        <div class="products">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Carrot" alt="Carrot">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Carrots</h3>
-                    <p class="product-price">$1.49/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Broccoli" alt="Broccoli">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Broccoli</h3>
-                    <p class="product-price">$2.29/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Tomato" alt="Tomato">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Tomatoes</h3>
-                    <p class="product-price">$2.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Potato" alt="Potato">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Potatoes</h3>
-                    <p class="product-price">$1.29/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Lettuce" alt="Lettuce">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Romaine Lettuce</h3>
-                    <p class="product-price">$1.99/head</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Onion" alt="Onion">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Yellow Onions</h3>
-                    <p class="product-price">$0.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-STORE</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
-    
-    <!-- Same footer/cart as index.html -->
+  </nav>
+
+  <!-- Page Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Fresh Vegetables</h1>
+      <p class="muted">Crisp, seasonal picks—filter by price or rating, or just search.</p>
+
+      <!-- Search + Sort -->
+      <div class="row">
+        <form id="search-form" role="search" aria-label="Search products" class="search">
+          <input id="search-input" type="search" placeholder="Search vegetables…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dept quick links -->
+  <nav class="dept-nav" aria-label="Departments">
+    <ul class="dept-chips">
+      <li><a href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a href="diary.html">Diary</a></li>
+      <li><a href="eggs.html">Eggs</a></li>
+      <li><a href="meat.html">Meat</a></li>
+      <li><a href="sea food.html">Seafood</a></li>
+      <li><a href="bakery.html">Bakery</a></li>
+      <li><a href="pantry.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <!-- Optional: visual dept grid (remove if you want) -->
+
+
+  <main class="container">
+    <!-- Filters (pre-checked Vegetables) -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="vegetables" checked> Vegetables</label></li>
+          <li><label><input type="checkbox" name="cat" value="fruits"> Fruits</label></li>
+          <li><label><input type="checkbox" name="cat" value="dairy"> Dairy</label></li>
+          <li><label><input type="checkbox" name="cat" value="eggs"> Eggs</label></li>
+          <li><label><input type="checkbox" name="cat" value="meat"> Meat</label></li>
+          <li><label><input type="checkbox" name="cat" value="bakery"> Bakery</label></li>
+          <li><label><input type="checkbox" name="cat" value="pantry"> Pantry</label></li>
+          <li><label><input type="checkbox" name="cat" value="beverages"> Beverages</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" inputmode="decimal" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" inputmode="decimal" min="0" step="0.01" value="9999">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div class="chips" id="active-chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="grid" id="product-grid">
+        <!-- Use data-* for filtering/sorting -->
+        <article class="card product-item" data-id="v-001" data-name="Carrots" data-price="1.49" data-category="vegetables" data-rating="4.2">
+          <button class="wish" title="Add to wishlist" aria-label="Add Carrots to wishlist">♡</button>
+          <div class="media">
+            <img src="https://cdn.notonthehighstreet.com/fs/65/79/6920-91d9-4756-8a72-40b953e793e1/original_carrot-chantenay-12-x-plug-plant-pack.jpg" alt="Fresh carrots" />
+          </div>
+          <h3 class="title">Carrots</h3>
+          <div class="meta">
+            <span class="rating">★★★★☆</span>
+            <span class="price">£1.49 / lb</span>
+          </div>
+          <div class="actions">
+            <div class="qty" data-qty-for="v-001"><button class="dec" aria-label="Decrease quantity">−</button><span class="q">1</span><button class="inc" aria-label="Increase quantity">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="v-002" data-name="Broccoli" data-price="2.29" data-category="vegetables" data-rating="4.5">
+          <button class="wish" title="Add to wishlist" aria-label="Add Broccoli to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.ocado.com/images-v3/eafa5127-d256-497b-9609-4869092accd6/fb6e8465-6405-4776-93df-d7d4be1f29b4/1280x1280.webp" alt="Fresh broccoli" />
+          </div>
+          <h3 class="title">Broccoli</h3>
+          <div class="meta">
+            <span class="rating">★★★★★</span>
+            <span class="price">£2.29 / lb</span>
+          </div>
+          <div class="actions">
+            <div class="qty" data-qty-for="v-002"><button class="dec" aria-label="Decrease quantity">−</button><span class="q">1</span><button class="inc" aria-label="Increase quantity">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="v-003" data-name="Tomatoes" data-price="2.99" data-category="vegetables" data-rating="4.0">
+          <button class="wish" title="Add to wishlist" aria-label="Add Tomatoes to wishlist">♡</button>
+          <div class="media">
+            <img src="https://media.post.rvohealth.io/wp-content/uploads/2020/09/AN313-Tomatoes-732x549-Thumb.jpg" alt="Fresh tomatoes" />
+          </div>
+          <h3 class="title">Tomatoes</h3>
+          <div class="meta">
+            <span class="rating">★★★★☆</span>
+            <span class="price">£2.99 / lb</span>
+          </div>
+          <div class="actions">
+            <div class="qty" data-qty-for="v-003"><button class="dec" aria-label="Decrease quantity">−</button><span class="q">1</span><button class="inc" aria-label="Increase quantity">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="v-004" data-name="Potatoes" data-price="1.29" data-category="vegetables" data-rating="3.8">
+          <button class="wish" title="Add to wishlist" aria-label="Add Potatoes to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.thespruce.com/thmb/nnMroQYv4CCSCR7i8Si-_MWDwnc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/how-to-harvest-potatoes-2540062-03-6ef71ddbaa974a2583d7ddf8d74f7c1e.jpg" alt="Fresh potatoes" />
+          </div>
+          <h3 class="title">Potatoes</h3>
+          <div class="meta">
+            <span class="rating">★★★☆☆</span>
+            <span class="price">£1.29 / lb</span>
+          </div>
+          <div class="actions">
+            <div class="qty" data-qty-for="v-004"><button class="dec" aria-label="Decrease quantity">−</button><span class="q">1</span><button class="inc" aria-label="Increase quantity">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="v-005" data-name="Romaine Lettuce" data-price="1.99" data-category="vegetables" data-rating="4.1">
+          <button class="wish" title="Add to wishlist" aria-label="Add Romaine Lettuce to wishlist">♡</button>
+          <div class="media">
+            <img src="https://i.ebayimg.com/images/g/ankAAOSwzGNjjNFD/s-l1600.webp" alt="Romaine lettuce head" />
+          </div>
+          <h3 class="title">Romaine Lettuce</h3>
+          <div class="meta">
+            <span class="rating">★★★★☆</span>
+            <span class="price">£1.99 / head</span>
+          </div>
+          <div class="actions">
+            <div class="qty" data-qty-for="v-005"><button class="dec" aria-label="Decrease quantity">−</button><span class="q">1</span><button class="inc" aria-label="Increase quantity">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="v-006" data-name="Yellow Onions" data-price="0.99" data-category="vegetables" data-rating="3.6">
+          <button class="wish" title="Add to wishlist" aria-label="Add Yellow Onions to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.simplyrecipes.com/thmb/MeiqocVcnuVRpSYUnY_bl0zj1Ac=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Reicpes-Onion-Difference-LEAD-01-1f8a6e76c2514292ab5149cc790afae8.jpg" alt="Yellow onions" />
+          </div>
+          <h3 class="title">Yellow Onions</h3>
+          <div class="meta">
+            <span class="rating">★★★☆☆</span>
+            <span class="price">£0.99 / lb</span>
+          </div>
+          <div class="actions">
+            <div class="qty" data-qty-for="v-006"><button class="dec" aria-label="Decrease quantity">−</button><span class="q">1</span><button class="inc" aria-label="Increase quantity">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> V-STORE</p>
+    </div>
+  </footer>
+
+  <!-- Global script (theme toggle, cart helpers, etc.) -->
+  <script src="script.js" defer></script>
+  <!-- Page-specific logic -->
+  <script src="dept-vegetables.js" defer></script>
 </body>
 </html>
