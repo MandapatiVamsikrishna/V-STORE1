@@ -1,107 +1,288 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMart - Online Grocery Shopping</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Meat</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">FreshMart</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for groceries...">
-        </div>
-        <div class="user-actions">
-            <a href="categories.html"><i class="categories"></i>Categories</a>
-            <a href="#" id="cart-toggle"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
-        </div>
-    </header>
-    <div class="container">
-        <h1 class="category-title">Meat & Seafood</h1>
-        
-        <div class="products">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Chicken" alt="Chicken">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Chicken Breast</h3>
-                    <p class="product-price">$5.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Beef" alt="Beef">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Ground Beef</h3>
-                    <p class="product-price">$6.49/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Pork" alt="Pork">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Pork Chops</h3>
-                    <p class="product-price">$4.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Salmon" alt="Salmon">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Atlantic Salmon</h3>
-                    <p class="product-price">$9.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Shrimp" alt="Shrimp">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Jumbo Shrimp</h3>
-                    <p class="product-price">$12.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Bacon" alt="Bacon">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Thick Cut Bacon</h3>
-                    <p class="product-price">$5.49/12oz</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
-    
-    <!-- Same footer/cart as index.html -->
+  </nav>
+
+  <!-- Page Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Meat</h1>
+      <p class="muted">Filter by category, price, and rating — or search for anything.</p>
+
+      <!-- Search + Sort -->
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search products">
+          <input id="search-input" type="search" placeholder="Search meat…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Department quick links (no Seafood link here) -->
+  <nav class="dept-nav" aria-label="Departments">
+    <ul class="dept-chips">
+      <li><a href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a href="diary.html">Diary</a></li>
+      <li><a href="eggs.html">Eggs</a></li>
+      <li><a aria-current="page" href="meat.html">Meat</a></li>
+      <li><a href="bakery.html">Bakery</a></li>
+      <li><a href="pantry.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="chicken" checked> Chicken</label></li>
+          <li><label><input type="checkbox" name="cat" value="beef" checked> Beef</label></li>
+          <li><label><input type="checkbox" name="cat" value="pork" checked> Pork</label></li>
+          <li><label><input type="checkbox" name="cat" value="lamb" checked> Lamb</label></li>
+          <li><label><input type="checkbox" name="cat" value="turkey" checked> Turkey</label></li>
+          <li><label><input type="checkbox" name="cat" value="bacon" checked> Bacon</label></li>
+          <li><label><input type="checkbox" name="cat" value="sausages" checked> Sausages</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="9999">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <!-- Chicken -->
+        <article class="card product-item"
+          data-id="m-chicken-breast"
+          data-name="Chicken Breast"
+          data-price="5.99"
+          data-category="chicken"
+          data-rating="4.6">
+          <button class="wish" aria-label="Add Chicken Breast to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1604908554063-0b6a0d5dcf39?q=80&w=800&auto=format&fit=crop" alt="Chicken Breast" />
+          </div>
+          <h3 class="title">Chicken Breast</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£5.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-chicken-breast"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Beef -->
+        <article class="card product-item"
+          data-id="m-ground-beef"
+          data-name="Ground Beef"
+          data-price="6.49"
+          data-category="beef"
+          data-rating="4.4">
+          <button class="wish" aria-label="Add Ground Beef to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop" alt="Ground Beef" />
+          </div>
+          <h3 class="title">Ground Beef</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£6.49 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-ground-beef"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Pork -->
+        <article class="card product-item"
+          data-id="m-pork-chops"
+          data-name="Pork Chops"
+          data-price="4.99"
+          data-category="pork"
+          data-rating="4.1">
+          <button class="wish" aria-label="Add Pork Chops to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1553163147-622ab57be1c7?q=80&w=800&auto=format&fit=crop" alt="Pork Chops" />
+          </div>
+          <h3 class="title">Pork Chops</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-pork-chops"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Lamb -->
+        <article class="card product-item"
+          data-id="m-lamb-chops"
+          data-name="Lamb Chops"
+          data-price="9.49"
+          data-category="lamb"
+          data-rating="4.3">
+          <button class="wish" aria-label="Add Lamb Chops to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1615937691194-97e1bfbbfdd6?q=80&w=800&auto=format&fit=crop" alt="Lamb Chops" />
+          </div>
+          <h3 class="title">Lamb Chops</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.49 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-lamb-chops"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Bacon -->
+        <article class="card product-item"
+          data-id="m-bacon"
+          data-name="Thick Cut Bacon"
+          data-price="5.49"
+          data-category="bacon"
+          data-rating="4.2">
+          <button class="wish" aria-label="Add Thick Cut Bacon to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?q=80&w=800&auto=format&fit=crop" alt="Thick Cut Bacon" />
+          </div>
+          <h3 class="title">Thick Cut Bacon</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£5.49 / 340g</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-bacon"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Beef: Ribeye Steak -->
+        <article class="card product-item"
+          data-id="m-ribeye"
+          data-name="Ribeye Steak"
+          data-price="12.99"
+          data-category="beef"
+          data-rating="4.7">
+          <button class="wish" aria-label="Add Ribeye Steak to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=800&auto=format&fit=crop" alt="Ribeye Steak" />
+          </div>
+          <h3 class="title">Ribeye Steak</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£12.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-ribeye"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Turkey -->
+        <article class="card product-item"
+          data-id="m-turkey-mince"
+          data-name="Turkey Mince"
+          data-price="5.29"
+          data-category="turkey"
+          data-rating="4.0">
+          <button class="wish" aria-label="Add Turkey Mince to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1615937691091-7a5c2e69afad?q=80&w=800&auto=format&fit=crop" alt="Turkey Mince" />
+          </div>
+          <h3 class="title">Turkey Mince</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£5.29 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-turkey-mince"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Sausages -->
+        <article class="card product-item"
+          data-id="m-italian-sausages"
+          data-name="Italian Sausages"
+          data-price="4.79"
+          data-category="sausages"
+          data-rating="4.3">
+          <button class="wish" aria-label="Add Italian Sausages to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1506368249639-73a05d6f6488?q=80&w=800&auto=format&fit=crop" alt="Italian Sausages" />
+          </div>
+          <h3 class="title">Italian Sausages</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.79 / 500g</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="m-italian-sausages"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global JS (search/sort/filters/cart) -->
+  <script src="script.js" defer></script>
 </body>
 </html>
