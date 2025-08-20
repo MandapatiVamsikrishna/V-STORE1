@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>V-STORE — Home</title>
   <meta name="description" content="V-STORE: your one-stop shop for top products at great prices." />
   <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js">
   <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-  <!-- Skip link for accessibility -->
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Navigation Bar -->
+  <!-- Top Promo Ticker -->
+  <div class="promo" role="status" aria-live="polite">
+    <div class="promo-track">
+      <span>🚚 Free shipping over £49</span>
+      <span>⚡ Flash deals live today</span>
+      <span>💬 24/7 support</span>
+      <span>🛡️ Secure checkout</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
   <nav class="nav" role="navigation" aria-label="Main">
     <div class="nav-inner">
-      <a class="logo" href="/">V-STORE</a>
+      <a class="logo" href="/" aria-label="V-STORE Home">V-STORE</a>
 
-      <!-- Mobile menu toggle -->
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
-        ☰
-      </button>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
 
       <ul id="nav-menu" class="nav-links">
         <li><a href="login.html">Login</a></li>
@@ -38,20 +45,82 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <header class="hero" role="banner">
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-content">
-      <h1>Welcome to V-STORE</h1>
-      <p>Your one‑stop shop for the best products!</p>
+      <h1 class="hero-title">Welcome to V-STORE</h1>
+      <p class="hero-sub">Your one-stop shop for the best products.</p>
+
       <form id="search-form" class="search" role="search" aria-label="Product search">
         <input id="search-input" type="search" placeholder="Search products…" autocomplete="off" aria-label="Search products" />
         <button type="submit">Search</button>
       </form>
+
+      <div class="trust-badges" aria-label="Trust badges">
+        <div class="badge-item">🛡️ SSL Secure</div>
+        <div class="badge-item">↩️ 30-day Returns</div>
+        <div class="badge-item">⭐ 4.8/5 Rated</div>
+        <div class="badge-item">📦 Fast Dispatch</div>
+      </div>
     </div>
   </header>
 
   <main id="main">
-    <!-- Controls row -->
+    <!-- Daily Deals strip -->
+    <section class="deals" aria-label="Deals">
+      <h2 class="section-title">Today’s Picks</h2>
+      <div class="deal-cards">
+        <article class="deal-card">
+          <span class="ribbon">-30%</span>
+          <h3>Summer Essentials</h3>
+          <p>Save on apparel bundles.</p>
+          <a href="categories.html#apparel" class="btn-ghost">Shop Now →</a>
+        </article>
+        <article class="deal-card">
+          <span class="ribbon">Hot</span>
+          <h3>Gadgets Under £50</h3>
+          <p>Top electronics steals.</p>
+          <a href="categories.html#electronics" class="btn-ghost">Browse →</a>
+        </article>
+        <article class="deal-card">
+          <span class="ribbon">New</span>
+          <h3>Home Refresh</h3>
+          <p>Cozy upgrades for less.</p>
+          <a href="categories.html#home" class="btn-ghost">Discover →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Category Highlights -->
+    <section class="categories-highlight" aria-label="Featured categories">
+      <h2 class="section-title">Shop by Category</h2>
+      <div class="cat-grid">
+        <a class="cat-card" href="categories.html#apparel">
+          <div class="cat-media apparel"></div>
+          <div class="cat-body">
+            <h3>Apparel</h3>
+            <p>Fresh fits for every day.</p>
+          </div>
+        </a>
+        <a class="cat-card" href="categories.html#electronics">
+          <div class="cat-media electronics"></div>
+          <div class="cat-body">
+            <h3>Electronics</h3>
+            <p>Smart picks, sharp prices.</p>
+          </div>
+        </a>
+        <a class="cat-card" href="categories.html#home">
+          <div class="cat-media home"></div>
+          <div class="cat-body">
+            <h3>Home</h3>
+            <p>Make your space yours.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Controls -->
     <section class="controls" aria-label="Browse controls">
       <div class="chips" id="category-chips" role="tablist" aria-label="Categories">
         <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
@@ -71,65 +140,128 @@
       </label>
     </section>
 
-    <!-- Featured Products Section -->
+    <!-- Products -->
     <section class="featured-products">
-      <h2>Featured Products</h2>
-      <div class="product-grid" id="product-grid">
-        <!-- Product Card 1 -->
+      <h2 class="section-title">Featured Products</h2>
+
+      <!-- Skeletons (show by default, you can hide via JS when data loads) -->
+      <div class="product-grid show-skeletons" id="product-grid">
         <article class="product-item" data-id="1" data-name="Product 1" data-price="20" data-category="electronics">
           <button class="wishlist" aria-label="Add Product 1 to wishlist" title="Add to wishlist">♡</button>
-          <img src="https://via.placeholder.com/200" alt="Product 1" loading="lazy" decoding="async" />
+          <div class="media">
+            <img src="https://via.placeholder.com/200" alt="Product 1" loading="lazy" decoding="async" />
+          </div>
           <h3 class="product-title">Product 1</h3>
+          <div class="rating" aria-label="Rated 4 out of 5 stars">
+            ★★★★☆
+          </div>
           <p class="price" data-currency="GBP">£20.00</p>
           <button class="add-to-cart">Add to Cart</button>
         </article>
 
-        <!-- Product Card 2 -->
         <article class="product-item" data-id="2" data-name="Product 2" data-price="25" data-category="apparel">
           <button class="wishlist" aria-label="Add Product 2 to wishlist" title="Add to wishlist">♡</button>
-          <img src="https://via.placeholder.com/200" alt="Product 2" loading="lazy" decoding="async" />
+          <div class="media">
+            <img src="https://via.placeholder.com/200" alt="Product 2" loading="lazy" decoding="async" />
+          </div>
           <h3 class="product-title">Product 2</h3>
+          <div class="rating" aria-label="Rated 5 out of 5 stars">
+            ★★★★★
+          </div>
           <p class="price" data-currency="GBP">£25.00</p>
           <button class="add-to-cart">Add to Cart</button>
         </article>
 
-        <!-- Product Card 3 -->
         <article class="product-item" data-id="3" data-name="Product 3" data-price="30" data-category="home">
           <button class="wishlist" aria-label="Add Product 3 to wishlist" title="Add to wishlist">♡</button>
-          <img src="https://via.placeholder.com/200" alt="Product 3" loading="lazy" decoding="async" />
+          <div class="media">
+            <img src="https://via.placeholder.com/200" alt="Product 3" loading="lazy" decoding="async" />
+          </div>
           <h3 class="product-title">Product 3</h3>
+          <div class="rating" aria-label="Rated 3 out of 5 stars">
+            ★★★☆☆
+          </div>
           <p class="price" data-currency="GBP">£30.00</p>
           <button class="add-to-cart">Add to Cart</button>
         </article>
       </div>
     </section>
+
+    <!-- Testimonials (CSS carousel) -->
+    <section class="testimonials" aria-label="What our customers say">
+      <h2 class="section-title">Loved by Shoppers</h2>
+      <div class="carousel" aria-roledescription="carousel">
+        <figure class="slide">
+          <blockquote>“Fast delivery and great prices. My go-to store!”</blockquote>
+          <figcaption>— Aisha K.</figcaption>
+        </figure>
+        <figure class="slide">
+          <blockquote>“Amazing customer support. Resolved my issue in minutes.”</blockquote>
+          <figcaption>— Daniel R.</figcaption>
+        </figure>
+        <figure class="slide">
+          <blockquote>“Quality products. The electronics section is 🔥.”</blockquote>
+          <figcaption>— Priya S.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" aria-label="Frequently Asked Questions">
+      <h2 class="section-title">FAQ</h2>
+      <details>
+        <summary>What is your return policy?</summary>
+        <p>We offer a 30-day return window on most items. See Returns at checkout for details.</p>
+      </details>
+      <details>
+        <summary>How long does shipping take?</summary>
+        <p>1–3 business days within the UK. International shipping varies by region.</p>
+      </details>
+      <details>
+        <summary>Do you offer student discounts?</summary>
+        <p>Yes! Verify your student status at checkout for an instant discount.</p>
+      </details>
+    </section>
+
   </main>
 
-  <!-- Toast / notifications -->
   <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
-      <p>&copy; <span id="year"></span> V-STORE. All Rights Reserved.</p>
-      <form class="newsletter" id="newsletter-form" aria-label="Newsletter signup">
-        <label for="newsletter-email" class="visually-hidden">Email</label>
-        <input id="newsletter-email" type="email" placeholder="Join our newsletter" required />
-        <button type="submit">Subscribe</button>
-      </form>
+      <div class="footer-grid">
+        <div>
+          <h3>V-STORE</h3>
+          <p>Great picks. Better prices.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="categories.html#electronics">Electronics</a></li>
+            <li><a href="categories.html#apparel">Apparel</a></li>
+            <li><a href="categories.html#home">Home</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Newsletter</h4>
+          <form class="newsletter" id="newsletter-form" aria-label="Newsletter signup">
+            <label for="newsletter-email" class="visually-hidden">Email</label>
+            <input id="newsletter-email" type="email" placeholder="Join our newsletter" required />
+            <button type="submit">Subscribe</button>
+            <p class="form-hint" aria-live="polite" id="newsletter-hint">No spam. Unsubscribe anytime.</p>
+          </form>
+        </div>
+      </div>
+      <p class="legal">© <span id="year"></span> V-STORE. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- JSON-LD for basic organization (SEO) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "V-STORE",
-    
-  }
-  </script>
-
-  <script src="script.js" defer></script>
-</body>
-</html>
+  
