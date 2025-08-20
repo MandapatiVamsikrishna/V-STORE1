@@ -1,140 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egg Varieties - FreshMart</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Eggs</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">FreshMart</div>
-        <div class="user-actions">
-            <a href="index.html"><i class="fas fa-home"></i> Home</a>
-            <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
-        </div>
-    </header>
-    
-    <div class="container">
-        <h1 class="category-title">Egg Varieties</h1>
-        
-        <div class="products">
-            <!-- Regular Eggs -->
-            <div class="product-card" data-id="egg-regular" data-name="Regular Eggs" data-price="3.99">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Regular+Eggs" alt="Regular Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Regular Eggs</h3>
-                    <p class="product-price">$3.99/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Free Range Eggs -->
-            <div class="product-card" data-id="egg-free-range" data-name="Free Range Eggs" data-price="5.99">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Free+Range+Eggs" alt="Free Range Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Free Range Eggs</h3>
-                    <p class="product-price">$5.99/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Organic Eggs -->
-            <div class="product-card" data-id="egg-organic" data-name="Organic Eggs" data-price="6.99">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Organic+Eggs" alt="Organic Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Organic Eggs</h3>
-                    <p class="product-price">$6.99/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Omega-3 Eggs -->
-            <div class="product-card" data-id="egg-omega3" data-name="Omega-3 Eggs" data-price="7.49">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Omega3+Eggs" alt="Omega-3 Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Omega-3 Eggs</h3>
-                    <p class="product-price">$7.49/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pasture Raised Eggs -->
-            <div class="product-card" data-id="egg-pasture" data-name="Pasture Raised Eggs" data-price="8.99">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Pasture+Eggs" alt="Pasture Raised Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Pasture Raised Eggs</h3>
-                    <p class="product-price">$8.99/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Jumbo Eggs -->
-            <div class="product-card" data-id="egg-jumbo" data-name="Jumbo Eggs" data-price="4.99">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Jumbo+Eggs" alt="Jumbo Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Jumbo Eggs</h3>
-                    <p class="product-price">$4.99/dozen</p>
-                    <div class="product-actions">
-                        <div class="quantity-controls">
-                            <button class="decrement">-</button>
-                            <span class="quantity">1</span>
-                            <button class="increment">+</button>
-                        </div>
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
-    
-    <footer>
-        <p>&copy; 2023 FreshMart. All Rights Reserved.</p>
-    </footer>
+  </nav>
+
+  <!-- Page Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Eggs</h1>
+      <p class="muted">Filter by category, price, and rating — or search for anything.</p>
+
+      <!-- Search + Sort -->
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search products">
+          <input id="search-input" type="search" placeholder="Search eggs…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Department quick links -->
+  <nav class="dept-nav" aria-label="Departments">
+    <ul class="dept-chips">
+      <li><a href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a href="dairy.html">Dairy</a></li>
+      <li><a aria-current="page" href="eggs.html">Eggs</a></li>
+      <li><a href="meat.html">Meat</a></li>
+      <li><a href="sea food.html">Seafood</a></li>
+      <li><a href="bakery.html">Bakery</a></li>
+      <li><a href="pantry.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="chicken" checked> Chicken</label></li>
+          <li><label><input type="checkbox" name="cat" value="duck" checked> Duck</label></li>
+          <li><label><input type="checkbox" name="cat" value="quail" checked> Quail</label></li>
+          <li><label><input type="checkbox" name="cat" value="specialty" checked> Specialty</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="9999">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <article class="card product-item" data-id="e-chicken-1" data-name="Free-Range Chicken Eggs (12)" data-price="2.99" data-category="chicken" data-rating="4.4">
+          <button class="wish" aria-label="Add Free-Range Chicken Eggs to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1498654200943-1088dd4438ae?q=80&w=800&auto=format&fit=crop" alt="Free-Range Chicken Eggs (12)" />
+          </div>
+          <h3 class="title">Free-Range Chicken Eggs (12)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / dozen</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="e-chicken-1"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="e-chicken-2" data-name="Organic Chicken Eggs (12)" data-price="3.49" data-category="chicken" data-rating="4.6">
+          <button class="wish" aria-label="Add Organic Chicken Eggs to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1587486913049-53fc8cf5d6a8?q=80&w=800&auto=format&fit=crop" alt="Organic Chicken Eggs (12)" />
+          </div>
+          <h3 class="title">Organic Chicken Eggs (12)</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£3.49 / dozen</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="e-chicken-2"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="e-chicken-3" data-name="Large Chicken Eggs (15-pack)" data-price="3.99" data-category="chicken" data-rating="4.3">
+          <button class="wish" aria-label="Add Large Chicken Eggs 15-pack to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1517959105821-eaf2591984d5?q=80&w=800&auto=format&fit=crop" alt="Large Chicken Eggs (15-pack)" />
+          </div>
+          <h3 class="title">Large Chicken Eggs (15-pack)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / pack</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="e-chicken-3"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="e-duck-1" data-name="Duck Eggs (6)" data-price="4.49" data-category="duck" data-rating="4.5">
+          <button class="wish" aria-label="Add Duck Eggs to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=800&auto=format&fit=crop" alt="Duck Eggs (6)" />
+          </div>
+          <h3 class="title">Duck Eggs (6)</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£4.49 / 6</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="e-duck-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="e-quail-1" data-name="Quail Eggs (12)" data-price="2.79" data-category="quail" data-rating="4.2">
+          <button class="wish" aria-label="Add Quail Eggs to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1576402187878-974f70c890a5?q=80&w=800&auto=format&fit=crop" alt="Quail Eggs (12)" />
+          </div>
+          <h3 class="title">Quail Eggs (12)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.79 / 12</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="e-quail-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="e-spec-1" data-name="Egg Whites (Pasteurised, 500ml)" data-price="2.59" data-category="specialty" data-rating="4.0">
+          <button class="wish" aria-label="Add Egg Whites carton to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1505579599272-8c1e9be5a0c1?q=80&w=800&auto=format&fit=crop" alt="Egg Whites (500ml carton)" />
+          </div>
+          <h3 class="title">Egg Whites (Pasteurised, 500ml)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.59 / carton</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="e-spec-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global helpers -->
+  <script src="script.js" defer></script>
+  <!-- Page-specific (optional) -->
+  <script src="dept-eggs.js" defer></script>
+</body>
+</html>
