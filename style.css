@@ -545,5 +545,57 @@ button:active { transform: translateY(0.5px); }
 @media screen {
   #print-receipt { float: right; }
 }
+/* ---------- Featured Rows ---------- */
+.featured-rows { margin-top: 1.25rem; }
+.row-block { margin-bottom: 1.25rem; }
+.row-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin:.25rem 0 .5rem;
+}
+.row-header h3 { font-size:1.1rem; margin:0; }
+.row-header a.view-all { font-size:.95rem; opacity:.8; text-decoration:none; }
+.row-header a.view-all:hover { opacity:1; text-decoration:underline; }
+
+.row-scroller-wrap {
+  position:relative;
+}
+.row-scroller {
+  display:grid; grid-auto-flow:column; grid-auto-columns: 240px;
+  gap:.75rem; overflow:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory; padding-bottom:.25rem;
+  scrollbar-width:thin;
+}
+.row-scroller:focus { outline: 2px solid color-mix(in oklab, var(--text) 25%, transparent); outline-offset:2px; }
+
+.row-nav {
+  position:absolute; inset:0; pointer-events:none;
+}
+.row-nav button {
+  pointer-events:auto;
+  position:absolute; top:50%; transform:translateY(-50%);
+  border:none; border-radius:999px; width:40px; height:40px;
+  background:color-mix(in oklab, var(--bg-elev) 70%, var(--text) 8%);
+  box-shadow:0 4px 16px color-mix(in oklab, black 15%, transparent);
+  cursor:pointer; display:grid; place-items:center;
+}
+.row-nav button[disabled] { opacity:.35; cursor:default; }
+.row-prev { left:-.25rem; }
+.row-next { right:-.25rem; }
+
+/* Compact product cards for rows (still compatible with your JS) */
+.card.card--sm.product-item {
+  scroll-snap-align:start;
+  width:240px; padding:.6rem;
+}
+.card.card--sm .media { aspect-ratio:4/3; border-radius:14px; overflow:hidden; }
+.card.card--sm .title { font-size:.95rem; line-height:1.25; margin:.45rem 0 .3rem; }
+.card.card--sm .meta { display:flex; justify-content:space-between; font-size:.85rem; }
+.card.card--sm .actions { display:flex; align-items:center; justify-content:space-between; margin-top:.45rem; }
+.card.card--sm .qty { font-size:.9rem; }
+
+/* Touch drag hint (optional) */
+@media (hover:none) and (pointer:coarse){
+  .row-nav { display:none; }
+}
 
 
