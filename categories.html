@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Categories — V-STORE</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="categories.js" defer></script>
+  <script src="script.js" defer></script>
+
   <link rel="script" href="script.js" />
   <link rel="checkout" href="checkout.html" />
   <link rel="icon" href="/favicon.ico" />
@@ -53,19 +56,7 @@
   </header>
 
   <!-- NEW: Department quick links (chips) -->
-  <nav class="dept-nav" aria-label="Departments">
-    <ul class="dept-chips">
-      <li><a href="fruits.html">Fruits</a></li>
-      <li><a href="vegatables.html">Vegatables</a></li>
-      <li><a href="diary.html">Diary</a></li>
-      <li><a href="eggs.html">Eggs</a></li>
-      <li><a href="meat.html">Meat</a></li>
-      <li><a href="sea food.html">Sea food</a></li>
-      <li><a href="bakery.html">Bakery</a></li>
-      <li><a href="pantry.html">Pantry</a></li>
-      <li><a href="beverages.html">Beverages</a></li>
-    </ul>
-  </nav>
+
 
   <!-- NEW: Visual department grid -->
   <section class="dept-grid-wrap" aria-label="Shop by Department">
@@ -73,7 +64,7 @@
     <div class="dept-grid">
       <a class="dept-card fruits" href="fruits.html"><span class="dept-emoji" aria-hidden="true">🍎</span><span class="dept-name">Fruits</span></a>
       <a class="dept-card vegetables" href="vegatables.html"><span class="dept-emoji" aria-hidden="true">🥕</span><span class="dept-name">Vegetables</span></a>
-      <a class="dept-card dairy" href="diary.html"><span class="dept-emoji" aria-hidden="true">🥛</span><span class="dept-name">Dairy</span></a>
+      <a class="dept-card dairy" href="diary.html"><span class="dept-emoji" aria-hidden="true">🥛</span><span class="dept-name">Diary</span></a>
       <a class="dept-card eggs" href="eggs.html"><span class="dept-emoji" aria-hidden="true">🥚</span><span class="dept-name">Eggs</span></a>
       <a class="dept-card meat" href="meat.html"><span class="dept-emoji" aria-hidden="true">🍗</span><span class="dept-name">Meat</span></a>
       <a class="dept-card seafood" href="sea food.html"><span class="dept-emoji" aria-hidden="true">🦐</span><span class="dept-name">Sea food</span></a>
@@ -81,6 +72,10 @@
       <a class="dept-card pantry" href="pantry.html"><span class="dept-emoji" aria-hidden="true">🥫</span><span class="dept-name">Pantry</span></a>
       <a class="dept-card beverages" href="beverages.html"><span class="dept-emoji" aria-hidden="true">🥤</span><span class="dept-name">Beverages</span></a>
     </div>
+  </section>
+  <section class="featured-rows container" aria-label="Featured by Department">
+      <h2 class="section-title">Featured by Department</h2>
+      <div id="featured-rows"></div>
   </section>
 
   <main class="container">
