@@ -1,108 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMart - Online Grocery Shopping</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Dairy</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">FreshMart</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for groceries...">
-        </div>
-        <div class="user-actions">
-            <a href="categories.html"><i class="categories"></i>Categories</a>
-            <a href="#" id="cart-toggle"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
-        </div>
-    </header>
-    
-    <div class="container">
-        <h1 class="category-title">Dairy & Eggs</h1>
-        
-        <div class="products">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="C:\Users\Administrator\Downloads\milk (1).jpg" alt="Milk">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Whole Milk</h3>
-                    <p class="product-price">$3.49/gallon</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Eggs" alt="Eggs">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Large Eggs</h3>
-                    <p class="product-price">$2.99/dozen</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Cheese" alt="Cheese">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Cheddar Cheese</h3>
-                    <p class="product-price">$4.99/8oz</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Yogurt" alt="Yogurt">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Greek Yogurt</h3>
-                    <p class="product-price">$1.29/5.3oz</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Butter" alt="Butter">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Salted Butter</h3>
-                    <p class="product-price">$3.99/lb</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Cream" alt="Cream">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Heavy Cream</h3>
-                    <p class="product-price">$2.49/pint</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
-    
-    <!-- Same footer/cart as index.html -->
+  </nav>
+
+  <!-- Page Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Dairy</h1>
+      <p class="muted">Filter by category, price, and rating — or search for anything.</p>
+
+      <!-- Search + Sort -->
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search products">
+          <input id="search-input" type="search" placeholder="Search dairy…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Department quick links -->
+  <nav class="dept-nav" aria-label="Departments">
+    <ul class="dept-chips">
+      <li><a href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a aria-current="page" href="diary.html">Diary</a></li>
+      <li><a href="eggs.html">Eggs</a></li>
+      <li><a href="meat.html">Meat</a></li>
+      <li><a href="sea food.html">Seafood</a></li>
+      <li><a href="bakery.html">Bakery</a></li>
+      <li><a href="pantry.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="milk" checked> Milk</label></li>
+          <li><label><input type="checkbox" name="cat" value="cheese" checked> Cheese</label></li>
+          <li><label><input type="checkbox" name="cat" value="yogurt" checked> Yogurt</label></li>
+          <li><label><input type="checkbox" name="cat" value="butter" checked> Butter</label></li>
+          <li><label><input type="checkbox" name="cat" value="cream" checked> Cream</label></li>
+          <li><label><input type="checkbox" name="cat" value="lactose-free" checked> Lactose-Free</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="9999">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <article class="card product-item" data-id="d-milk-1" data-name="Whole Milk" data-price="3.49" data-category="milk" data-rating="4.7">
+          <button class="wish" aria-label="Add Whole Milk to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop" alt="Whole Milk" />
+          </div>
+          <h3 class="title">Whole Milk</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£3.49 / 2L</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="d-milk-1"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="d-milk-2" data-name="Semi-Skimmed Milk" data-price="3.19" data-category="milk" data-rating="4.5">
+          <button class="wish" aria-label="Add Semi-Skimmed Milk to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?q=80&w=800&auto=format&fit=crop" alt="Semi-Skimmed Milk" />
+          </div>
+          <h3 class="title">Semi-Skimmed Milk</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£3.19 / 2L</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="d-milk-2"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="d-cheese-1" data-name="Cheddar Cheese" data-price="4.99" data-category="cheese" data-rating="4.6">
+          <button class="wish" aria-label="Add Cheddar Cheese to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1604908554035-7c2ae95a5b7d?q=80&w=800&auto=format&fit=crop" alt="Cheddar Cheese" />
+          </div>
+          <h3 class="title">Cheddar Cheese</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£4.99 / 200g</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="d-cheese-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="d-yogurt-1" data-name="Greek Yogurt" data-price="2.49" data-category="yogurt" data-rating="4.2">
+          <button class="wish" aria-label="Add Greek Yogurt to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1546549039-49b6b4b3a7ef?q=80&w=800&auto=format&fit=crop" alt="Greek Yogurt" />
+          </div>
+          <h3 class="title">Greek Yogurt</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / 500g</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="d-yogurt-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="d-butter-1" data-name="Salted Butter" data-price="3.99" data-category="butter" data-rating="4.3">
+          <button class="wish" aria-label="Add Salted Butter to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1546964124-0cce460f38ef?q=80&w=800&auto=format&fit=crop" alt="Salted Butter" />
+          </div>
+          <h3 class="title">Salted Butter</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / 250g</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="d-butter-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="d-cream-1" data-name="Heavy Cream" data-price="2.49" data-category="cream" data-rating="4.1">
+          <button class="wish" aria-label="Add Heavy Cream to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1541782814452-d2a64287ec88?q=80&w=800&auto=format&fit=crop" alt="Heavy Cream" />
+          </div>
+          <h3 class="title">Heavy Cream</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / 284ml</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="d-cream-1"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global helpers -->
+  <script src="script.js" defer></script>
+  <!-- Page-specific (optional) -->
+  <script src="dept-dairy.js" defer></script>
 </body>
 </html>
