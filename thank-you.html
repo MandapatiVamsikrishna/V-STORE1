@@ -1,44 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You - MyStore</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You — V-STORE</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="logo">MyStore</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="categories.html">Categories</a></li>
-            <li><a href="cart.html">Cart</a></li>
-        </ul>
-    </nav>
+    
+  <strong class="brand-name">V-STORE</strong>
+  <span class="brand-url">www.v-store.com</span>
+</header>
 
-    <!-- Thank You Section -->
-    <section class="thank-you-section">
-        <h2>Thank You for Your Order!</h2>
-        <p>Your order has been successfully placed.</p>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-STORE</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <script src="script.js" defer></script>
+        <script src="thank you script.js" defer></script>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul>
+    </div>
+  </nav>
 
-        <h3>Order Summary</h3>
-        <div id="order-summary">
-            <!-- Order details will be dynamically inserted here -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Thank you for your order!</h1>
+      <p class="muted">Your order has been placed successfully.</p>
+    </div>
+  </header>
+
+  <main class="container" style="align-items:start; gap:1rem;">
+    <!-- Left: Items + totals -->
+    <section class="results" style="width:100%;">
+      <div class="card" style="padding:1rem;">
+        <h2 style="margin:0 0 .5rem;">Order <span id="order-id">—</span></h2>
+        <p class="muted" style="margin:.2rem 0 .8rem;">Placed on <span id="order-date">—</span></p>
+
+        <h3>Items</h3>
+        <ul id="order-items" style="list-style:none; padding:0; margin:0;"></ul>
+
+        <div class="summary-lines" style="display:grid; gap:.35rem; margin-top:1rem;">
+          <div class="meta" style="display:flex; justify-content:space-between;">
+            <span>Subtotal</span><strong id="sum-subtotal">£0.00</strong>
+          </div>
+          <div class="meta" style="display:flex; justify-content:space-between;">
+            <span>Discount</span><strong id="sum-discount">– £0.00</strong>
+          </div>
+          <div class="meta" style="display:flex; justify-content:space-between;">
+            <span>Shipping</span><strong id="sum-shipping">£0.00</strong>
+          </div>
+          <p id="free-ship-note" class="form-hint" style="margin:.1rem 0 0;"></p>
+          <div class="meta" style="display:flex; justify-content:space-between; border-top:1px solid color-mix(in oklab, var(--text) 10%, transparent); padding-top:.5rem; margin-top:.4rem;">
+            <strong>Total</strong><strong id="sum-total">£0.00</strong>
+          </div>
         </div>
 
-        <h3>Shipping Information</h3>
-        <div id="shipping-info">
-            <!-- Shipping information will be dynamically inserted here -->
+        <div style="margin-top:1rem; display:grid; gap:.35rem;">
+          <div class="meta"><strong>Payment:</strong> <span id="payment-line">—</span></div>
+          <div class="meta"><span id="promo-line" class="muted"></span></div>
         </div>
 
-        <button onclick="window.location.href='index.html';" class="btn">Back to Home</button>
+        <div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+          <button id="print-receipt" class="btn-primary">Print / Save PDF</button>
+          <a class="btn-ghost" href="index.html">Back to Home</a>
+        </div>
+      </div>
     </section>
 
-    <footer>
-        <p>&copy; 2024 MyStore. All Rights Reserved.</p>
-    </footer>
+    <!-- Right: Shipping info -->
+    <aside class="filters" aria-label="Shipping info" style="min-width:280px;">
+      <h2 class="filters-title">Shipping Information</h2>
+      <div class="meta"><strong>Name:</strong> <span id="ship-name">—</span></div>
+      <div class="meta" style="margin-top:.25rem;"><strong>Address:</strong> <span id="ship-address">—</span></div>
+      <div class="meta" style="margin-top:.25rem;"><strong>Contact:</strong> <span id="ship-contact">—</span></div>
+    </aside>
+  </main>
 
-    <script src="thank-you.js"></script>
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> V-STORE</p>
+    </div>
+  </footer>
+
+  <!-- Keep your global script if you want the theme/year helpers; it's optional here -->
+  <script src="script.js" defer></script>
+  <!-- Required: standalone renderer for this page -->
+  <script src="thank-you.js" defer></script>
 </body>
 </html>
