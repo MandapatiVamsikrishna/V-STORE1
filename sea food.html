@@ -1,104 +1,296 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seafood Store</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart – Seafood</title>
+  <li><a href="categories.html">categories</a></li>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
-
-    <h1>Fresh Seafood Categories</h1>
-
-    <!-- Fish Category -->
-    <div class="category">
-        <h2>Fish</h2>
-        <div class="product" data-id="fish1" data-name="Salmon" data-price="15.99">
-            <img src="salmon.jpg" alt="Salmon">
-            <p>Salmon Fillet - $15.99/lb</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product" data-id="fish2" data-name="Tuna" data-price="18.50">
-            <img src="tuna.jpg" alt="Tuna">
-            <p>Tuna Steak - $18.50/lb</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
+  </nav>
 
-    <!-- Shellfish Category -->
-    <div class="category">
-        <h2>Shellfish</h2>
-        <div class="product" data-id="shell1" data-name="Oysters" data-price="12.00">
-            <img src="oysters.jpg" alt="Oysters">
-            <p>Fresh Oysters - $12.00/dozen</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product" data-id="shell2" data-name="Clams" data-price="10.00">
-            <img src="clams.jpg" alt="Clams">
-            <p>Little Neck Clams - $10.00/dozen</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
+  <!-- Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Seafood</h1>
+      <p class="muted">Filter by type, price and rating — or search for anything.</p>
+
+      <div class="row">
+        <form id="search-form" role="search" aria-label="Search seafood" class="search">
+          <input id="search-input" type="search" placeholder="Search salmon, shrimp, squid…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
     </div>
+  </header>
 
-    <!-- Crustaceans Category -->
-    <div class="category">
-        <h2>Crustaceans</h2>
-        <div class="product" data-id="crust1" data-name="Lobster" data-price="25.00">
-            <img src="lobster.jpg" alt="Lobster">
-            <p>Live Lobster - $25.00 each</p>
-            <button class="add-to-cart">Add to Cart</button>
+  <!-- Quick sub-category chips -->
+  <nav class="dept-nav" aria-label="Seafood types">
+    <ul class="dept-chips">
+      <li><a href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a href="dairy.html">Dairy</a></li>
+      <li><a href="eggs.html">Eggs</a></li>
+      <li><a href="meat.html">Meat</a></li>
+      <li><a href="sea food.html">Sea food</a></li>
+      <li><a href="bakery.html">Bakery</a></li>
+      <li><a href="pantry.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <!-- Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Type</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="fish" checked> Fish</label></li>
+          <li><label><input type="checkbox" name="cat" value="shellfish" checked> Shellfish</label></li>
+          <li><label><input type="checkbox" name="cat" value="crustaceans" checked> Crustaceans</label></li>
+          <li><label><input type="checkbox" name="cat" value="mollusks" checked> Mollusks</label></li>
+          <li><label><input type="checkbox" name="cat" value="seaweed" checked> Seaweed</label></li>
+          <li><label><input type="checkbox" name="cat" value="ready" checked> Ready-to-Cook</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="9999">
         </div>
-        <div class="product" data-id="crust2" data-name="Shrimp" data-price="14.99">
-            <img src="shrimp.jpg" alt="Shrimp">
-            <p>Large Shrimp - $14.99/lb</p>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <div id="product-grid" class="grid">
+        <!-- FISH -->
+        <article id="fish" class="card product-item" data-id="sea-fish-salmon" data-name="Salmon Fillet" data-price="15.99" data-category="fish" data-rating="4.8">
+          <button class="wish" aria-label="Add Salmon Fillet to wishlist">♡</button>
+          <div class="media">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkYKfZtY0N6EK5OFtmtxJzlVyQmbaZ_N_nvA&s" alt="Salmon fillet" />
+          </div>
+          <h3 class="title">Salmon Fillet</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£15.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-fish-salmon"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
             <button class="add-to-cart">Add to Cart</button>
-        </div>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="sea-fish-tuna" data-name="Tuna Steak" data-price="18.50" data-category="fish" data-rating="4.6">
+          <button class="wish" aria-label="Add Tuna Steak to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.thefishsociety.co.uk/cdn/shop/files/cropped_superfrozentunaloinchunk1_1000x.jpg?v=1745418872" alt="Tuna steak" />
+          </div>
+          <h3 class="title">Tuna Steak</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£18.50 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-fish-tuna"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- SHELLFISH -->
+        <article id="shellfish" class="card product-item" data-id="sea-shell-oyster" data-name="Fresh Oysters" data-price="12.00" data-category="shellfish" data-rating="4.4">
+          <button class="wish" aria-label="Add Fresh Oysters to wishlist">♡</button>
+          <div class="media">
+            <img src="https://www.finefoodspecialist.co.uk/media/catalog/product/cache/f161b34f5056d8320f6a68b3897c20ac/5/7/573.jpeg" alt="Oysters on ice" />
+          </div>
+          <h3 class="title">Fresh Oysters</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£12.00 / dozen</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-shell-oyster"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="sea-shell-clam" data-name="Little Neck Clams" data-price="10.00" data-category="shellfish" data-rating="4.1">
+          <button class="wish" aria-label="Add Little Neck Clams to wishlist">♡</button>
+          <div class="media">
+            <img src="https://globalseafoods.com/cdn/shop/articles/dreamstime_s_215073521_2048x.jpg?v=1694319164" alt="Clams" />
+          </div>
+          <h3 class="title">Little Neck Clams</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£10.00 / dozen</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-shell-clam"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- CRUSTACEANS -->
+        <article id="crustaceans" class="card product-item" data-id="sea-crust-lobster" data-name="Live Lobster" data-price="25.00" data-category="crustaceans" data-rating="4.7">
+          <button class="wish" aria-label="Add Live Lobster to wishlist">♡</button>
+          <div class="media">
+            <img src="https://adamseafood.co.uk/wp-content/uploads/2021/03/bigstock-Fresh-Lobster-On-Wooden-Boa-407209979.jpg" alt="Lobster" />
+          </div>
+          <h3 class="title">Live Lobster</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£25.00 each</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-crust-lobster"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="sea-crust-shrimp" data-name="Large Shrimp" data-price="14.99" data-category="crustaceans" data-rating="4.5">
+          <button class="wish" aria-label="Add Large Shrimp to wishlist">♡</button>
+          <div class="media">
+            <img src="https://emmaeatsandexplores.com/wp-content/uploads/2017/08/Shrimp-Lime-Butter-2-1024x709.jpeg" alt="Shrimp" />
+          </div>
+          <h3 class="title">Large Shrimp</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£14.99 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-crust-shrimp"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- MOLLUSKS -->
+        <article id="mollusks" class="card product-item" data-id="sea-moll-squid" data-name="Fresh Squid" data-price="9.50" data-category="mollusks" data-rating="4.0">
+          <button class="wish" aria-label="Add Fresh Squid to wishlist">♡</button>
+          <div class="media">
+            <img src="https://m.media-amazon.com/images/I/51-g-W28izL._UF1000,1000_QL80_.jpg" alt="Squid" />
+          </div>
+          <h3 class="title">Fresh Squid</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.50 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-moll-squid"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="sea-moll-octopus" data-name="Whole Octopus" data-price="13.75" data-category="mollusks" data-rating="4.3">
+          <button class="wish" aria-label="Add Whole Octopus to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1623066176517-8d640ee1e7a4?q=80&w=1200&auto=format&fit=crop" alt="Octopus" />
+          </div>
+          <h3 class="title">Whole Octopus</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£13.75 / lb</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-moll-octopus"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- SEAWEED -->
+        <article id="seaweed" class="card product-item" data-id="sea-weed-nori" data-name="Nori Sheets" data-price="5.00" data-category="seaweed" data-rating="4.2">
+          <button class="wish" aria-label="Add Nori Sheets to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1584367369853-c2d3b1b2f8a3?q=80&w=1200&auto=format&fit=crop" alt="Nori sheets" />
+          </div>
+          <h3 class="title">Nori Sheets</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£5.00 / pack</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-weed-nori"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="sea-weed-wakame" data-name="Wakame Seaweed" data-price="4.50" data-category="seaweed" data-rating="4.0">
+          <button class="wish" aria-label="Add Wakame Seaweed to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1622227921133-4d2b37fa3b80?q=80&w=1200&auto=format&fit=crop" alt="Wakame seaweed" />
+          </div>
+          <h3 class="title">Wakame Seaweed</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.50 / pack</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-weed-wakame"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- READY -->
+        <article id="ready" class="card product-item" data-id="sea-ready-mix" data-name="Seafood Mix Pack" data-price="20.00" data-category="ready" data-rating="4.6">
+          <button class="wish" aria-label="Add Seafood Mix Pack to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Seafood mix pack" />
+          </div>
+          <h3 class="title">Seafood Mix Pack</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£20.00</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-ready-mix"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item" data-id="sea-ready-fry" data-name="Fish Fry Kit" data-price="18.00" data-category="ready" data-rating="4.3">
+          <button class="wish" aria-label="Add Fish Fry Kit to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=1200&auto=format&fit=crop" alt="Fish fry kit" />
+          </div>
+          <h3 class="title">Fish Fry Kit</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£18.00</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="sea-ready-fry"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart</p>
     </div>
+  </footer>
 
-    <!-- Mollusks Category -->
-    <div class="category">
-        <h2>Mollusks</h2>
-        <div class="product" data-id="mollusk1" data-name="Squid" data-price="9.50">
-            <img src="squid.jpg" alt="Squid">
-            <p>Fresh Squid - $9.50/lb</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product" data-id="mollusk2" data-name="Octopus" data-price="13.75">
-            <img src="octopus.jpg" alt="Octopus">
-            <p>Whole Octopus - $13.75/lb</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-
-    <!-- Seaweed Category -->
-    <div class="category">
-        <h2>Seaweed</h2>
-        <div class="product" data-id="seaweed1" data-name="Nori Sheets" data-price="5.00">
-            <img src="nori.jpg" alt="Nori">
-            <p>Nori Sheets - $5.00/pack</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product" data-id="seaweed2" data-name="Wakame" data-price="4.50">
-            <img src="wakame.jpg" alt="Wakame">
-            <p>Wakame Seaweed - $4.50/pack</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-
-    <!-- Ready-to-Cook Packs -->
-    <div class="category">
-        <h2>Ready-to-Cook Packs</h2>
-        <div class="product" data-id="ready1" data-name="Seafood Mix" data-price="20.00">
-            <img src="seafood-mix.jpg" alt="Seafood Mix">
-            <p>Seafood Mix Pack - $20.00</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-        <div class="product" data-id="ready2" data-name="Fish Fry Kit" data-price="18.00">
-            <img src="fish-fry.jpg" alt="Fish Fry Kit">
-            <p>Fish Fry Kit - $18.00</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-    </div>
-
+  <!-- IMPORTANT: your global script that handles cart/theme/filter/etc. -->
+  <script src="script.js" defer></script>
 </body>
 </html>
