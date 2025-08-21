@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Gadgets Under £50</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Gadgets Under £50</h1>
+      <p class="muted">Top electronics steals — audio, smart-home, gaming, and more.</p>
+
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search gadgets">
+          <input id="search-input" type="search" placeholder="Search gadgets…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick links -->
+  
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="audio" checked> Audio</label></li>
+          <li><label><input type="checkbox" name="cat" value="smart-home" checked> Smart-Home</label></li>
+          <li><label><input type="checkbox" name="cat" value="mobile" checked> Mobile Accessories</label></li>
+          <li><label><input type="checkbox" name="cat" value="gaming" checked> Gaming</label></li>
+          <li><label><input type="checkbox" name="cat" value="wearables" checked> Wearables</label></li>
+          <li><label><input type="checkbox" name="cat" value="office" checked> Office/Desk</label></li>
+          <li><label><input type="checkbox" name="cat" value="cables" checked> Cables/Power</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="50">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3.5"> 3.5★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <!-- AUDIO -->
+        <article class="card product-item"
+          data-id="g-bt-earbuds"
+          data-name="Bluetooth Earbuds"
+          data-price="19.99"
+          data-category="audio"
+          data-rating="4.3">
+          <button class="wish" aria-label="Save Bluetooth Earbuds">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1603575449299-b5b4e0a75a3f?q=80&w=900&auto=format&fit=crop" alt="Bluetooth Earbuds">
+          </div>
+          <h3 class="title">Bluetooth Earbuds</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£19.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="g-mini-speaker"
+          data-name="Mini Bluetooth Speaker"
+          data-price="14.99"
+          data-category="audio"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save Mini Bluetooth Speaker">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=900&auto=format&fit=crop" alt="Mini Bluetooth Speaker">
+          </div>
+          <h3 class="title">Mini Bluetooth Speaker</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£14.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- SMART-HOME -->
+        <article class="card product-item"
+          data-id="g-smart-plug"
+          data-name="Wi-Fi Smart Plug"
+          data-price="9.99"
+          data-category="smart-home"
+          data-rating="4.4">
+          <button class="wish" aria-label="Save Wi-Fi Smart Plug">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1592833159155-c59ab3b72bdf?q=80&w=900&auto=format&fit=crop" alt="Wi-Fi Smart Plug">
+          </div>
+          <h3 class="title">Wi-Fi Smart Plug</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="g-led-strip"
+          data-name="RGB LED Light Strip 5m"
+          data-price="12.99"
+          data-category="smart-home"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save RGB LED Light Strip">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=900&auto=format&fit=crop" alt="RGB LED Light Strip">
+          </div>
+          <h3 class="title">RGB LED Light Strip 5m</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£12.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- MOBILE ACCESSORIES -->
+        <article class="card product-item"
+          data-id="g-20w-charger"
+          data-name="20W USB-C Fast Charger"
+          data-price="11.49"
+          data-category="mobile"
+          data-rating="4.5">
+          <button class="wish" aria-label="Save 20W USB-C Fast Charger">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?q=80&w=900&auto=format&fit=crop" alt="20W USB-C Fast Charger">
+          </div>
+          <h3 class="title">20W USB-C Fast Charger</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£11.49</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="g-magsafe-stand"
+          data-name="MagSafe Desk Stand"
+          data-price="16.99"
+          data-category="mobile"
+          data-rating="4.0">
+          <button class="wish" aria-label="Save MagSafe Desk Stand">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=900&auto=format&fit=crop" alt="MagSafe Desk Stand">
+          </div>
+          <h3 class="title">MagSafe Desk Stand</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£16.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- GAMING -->
+        <article class="card product-item"
+          data-id="g-rgb-mouse"
+          data-name="RGB Gaming Mouse"
+          data-price="17.99"
+          data-category="gaming"
+          data-rating="4.3">
+          <button class="wish" aria-label="Save RGB Gaming Mouse">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1544731612-de7f96afe55f?q=80&w=900&auto=format&fit=crop" alt="RGB Gaming Mouse">
+          </div>
+          <h3 class="title">RGB Gaming Mouse</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£17.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="g-gamepad"
+          data-name="Bluetooth Gamepad"
+          data-price="21.99"
+          data-category="gaming"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save Bluetooth Gamepad">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=900&auto=format&fit=crop" alt="Bluetooth Gamepad">
+          </div>
+          <h3 class="title">Bluetooth Gamepad</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£21.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- WEARABLES -->
+        <article class="card product-item"
+          data-id="g-fitness-band"
+          data-name="Fitness Band"
+          data-price="24.99"
+          data-category="wearables"
+          data-rating="4.0">
+          <button class="wish" aria-label="Save Fitness Band">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=900&auto=format&fit=crop" alt="Fitness Band">
+          </div>
+          <h3 class="title">Fitness Band</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£24.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- OFFICE / DESK -->
+        <article class="card product-item"
+          data-id="g-usb-hub"
+          data-name="USB-C Hub (4-Port)"
+          data-price="13.99"
+          data-category="office"
+          data-rating="4.4">
+          <button class="wish" aria-label="Save USB-C Hub">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=900&auto=format&fit=crop" alt="USB-C Hub">
+          </div>
+          <h3 class="title">USB-C Hub (4-Port)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£13.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="g-laptop-stand"
+          data-name="Aluminium Laptop Stand"
+          data-price="18.49"
+          data-category="office"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Aluminium Laptop Stand">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1527430253228-e93688616381?q=80&w=900&auto=format&fit=crop" alt="Aluminium Laptop Stand">
+          </div>
+          <h3 class="title">Aluminium Laptop Stand</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£18.49</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- CABLES / POWER -->
+        <article class="card product-item"
+          data-id="g-3in1-cable"
+          data-name="3-in-1 Charging Cable"
+          data-price="7.99"
+          data-category="cables"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save 3-in-1 Charging Cable">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=900&auto=format&fit=crop" alt="3-in-1 Charging Cable">
+          </div>
+          <h3 class="title">3-in-1 Charging Cable</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£7.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="g-powerbank-10k"
+          data-name="10,000mAh Power Bank"
+          data-price="22.99"
+          data-category="cables"
+          data-rating="4.5">
+          <button class="wish" aria-label="Save 10,000mAh Power Bank">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1587152601230-83d8e91f8fef?q=80&w=900&auto=format&fit=crop" alt="Power Bank">
+          </div>
+          <h3 class="title">10,000mAh Power Bank</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£22.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global JS (search/sort/filters/cart) -->
+  <script src="script.js" defer></script>
+</body>
+</html>
