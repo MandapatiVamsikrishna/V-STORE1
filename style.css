@@ -708,4 +708,32 @@ form {
 }
 .action-btn:focus-visible{outline:3px solid color-mix(in oklab,var(--accent,#4f46e5) 60%, transparent);outline-offset:2px}
 
+/* =========================================================
+   order page styles
+   ========================================================= */
+
+/* Minimal extras for badges & inputs if not in your style.css */
+.table th, .table td { padding: .7rem .6rem; border-top: 1px solid var(--border); }
+.table thead th { position: sticky; top:0; background: var(--bg-elev); z-index: 1; }
+input[type="search"], input[type="date"], select { width:100%; padding:.6rem .7rem; border-radius:10px; border:1px solid color-mix(in oklab, var(--text) 12%, transparent); background:var(--bg-elev); color:var(--text); }
+.badge { display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:.8rem; border:1px solid color-mix(in oklab, var(--text) 14%, transparent); }
+.badge.success{ background: color-mix(in oklab, lime 26%, transparent); }
+.badge.danger{ background: color-mix(in oklab, crimson 22%, transparent); }
+.badge.shipped{ background: color-mix(in oklab, dodgerblue 20%, transparent); }
+.badge.processing{ background: color-mix(in oklab, orange 24%, transparent); }
+    .container { display:grid; grid-template-columns: 320px 1fr; gap: 1.5rem; }
+    .orders-table { width:100%; border-collapse: collapse; }
+    .orders-table th, .orders-table td { padding:.7rem .6rem; border-top:1px solid var(--border, #e5e7eb); text-align:left; }
+    .orders-table thead th { position: sticky; top:0; background: var(--bg-elev, #fff); z-index:1; }
+    input[type="search"], input[type="date"], select {
+      width:100%; padding:.6rem .7rem; border-radius:10px;
+      border:1px solid color-mix(in oklab, var(--text, #111) 12%, transparent);
+      background:var(--bg-elev, #fff); color:var(--text, #111);
+    }
+    .badge { display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:.8rem;
+      border:1px solid color-mix(in oklab, var(--text, #111) 14%, transparent); }
+    .badge.success{ background: color-mix(in oklab, lime 26%, transparent); }
+    .badge.danger{ background: color-mix(in oklab, crimson 22%, transparent); }
+    .badge.shipped{ background: color-mix(in oklab, dodgerblue 20%, transparent); }
+    .page-hero .hero-inner { max-width: 960px; margin: 0 auto; padding: 1rem; }
 
