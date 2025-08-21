@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Orders — V-STORE</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="script" href="script.js">
+<script src="script.js" defer></script>
+<link rel="icon" href="/favicon.ico" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-STORE</a>
+
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a aria-current="page" href="orders.html">Orders</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Your Orders</h1>
+      <p class="muted">Track past purchases, view receipts, and check delivery status.</p>
+    </div>
+  </header>
+
+  <!-- Two-column layout -->
+  <main class="container">
+    <!-- Filters (left) -->
+    <aside class="card" aria-label="Filters" style="position:sticky; top:84px; height:max-content;">
+      <form id="filters" style="display:grid; gap:.75rem;">
+        <div>
+          <label class="muted" for="q">Search</label>
+          <input id="q" name="q" type="search" placeholder="Order ID or item name" />
+        </div>
+
+        <div>
+          <label class="muted" for="status">Status</label>
+          <select id="status" name="status">
+            <option value="">All</option>
+            <option>Processing</option>
+            <option>Shipped</option>
+            <option>Delivered</option>
+            <option>Cancelled</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="muted" for="from">From</label>
+          <input id="from" name="from" type="date" />
+        </div>
+
+        <div>
+          <label class="muted" for="to">To</label>
+          <input id="to" name="to" type="date" />
+        </div>
+
+        <button class="btn-primary" type="submit">
+          <i class="fa-solid fa-filter"></i> Apply
+        </button>
+        <button class="btn-ghost" id="reset-filters" type="button">Reset</button>
+      </form>
+    </aside>
+
+    <!-- Orders (right) -->
+    <section aria-labelledby="orders-title" class="results">
+      <div class="toolbar" style="justify-content:space-between; gap:.75rem;">
+        <div style="display:flex; align-items:center; gap:.75rem;">
+          <h2 id="orders-title" style="margin:0;">Order history</h2>
+          <span id="orders-count" class="muted">0 orders</span>
+        </div>
+        <div>
+          <button id="export-csv" class="btn-ghost" type="button">
+            <i class="fa-solid fa-file-export"></i> Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <article id="empty-orders" class="card" style="display:none; margin-top:1rem;">
+        <h3 style="margin:.2rem 0 .3rem;">No orders yet</h3>
+        <p class="muted" style="margin:.2rem 0 1rem;">When you place orders, they'll show up here with status and receipts.</p>
+        <a class="btn-ghost" href="categories.html">Start shopping →</a>
+      </article>
+
+      <!-- Orders table -->
+      <div id="orders-card" class="card" style="margin-top:1rem; overflow:auto;">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th style="text-align:right;">Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div style="display:flex; gap:.5rem; align-items:center; justify-content:flex-end; margin-top:.75rem;">
+        <button id="prev" class="btn-ghost" type="button" disabled>Prev</button>
+        <span id="page-info" class="muted">Page 1 / 1</span>
+        <button id="next" class="btn-ghost" type="button" disabled>Next</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast (shared by script.js) -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> V-STORE</p>
+    </div>
+  </footer>
+</body>
+</html>
