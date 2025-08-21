@@ -1,113 +1,325 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreshMart - Online Grocery Shopping</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Bakery</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
-        </ul>
-    </nav>
-    <header>
-        <div class="logo">FreshMart</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for groceries...">
-        </div>
-        <div class="user-actions">
-            <a href="categories.html"><i class="categories"></i>Categories</a>
-            <a href="#" id="cart-toggle"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
-        </div>
-    </header>
-    
-    <div class="container">
-        <h1 class="category-title">Fresh Bakery</h1>
-        
-        <div class="products">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Bread" alt="Bread">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Whole Wheat Bread</h3>
-                    <p class="product-price">$3.49/loaf</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Bagel" alt="Bagel">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Everything Bagels</h3>
-                    <p class="product-price">$4.99/6-pack</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Croissant" alt="Croissant">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Butter Croissants</h3>
-                    <p class="product-price">$2.99/each</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Cookie" alt="Cookie">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Chocolate Chip Cookies</h3>
-                    <p class="product-price">$5.99/dozen</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Cake" alt="Cake">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Chocolate Cake</h3>
-                    <p class="product-price">$14.99</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://via.placeholder.com/200x200?text=Muffin" alt="Muffin">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">Blueberry Muffins</h3>
-                    <p class="product-price">$3.99/4-pack</p>
-                    <div class="product-actions">
-                        <button class="add-to-cart">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
     </div>
-    
-    <!-- Same footer/cart as index.html -->
+  </nav>
+
+  <!-- Page Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Fresh Bakery</h1>
+      <p class="muted">Filter by type, price, and rating — or search for anything.</p>
+
+      <!-- Search + Sort -->
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search products">
+          <input id="search-input" type="search" placeholder="Search bakery…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Department Quick Links -->
+  <nav class="dept-nav" aria-label="Departments">
+    <ul class="dept-chips">
+      <li><a aria-current="page" href="fruits.html">Fruits</a></li>
+      <li><a href="vegatables.html">Vegatables</a></li>
+      <li><a href="diary.html">Diary</a></li>
+      <li><a href="eggs.html">Eggs</a></li>
+      <li><a href="meat.html">Meat</a></li>
+      <li><a href="sea food.html">Seafood</a></li>
+      <li><a href="backery.html">Backery</a></li>
+      <li><a href="pantery.html">Pantry</a></li>
+      <li><a href="beverages.html">Beverages</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Type</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="bread" checked> Bread</label></li>
+          <li><label><input type="checkbox" name="cat" value="bagels" checked> Bagels</label></li>
+          <li><label><input type="checkbox" name="cat" value="croissant" checked> Croissants</label></li>
+          <li><label><input type="checkbox" name="cat" value="cookies" checked> Cookies</label></li>
+          <li><label><input type="checkbox" name="cat" value="cake" checked> Cakes</label></li>
+          <li><label><input type="checkbox" name="cat" value="muffins" checked> Muffins</label></li>
+          <li><label><input type="checkbox" name="cat" value="pastries" checked> Pastries</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="9999">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <!-- Bread -->
+        <article class="card product-item"
+          data-id="b-bread-ww"
+          data-name="Whole Wheat Bread"
+          data-price="3.49"
+          data-category="bread"
+          data-rating="4.5">
+          <button class="wish" aria-label="Add Whole Wheat Bread to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=800&auto=format&fit=crop" alt="Whole Wheat Bread" />
+          </div>
+          <h3 class="title">Whole Wheat Bread</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / loaf</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-bread-ww"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="b-sourdough"
+          data-name="Sourdough Loaf"
+          data-price="3.99"
+          data-category="bread"
+          data-rating="4.7">
+          <button class="wish" aria-label="Add Sourdough Loaf to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop" alt="Sourdough Loaf" />
+          </div>
+          <h3 class="title">Sourdough Loaf</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£3.99 / loaf</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-sourdough"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Bagels -->
+        <article class="card product-item"
+          data-id="b-bagels-everything"
+          data-name="Everything Bagels"
+          data-price="4.49"
+          data-category="bagels"
+          data-rating="4.3">
+          <button class="wish" aria-label="Add Everything Bagels to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?q=80&w=800&auto=format&fit=crop" alt="Everything Bagels" />
+          </div>
+          <h3 class="title">Everything Bagels</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.49 / 6-pack</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-bagels-everything"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Croissants -->
+        <article class="card product-item"
+          data-id="b-croissant-butter"
+          data-name="Butter Croissants"
+          data-price="2.49"
+          data-category="croissant"
+          data-rating="4.6">
+          <button class="wish" aria-label="Add Butter Croissants to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1509440159598-8b09d1e8be0d?q=80&w=800&auto=format&fit=crop" alt="Butter Croissants" />
+          </div>
+          <h3 class="title">Butter Croissants</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£2.49 / each</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-croissant-butter"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="b-croissant-almond"
+          data-name="Almond Croissant"
+          data-price="2.99"
+          data-category="croissant"
+          data-rating="4.4">
+          <button class="wish" aria-label="Add Almond Croissant to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1541592553160-82008b127ccb?q=80&w=800&auto=format&fit=crop" alt="Almond Croissant" />
+          </div>
+          <h3 class="title">Almond Croissant</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / each</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-croissant-almond"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Cookies -->
+        <article class="card product-item"
+          data-id="b-cookie-chocchip"
+          data-name="Chocolate Chip Cookies"
+          data-price="5.49"
+          data-category="cookies"
+          data-rating="4.5">
+          <button class="wish" aria-label="Add Chocolate Chip Cookies to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=800&auto=format&fit=crop" alt="Chocolate Chip Cookies" />
+          </div>
+          <h3 class="title">Chocolate Chip Cookies</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£5.49 / dozen</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-cookie-chocchip"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="b-cookie-oatmeal"
+          data-name="Oatmeal Raisin Cookies"
+          data-price="4.99"
+          data-category="cookies"
+          data-rating="4.1">
+          <button class="wish" aria-label="Add Oatmeal Raisin Cookies to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1599785209793-65f215f3d9bd?q=80&w=800&auto=format&fit=crop" alt="Oatmeal Raisin Cookies" />
+          </div>
+          <h3 class="title">Oatmeal Raisin Cookies</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.99 / dozen</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-cookie-oatmeal"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Cakes -->
+        <article class="card product-item"
+          data-id="b-cake-choc"
+          data-name="Chocolate Cake"
+          data-price="14.99"
+          data-category="cake"
+          data-rating="4.8">
+          <button class="wish" aria-label="Add Chocolate Cake to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1541782814451-2895710d3b59?q=80&w=800&auto=format&fit=crop" alt="Chocolate Cake" />
+          </div>
+          <h3 class="title">Chocolate Cake</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£14.99 / whole</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-cake-choc"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Muffins -->
+        <article class="card product-item"
+          data-id="b-muffins-blueberry"
+          data-name="Blueberry Muffins"
+          data-price="3.99"
+          data-category="muffins"
+          data-rating="4.2">
+          <button class="wish" aria-label="Add Blueberry Muffins to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1542834369-f10ebf06d3cb?q=80&w=800&auto=format&fit=crop" alt="Blueberry Muffins" />
+          </div>
+          <h3 class="title">Blueberry Muffins</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / 4-pack</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-muffins-blueberry"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Pastries -->
+        <article class="card product-item"
+          data-id="b-pastry-cinnamon"
+          data-name="Cinnamon Rolls"
+          data-price="2.49"
+          data-category="pastries"
+          data-rating="4.4">
+          <button class="wish" aria-label="Add Cinnamon Rolls to wishlist">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1570845201626-6313d78ac1f4?q=80&w=800&auto=format&fit=crop" alt="Cinnamon Rolls" />
+          </div>
+          <h3 class="title">Cinnamon Rolls</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / each</span></div>
+          <div class="actions">
+            <div class="qty" data-qty-for="b-pastry-cinnamon"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global JS (search/sort/filters/cart/qty/wishlist) -->
+  <script src="script.js" defer></script>
 </body>
 </html>
