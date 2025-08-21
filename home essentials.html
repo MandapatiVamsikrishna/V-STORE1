@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Home Essentials</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Home Essentials</h1>
+      <p class="muted">Daily must-haves for a tidy, comfy home — sharp prices, reliable picks.</p>
+
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search home essentials">
+          <input id="search-input" type="search" placeholder="Search cleaners, storage, bulbs, batteries…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick links -->
+  
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="cleaning" checked> Cleaning</label></li>
+          <li><label><input type="checkbox" name="cat" value="laundry" checked> Laundry</label></li>
+          <li><label><input type="checkbox" name="cat" value="kitchen" checked> Kitchen</label></li>
+          <li><label><input type="checkbox" name="cat" value="bathroom" checked> Bathroom</label></li>
+          <li><label><input type="checkbox" name="cat" value="storage" checked> Storage & Organising</label></li>
+          <li><label><input type="checkbox" name="cat" value="lighting" checked> Lighting</label></li>
+          <li><label><input type="checkbox" name="cat" value="power" checked> Power</label></li>
+          <li><label><input type="checkbox" name="cat" value="safety" checked> Safety & First Aid</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="100">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3.5"> 3.5★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <!-- CLEANING -->
+        <article class="card product-item"
+          data-id="he-multi-cleaner"
+          data-name="Multi-Surface Cleaner"
+          data-price="2.99"
+          data-category="cleaning"
+          data-rating="4.5">
+          <button class="wish" aria-label="Save Multi-Surface Cleaner">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=900&auto=format&fit=crop" alt="Multi-surface spray cleaner">
+          </div>
+          <h3 class="title">Multi-Surface Cleaner</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£2.99 / 750ml</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-dish-soap"
+          data-name="Dishwashing Liquid"
+          data-price="1.49"
+          data-category="kitchen"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Dishwashing Liquid">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1593810450982-c5fa1a81ebfe?q=80&w=900&auto=format&fit=crop" alt="Dishwashing liquid bottle at sink">
+          </div>
+          <h3 class="title">Dishwashing Liquid</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.49 / 500ml</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-scrub-sponges"
+          data-name="Scrub Sponges (6-pack)"
+          data-price="2.29"
+          data-category="kitchen"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save Scrub Sponges">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=900&auto=format&fit=crop" alt="Pack of kitchen sponges">
+          </div>
+          <h3 class="title">Scrub Sponges (6-pack)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.29</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- LAUNDRY -->
+        <article class="card product-item"
+          data-id="he-laundry-detergent"
+          data-name="Laundry Detergent"
+          data-price="6.99"
+          data-category="laundry"
+          data-rating="4.6">
+          <button class="wish" aria-label="Save Laundry Detergent">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1626721105746-6868d9ec2b7b?q=80&w=900&auto=format&fit=crop" alt="Laundry detergent and washing machine">
+          </div>
+          <h3 class="title">Laundry Detergent</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£6.99 / 20 washes</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-fabric-softener"
+          data-name="Fabric Softener"
+          data-price="3.49"
+          data-category="laundry"
+          data-rating="4.3">
+          <button class="wish" aria-label="Save Fabric Softener">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1615485737657-7c88c4cb0d2b?q=80&w=900&auto=format&fit=crop" alt="Fabric softener bottle">
+          </div>
+          <h3 class="title">Fabric Softener</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / 1L</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- BATHROOM -->
+        <article class="card product-item"
+          data-id="he-toilet-paper"
+          data-name="Toilet Tissue (9-roll)"
+          data-price="3.99"
+          data-category="bathroom"
+          data-rating="4.4">
+          <button class="wish" aria-label="Save Toilet Tissue 9-roll">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1584556812952-905ffd0c611a?q=80&w=900&auto=format&fit=crop" alt="Toilet paper rolls">
+          </div>
+          <h3 class="title">Toilet Tissue (9-roll)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-hand-soap"
+          data-name="Hand Soap Pump"
+          data-price="1.29"
+          data-category="bathroom"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Hand Soap Pump">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1583947215259-38e31be8752a?q=80&w=900&auto=format&fit=crop" alt="Hand soap pump on sink">
+          </div>
+          <h3 class="title">Hand Soap Pump</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.29 / 300ml</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- STORAGE & ORGANISING -->
+        <article class="card product-item"
+          data-id="he-food-containers"
+          data-name="Food Storage Set (10-pc)"
+          data-price="7.99"
+          data-category="storage"
+          data-rating="4.3">
+          <button class="wish" aria-label="Save Food Storage Set">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1586201375754-1421e0aa2f14?q=80&w=900&auto=format&fit=crop" alt="Plastic food storage containers">
+          </div>
+          <h3 class="title">Food Storage Set (10-pc)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£7.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-trash-bags"
+          data-name="Bin Bags (30-pack)"
+          data-price="2.49"
+          data-category="storage"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save Bin Bags">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1621263764928-594aef77df5f?q=80&w=900&auto=format&fit=crop" alt="Black bin bags roll">
+          </div>
+          <h3 class="title">Bin Bags (30-pack)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- LIGHTING -->
+        <article class="card product-item"
+          data-id="he-led-bulbs"
+          data-name="LED Bulbs (Warm, 4-pack)"
+          data-price="6.49"
+          data-category="lighting"
+          data-rating="4.5">
+          <button class="wish" aria-label="Save LED Bulbs Warm 4-pack">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=900&auto=format&fit=crop" alt="LED light bulbs">
+          </div>
+          <h3 class="title">LED Bulbs (Warm, 4-pack)</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£6.49</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- POWER -->
+        <article class="card product-item"
+          data-id="he-aa-batteries"
+          data-name="AA Batteries (8-pack)"
+          data-price="4.99"
+          data-category="power"
+          data-rating="4.4">
+          <button class="wish" aria-label="Save AA Batteries 8-pack">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1617302224909-67b5d2cc4a15?q=80&w=900&auto=format&fit=crop" alt="AA batteries stack">
+          </div>
+          <h3 class="title">AA Batteries (8-pack)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-extension-lead"
+          data-name="Extension Lead (4-way, 2m)"
+          data-price="7.99"
+          data-category="power"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Extension Lead 4-way">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1563371351-e53ebb744a1b?q=80&w=900&auto=format&fit=crop" alt="White 4-way extension lead">
+          </div>
+          <h3 class="title">Extension Lead (4-way, 2m)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£7.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- SAFETY -->
+        <article class="card product-item"
+          data-id="he-first-aid"
+          data-name="First Aid Kit (Compact)"
+          data-price="9.99"
+          data-category="safety"
+          data-rating="4.6">
+          <button class="wish" aria-label="Save First Aid Kit">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=900&auto=format&fit=crop" alt="Compact first aid kit">
+          </div>
+          <h3 class="title">First Aid Kit (Compact)</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£9.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="he-sanitiser"
+          data-name="Hand Sanitiser Gel"
+          data-price="1.79"
+          data-category="safety"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save Hand Sanitiser">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1583947581924-860bda6a26eb?q=80&w=900&auto=format&fit=crop" alt="Hand sanitiser bottle">
+          </div>
+          <h3 class="title">Hand Sanitiser Gel</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.79 / 200ml</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global JS (search/sort/filters/cart) -->
+  <script src="script.js" defer></script>
+</body>
+</html>
