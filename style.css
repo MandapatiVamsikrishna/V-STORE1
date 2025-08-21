@@ -597,5 +597,115 @@ button:active { transform: translateY(0.5px); }
 @media (hover:none) and (pointer:coarse){
   .row-nav { display:none; }
 }
+/* Page-scoped styles; safe to load after your global style.css */
+.auth-container {
+  display: grid; place-items: center;
+  min-height: calc(100dvh - 72px); padding: 1.25rem;
+}
+
+.auth-card {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  width: min(100%, 980px);
+  background: var(--bg-elev, #fff);
+  color: var(--text, #111);
+  border: 1px solid color-mix(in oklab, var(--text, #111) 12%, transparent);
+  border-radius: 18px; overflow: hidden;
+  box-shadow: 0 10px 30px color-mix(in oklab, #000 10%, transparent);
+}
+
+.auth-illustration {
+  display: none;
+}
+.auth-illustration img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+@media (min-width: 900px) {
+  .auth-illustration { display: block; }
+}
+
+.auth-form-wrap {
+  padding: clamp(1rem, 2.5vw, 2rem);
+}
+
+.auth-form-wrap h1 {
+  margin: 0 0 .25rem 0; font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+}
+.muted { opacity: .75; }
+.small { font-size: .9rem; }
+
+form {
+  display: grid; gap: .9rem; margin-top: .8rem;
+}
+
+.form-group { display: grid; gap: .4rem; }
+.form-group label { font-weight: 600; }
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="tel"] {
+  padding: .8rem .9rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in oklab, var(--text, #111) 14%, transparent);
+  background: var(--bg-elev, #fff);
+  color: inherit;
+  outline: none;
+}
+.form-group input:focus {
+  border-color: color-mix(in oklab, var(--text, #111) 40%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--text, #111) 10%, transparent);
+}
+
+.hint { font-size: .85rem; opacity: .7; }
+.error { color: #b00020; min-height: 1.1em; font-size: .9rem; }
+
+.checkbox-group .checkbox { display: grid; grid-template-columns: 20px 1fr; gap: .6rem; align-items: start; }
+.checkbox-group input[type="checkbox"] { margin-top: .2rem; }
+
+.btn-primary {
+  appearance: none;
+  border: 0; border-radius: 12px;
+  padding: .9rem 1rem; font-weight: 700;
+  background: #111; color: #fff; cursor: pointer;
+  transition: transform .06s ease, opacity .2s ease;
+}
+.btn-primary[disabled] { opacity: .5; cursor: not-allowed; }
+.btn-primary:active { transform: translateY(1px); }
+
+.with-toggle { position: relative; }
+.toggle-eye {
+  position: absolute; right: .4rem; top: 50%; transform: translateY(-50%);
+  background: transparent; border: 0; cursor: pointer; font-size: 1rem; opacity: .7;
+}
+.toggle-eye:hover { opacity: 1; }
+
+.password-strength {
+  display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: .4rem; align-items: center;
+}
+.password-strength .strength-bar {
+  height: 6px; border-radius: 999px; background: #e0e0e0;
+}
+.password-strength[data-score="1"] .strength-bar:nth-child(-n+1) { background: #ff6b6b; }
+.password-strength[data-score="2"] .strength-bar:nth-child(-n+2) { background: #ffb54a; }
+.password-strength[data-score="3"] .strength-bar:nth-child(-n+3) { background: #35c759; }
+.password-strength .strength-text { justify-self: end; font-size: .85rem; opacity: .8; }
+
+.auth-footer { margin-top: .75rem; text-align: center; }
+.auth-link { font-weight: 600; text-decoration: underline; }
+.action-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1rem}
+.action-btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.55rem .9rem;border-radius:999px;
+  border:1px solid color-mix(in oklab,var(--text) 12%,transparent);
+  background:var(--bg-elev);color:var(--text);cursor:pointer;
+  transition:transform .06s ease, box-shadow .2s ease, background .2s ease;
+}
+.action-btn .icon{font-size:1.05rem;line-height:1}
+.action-btn:hover{transform:translateY(-1px)}
+.action-btn[aria-pressed="true"]{
+  background:var(--accent,#4f46e5);color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px color-mix(in oklab,var(--accent,#4f46e5) 30%, transparent);
+}
+.action-btn:focus-visible{outline:3px solid color-mix(in oklab,var(--accent,#4f46e5) 60%, transparent);outline-offset:2px}
 
 
