@@ -1,3 +1,4 @@
+
 // script.js — universal, page-safe logic for V-STORE / FreshMart
 (() => {
   /* ========================= Helpers / Config ========================= */
@@ -192,7 +193,7 @@
     }
 
     let shipping = 0;
-    if (items.length) shipping = (subtotal - discount) >= FREE_SHIP_THRESHOLD ? 0 : 4.99;
+    if (items.length) shipping = (subtotal - discount) >= FREE_SHIP_THRESHOLD ? 0 : 1.99;
     if (promo?.type === "freeship" && items.length) shipping = 0;
 
     const total = Math.max(0, subtotal - discount + shipping);
