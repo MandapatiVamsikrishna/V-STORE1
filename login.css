@@ -34,7 +34,16 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui, -a
     radial-gradient(1000px 500px at 120% -10%, rgba(34,197,94,.18), transparent 60%),
     linear-gradient(180deg, rgba(0,0,0,.04), transparent 40%);
 }
-.auth-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;filter:contrast(1.1) saturate(.85)}
+.auth-art img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  /* ✅ Show in full color */
+  mix-blend-mode:normal;
+  filter:contrast(1.05) saturate(1.1); /* optional: slight color pop */
+}
 .brand-overlay{position:absolute;inset:auto 0 0 0;padding:14px 16px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));color:#fff;display:flex;justify-content:space-between;align-items:end;gap:12px}
 .brand-overlay h2{margin:0 0 2px;font-size:1.35rem}
 .brand-overlay p{margin:.1rem 0 .2rem;opacity:.9}
