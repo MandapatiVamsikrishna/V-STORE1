@@ -1,67 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Your E-commerce Site</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register — V-STORE</title>
+
+  <!-- Your global styles first, then page-specific overrides -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="register.css">
+  <link rel="icon" href="/favicon.ico">
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2>Create Your Account</h2>
-            
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                    <div class="error-message" id="nameError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                    <div class="error-message" id="emailError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                    <div class="password-strength">
-                        <span class="strength-bar"></span>
-                        <span class="strength-bar"></span>
-                        <span class="strength-bar"></span>
-                        <span class="strength-text" id="passwordStrength">Weak</span>
-                    </div>
-                    <div class="error-message" id="passwordError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                    <div class="error-message" id="confirmPasswordError"></div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone Number (Optional)</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to Sign <a href="/terms">Terms of Service</a> <a href="/privacy">Privacy Policy</a></label>
-                    <div class="error-message" id="termsError"></div>
-                </div>
-                
-                <button type="submit" class="btn-primary" id="registerBtn">Create Account</button>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Already have an account? <a href="login.html" class="auth-link">Sign in</a></p></p>
-            </div>
-        </div>
+  <!-- Top Nav -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-STORE</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Sign in</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <script src="js/auth.js"></script>
+  <!-- Auth Container -->
+  <main class="auth-container">
+    <section class="auth-card" aria-labelledby="reg-title">
+      <div class="auth-illustration" aria-hidden="true">
+        <img src="https://img.freepik.com/free-vector/flat-design-shopping-pattern-design_23-2149656934.jpg"
+             alt="" />
+      </div>
+
+      <div class="auth-form-wrap">
+        <h1 id="reg-title">Create your account</h1>
+        <p class="muted">Shop faster, track orders, and save your favourites.</p>
+
+        <form id="registrationForm" novalidate>
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" required autocomplete="name"
+                   placeholder="e.g., Priya Sharma" />
+            <small class="hint">Use your real name (min 2 characters).</small>
+            <div class="error" id="nameError" aria-live="polite"></div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" required autocomplete="email"
+                   placeholder="you@example.com" />
+            <small class="hint">We’ll send receipts here.</small>
+            <div class="error" id="emailError" aria-live="polite"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="with-toggle">
+              <input id="password" name="password" type="password" required autocomplete="new-password"
+                     placeholder="At least 8 characters" />
+              <button type="button" class="toggle-eye" aria-label="Show password" data-eye-for="password">👁️</button>
+            </div>
+
+            <div class="password-strength" aria-live="polite">
+              <span class="strength-bar"></span>
+              <span class="strength-bar"></span>
+              <span class="strength-bar"></span>
+              <span class="strength-text" id="passwordStrength">Weak</span>
+            </div>
+            <small class="hint">Add upper & lower case, numbers, and symbols for a stronger password.</small>
+            <div class="error" id="passwordError" aria-live="polite"></div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirm password</label>
+            <div class="with-toggle">
+              <input id="confirmPassword" name="confirmPassword" type="password" required autocomplete="new-password"
+                     placeholder="Re-enter your password" />
+              <button type="button" class="toggle-eye" aria-label="Show password" data-eye-for="confirmPassword">👁️</button>
+            </div>
+            <div class="error" id="confirmPasswordError" aria-live="polite"></div>
+          </div>
+
+          <!-- Phone (optional) -->
+          <div class="form-group">
+            <label for="phone">Phone (optional)</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel"
+                   placeholder="+44 7700 900123" />
+            <small class="hint">Include country code.</small>
+            <div class="error" id="phoneError" aria-live="polite"></div>
+          </div>
+
+          <!-- Terms -->
+          <div class="form-group checkbox-group">
+            <label class="checkbox">
+              <input type="checkbox" id="terms" name="terms" required />
+              <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and
+              <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+            </label>
+            <div class="error" id="termsError" aria-live="polite"></div>
+          </div>
+
+          <!-- Action -->
+          <button type="submit" class="btn-primary" id="registerBtn" disabled>Create account</button>
+          <p class="muted small" id="formMessage" aria-live="polite"></p>
+        </form>
+
+        <div class="auth-footer">
+          <p>Already have an account? <a class="auth-link" href="login.html">Sign in</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="server.js" defer></script>
+  <!-- Register page logic -->
+<script src="registration.js" defer></script>
+
 </body>
 </html>
