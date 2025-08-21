@@ -1,5 +1,4 @@
-
-// script.js — universal, page-safe logic for V-STORE / FreshMart
+// script.js — universal, page-safe logic for V-STORE
 (() => {
   /* ========================= Helpers / Config ========================= */
   const $  = (s, r=document) => r.querySelector(s);
@@ -12,12 +11,16 @@
   const ORDER_KEY   = "vstore_last_order";     // thank-you page reads this
   const CKOUT_INFO  = "vstore_checkout_info";  // optional saved shipping info
 
+  // Orders storage
+  const ORDERS_KEY  = "vstore_orders";
+  const ORDERS_PAGE_SIZE = 8;
+
   // Currency + limits
   const GBP = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
   const QMIN = 1, QMAX = 99;
   const FREE_SHIP_THRESHOLD = 49;
 
-  // Node cache (optional across pages)
+  // Node cache
   const themeBtn  = $("#theme-toggle");
   const navToggle = $(".nav-toggle");
   const navMenu   = $("#nav-menu");
@@ -36,12 +39,14 @@
     updateBadge();
 
     initGlobalClicks();         // add-to-cart, qty +/-, wishlist
-    initSearch();               // search forms on any page
+    initSearch();               // search forms (safe no-op)
     initFiltersAndSort();       // category pages (safe no-op)
-    initCartRendering();        // cart list + totals (safe no-op)
-    initPromoUI();              // promo input(s) (safe no-op)
-    initCheckout();             // payment UI, validations, order submit (safe no-op)
-    initOrderSummaryInline();   // if a page has #order-summary (safe no-op)
+    initCartRendering();        // cart page (safe no-op)
+    initPromoUI();              // promo inputs (safe no-op)
+    initCheckout();             // checkout form (safe no-op)
+    initOrderSummaryInline();   // inline summary on checkout page (safe no-op)
+    initOrdersPage();           // orders.html logic (safe no-op)
+    initThankYou();             // thank-you.html receipt (safe no-op)
   });
 
   /* ========================= UI basics ========================= */
@@ -221,9 +226,11 @@
       : parsePrice(card?.querySelector(".price, .product-price")?.textContent);
     const img = card?.querySelector("img")?.src;
     const qtyWrap = card?.querySelector(".qty, .quantity-controls");
-    const qEl = qtyWrap?.querySelector(".q, .quantity");
-    const qty = Math.max(QMIN, Math.min(QMAX, parseInt(qEl?.textContent || "1", 10)));
-    return { id, name, price, qty, img };
+    theQty: {
+      const qEl = qtyWrap?.querySelector(".q, .quantity");
+      const qty = Math.max(QMIN, Math.min(QMAX, parseInt(qEl?.textContent || "1", 10)));
+      return { id, name, price, qty, img };
+    }
   }
 
   /* ========================= Global clicks (works on all pages) ========================= */
@@ -529,6 +536,64 @@
     });
   }
 
+  /* ========================= Orders storage/helpers ========================= */
+  function readOrders() {
+    try { return JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]"); }
+    catch { return []; }
+  }
+  function writeOrders(list) {
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(list || []));
+  }
+  function addOrderToHistory(o) {
+    const list = readOrders();
+    list.push(o);
+    writeOrders(list);
+  }
+  function formatGBP(n){ return GBP.format(Number(n||0)); }
+  function fmtDate(iso){ return new Date(iso).toLocaleString("en-GB",{year:"numeric",month:"short",day:"2-digit"}); }
+
+  // (Optional) demo data so Orders page isn't empty during dev
+  function seedOrdersIfEmpty(){
+    const have = readOrders();
+    if (have.length) return;
+    writeOrders([
+      {
+        id: "ORD-240812-0012",
+        createdAt: new Date(Date.now()-1000*60*60*24*9).toISOString(),
+        status: "Delivered",
+        subtotal: 74.97, shipping: 1.00, discount: 7.50, total: 68.47,
+        items: [
+          { id:"SKU-TSHIRT-001", name:"Classic Tee", qty:1, price:19.99 },
+          { id:"SKU-MUG-002",    name:"Ceramic Mug", qty:2, price:12.99 },
+          { id:"SKU-CABLE-USB",  name:"USB-C Cable 2m", qty:1, price:28.00 }
+        ],
+        address: { name:"P. C. Chilukuri", line1:"221B Baker St", city:"London", postcode:"NW1 6XE", country:"UK" }
+      },
+      {
+        id: "ORD-240818-0044",
+        createdAt: new Date(Date.now()-1000*60*60*24*3).toISOString(),
+        status: "Shipped",
+        subtotal: 129.98, shipping: 1.00, discount: 0, total: 130.98,
+        items: [
+          { id:"SKU-HDST-009", name:"Wireless Headset", qty:1, price:89.99 },
+          { id:"SKU-MOUSE-003", name:"Ergo Mouse", qty:1, price:39.99 }
+        ],
+        address: { name:"Triveni Kandimalla", line1:"10 Downing St", city:"London", postcode:"SW1A 2AA", country:"UK" }
+      },
+      {
+        id: "ORD-240820-0102",
+        createdAt: new Date(Date.now()-1000*60*60*24*1).toISOString(),
+        status: "Processing",
+        subtotal: 59.99, shipping: 1.00, discount: 6.00, total: 54.99,
+        items: [
+          { id:"SKU-LED-STRIP", name:"LED Strip Light (5m)", qty:1, price:19.99 },
+          { id:"SKU-KEYB-004", name:"Mechanical Keyboard", qty:1, price:40.00 }
+        ],
+        address: { name:"V-STORE Customer", line1:"5 Market St", city:"Manchester", postcode:"M1 1AA", country:"UK" }
+      }
+    ]);
+  }
+
   /* ========================= Checkout (payment UI + submit) ========================= */
   function initCheckout() {
     const payRadios = $$('input[name="payment-method"]');
@@ -705,7 +770,27 @@
         payment: payMeta
       };
 
-      // Save order for thank-you page
+      // Persist to Orders history (used by orders.html)
+      const normalized = {
+        id: order.id,
+        createdAt: order.createdAt,
+        status: "Processing",
+        subtotal: +(totals.subtotal||0),
+        shipping: +(totals.shipping||0),
+        discount: +(totals.discount||0),
+        total: +(totals.total||0),
+        items: order.items.map(i => ({ id:i.id, name:i.name, qty:i.qty, price:i.price })),
+        address: {
+          name: customer.name,
+          line1: customer.address,
+          city: customer.city,
+          postcode: customer.zip,
+          country: customer.country
+        }
+      };
+      addOrderToHistory(normalized);
+
+      // Save full order for thank-you page
       try { sessionStorage.setItem(ORDER_KEY, JSON.stringify(order)); }
       catch { localStorage.setItem(ORDER_KEY, JSON.stringify(order)); }
 
@@ -754,4 +839,234 @@
         `Add ${GBP.format(Math.max(0,FREE_SHIP_THRESHOLD-(subtotal-discount)))} more for free shipping.`)
     );
   }
+
+  /* ========================= Orders page controller ========================= */
+  function initOrdersPage(){
+    // Detect required elements. If not present, no-op (safe on other pages).
+    const els = {
+      count: $("#orders-count"),
+      body: $("#orders-body"),
+      empty: $("#empty-orders"),
+      card: $("#orders-card"),
+      prev: $("#prev"),
+      next: $("#next"),
+      pageInfo: $("#page-info"),
+      exportCsv: $("#export-csv"),
+      filtersForm: $("#filters"),
+      resetFilters: $("#reset-filters"),
+      q: $("#q"),
+      status: $("#status"),
+      from: $("#from"),
+      to: $("#to"),
+    };
+    if (!els.body && !els.empty && !els.exportCsv) return; // not on orders.html
+
+    // (Dev) seed once so the page isn't empty
+    seedOrdersIfEmpty();
+
+    const badges = {
+      Processing: "badge processing",
+      Shipped:    "badge shipped",
+      Delivered:  "badge success",
+      Cancelled:  "badge danger",
+    };
+
+    const state = { page: 1, filtered: [] };
+
+    function matchFilters(o){
+      const q = (els.q?.value || "").trim().toLowerCase();
+      const st = els.status?.value || "";
+      const from = els.from?.value ? new Date(els.from.value) : null;
+      const to   = els.to?.value   ? new Date(els.to.value)   : null;
+
+      if (st && o.status !== st) return false;
+      if (from && new Date(o.createdAt) < from) return false;
+      if (to) {
+        const end = new Date(to); end.setHours(23,59,59,999);
+        if (new Date(o.createdAt) > end) return false;
+      }
+      if (q) {
+        const inId = o.id.toLowerCase().includes(q);
+        const inItems = (o.items||[]).some(it => (it.name||"").toLowerCase().includes(q));
+        if (!inId && !inItems) return false;
+      }
+      return true;
+    }
+
+    function paginate(){
+      const start = (state.page-1)*ORDERS_PAGE_SIZE;
+      return state.filtered.slice(start, start + ORDERS_PAGE_SIZE);
+    }
+
+    function render(){
+      const orders = readOrders().sort((a,b) => (a.createdAt > b.createdAt ? -1 : 1));
+      state.filtered = orders.filter(matchFilters);
+
+      if (els.count) els.count.textContent = `${state.filtered.length} ${state.filtered.length===1?"order":"orders"}`;
+
+      // Empty/table toggles
+      if (els.empty && els.card) {
+        const empty = state.filtered.length === 0;
+        els.empty.style.display = empty ? "" : "none";
+        els.card.style.display  = empty ? "none" : "";
+      }
+      if (!els.body) return;
+
+      els.body.innerHTML = "";
+      paginate().forEach(o => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${o.id}</strong></td>
+          <td>${fmtDate(o.createdAt)}</td>
+          <td>${(o.items||[]).map(i => `${i.name} ×${i.qty}`).join(", ")}</td>
+          <td style="text-align:right;">${formatGBP(o.total)}</td>
+          <td><span class="${badges[o.status]||"badge"}">${o.status}</span></td>
+          <td>
+            <button class="btn-ghost view" data-id="${o.id}"><i class="fa-regular fa-file-lines"></i> View</button>
+            ${o.status === "Processing" ? `<button class="btn-ghost cancel" data-id="${o.id}"><i class="fa-regular fa-circle-xmark"></i> Cancel</button>` : ""}
+          </td>
+        `;
+        els.body.appendChild(tr);
+      });
+
+      const pages = Math.max(1, Math.ceil(state.filtered.length / ORDERS_PAGE_SIZE));
+      if (els.prev) els.prev.disabled = state.page <= 1;
+      if (els.next) els.next.disabled = state.page >= pages;
+      if (els.pageInfo) els.pageInfo.textContent = `Page ${state.page} / ${pages}`;
+    }
+
+    function exportCSV(){
+      const rows = [['Order ID','Date','Status','Subtotal','Discount','Shipping','Total','Items']];
+      readOrders().filter(matchFilters).forEach(o => {
+        rows.push([
+          o.id,
+          new Date(o.createdAt).toISOString(),
+          o.status,
+          o.subtotal,
+          o.discount,
+          o.shipping,
+          o.total,
+          (o.items||[]).map(i => `${i.name} x${i.qty}`).join('; ')
+        ]);
+      });
+      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type:"text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "vstore-orders.csv"; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function viewOrder(id){
+      const o = readOrders().find(x => x.id === id); if (!o) return;
+      const lines = (o.items||[]).map(i => `• ${i.name} ×${i.qty} — ${formatGBP((i.price||0)*(i.qty||0))}`).join("\n");
+      alert(
+`Order ${o.id}
+
+Date: ${fmtDate(o.createdAt)}
+Status: ${o.status}
+
+Items:
+${lines}
+
+Subtotal: ${formatGBP(o.subtotal)}
+Discount: −${formatGBP(o.discount)}
+Shipping: ${formatGBP(o.shipping)}
+Total: ${formatGBP(o.total)}
+
+Ship to:
+${o.address?.name||""}
+${o.address?.line1||""}, ${o.address?.city||""}
+${o.address?.postcode||""}, ${o.address?.country||""}`
+      );
+    }
+
+    function cancelOrder(id){
+      const list = readOrders();
+      const idx = list.findIndex(o => o.id === id);
+      if (idx === -1) return;
+      if (!confirm("Cancel this order?")) return;
+      list[idx].status = "Cancelled";
+      writeOrders(list);
+      toast("Order cancelled");
+      render();
+    }
+
+    // Events
+    els.prev?.addEventListener("click", () => { state.page = Math.max(1, state.page-1); render(); });
+    els.next?.addEventListener("click", () => { state.page = state.page+1; render(); });
+    els.exportCsv?.addEventListener("click", exportCSV);
+    els.filtersForm?.addEventListener("submit", (e)=>{ e.preventDefault(); state.page = 1; render(); });
+    els.resetFilters?.addEventListener("click", ()=>{ els.filtersForm?.reset(); state.page=1; render(); });
+
+    // Delegated row actions
+    els.body?.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.classList.contains("view")) return viewOrder(id);
+      if (btn.classList.contains("cancel")) return cancelOrder(id);
+    });
+
+    // Kick off
+    render();
+  }
+
+  /* ========================= Thank-You page (receipt) ========================= */
+  function initThankYou(){
+    const host = $("#thank-you");
+    if (!host) return;
+
+    // Load from session first (falls back to local for file:// cases)
+    let o = null;
+    try { o = JSON.parse(sessionStorage.getItem(ORDER_KEY) || "null"); } catch {}
+    if (!o) { try { o = JSON.parse(localStorage.getItem(ORDER_KEY) || "null"); } catch {} }
+    if (!o) { host.innerHTML = `<p class="muted">No recent order found.</p>`; return; }
+
+    // Populate simple placeholders if they exist
+    $("#thank-order-id") && ($("#thank-order-id").textContent = o.id);
+    $("#thank-order-date") && ($("#thank-order-date").textContent = fmtDate(o.createdAt));
+    $("#thank-order-total") && ($("#thank-order-total").textContent = formatGBP(o.totals?.total||0));
+    $("#thank-shipping-name") && ($("#thank-shipping-name").textContent = o.customer?.name || "");
+    $("#thank-shipping-addr") && ($("#thank-shipping-addr").textContent = [
+      o.customer?.address, o.customer?.city, o.customer?.state, o.customer?.zip, o.customer?.country
+    ].filter(Boolean).join(", "));
+
+    const list = $("#thank-items");
+    if (list) {
+      list.innerHTML = "";
+      (o.items||[]).forEach(it => {
+        const li = document.createElement("li");
+        li.className = "card";
+        li.innerHTML = `
+          <div style="display:grid;grid-template-columns:72px 1fr auto;gap:.6rem;align-items:center;">
+            <div class="media" style="aspect-ratio:1/1;">
+              <img src="${it.img||'https://via.placeholder.com/120?text=Item'}" alt="">
+            </div>
+            <div>
+              <strong>${it.name||"Item"}</strong>
+              <div class="muted">${GBP.format(it.price||0)} × ${it.qty||1}</div>
+            </div>
+            <div style="font-weight:700">${GBP.format((it.price||0)*(it.qty||0))}</div>
+          </div>`;
+        list.appendChild(li);
+      });
+    }
+
+    // Totals
+    $("#thank-subtotal") && ($("#thank-subtotal").textContent = formatGBP(o.totals?.subtotal||0));
+    $("#thank-discount") && ($("#thank-discount").textContent = o.totals?.discount ? "– " + formatGBP(o.totals.discount) : "– £0.00");
+    $("#thank-shipping") && ($("#thank-shipping").textContent = (o.totals?.shipping||0) === 0 ? "Free" : formatGBP(o.totals?.shipping||0));
+    $("#thank-total")    && ($("#thank-total").textContent    = formatGBP(o.totals?.total||0));
+
+    // Clear stored last order on print / done button (optional)
+    $("#thank-print")?.addEventListener("click", () => window.print());
+    $("#thank-view-orders")?.addEventListener("click", () => { window.location.href = `orders.html`; });
+  }
+
+  /* ========================= Debug helpers (optional) ========================= */
+  window.vstoreDebug = {
+    listOrders: () => JSON.parse(localStorage.getItem(ORDERS_KEY)||"[]"),
+    seedOrders: () => { localStorage.removeItem(ORDERS_KEY); seedOrdersIfEmpty(); console.log("Seeded demo orders."); }
+  };
 })();
