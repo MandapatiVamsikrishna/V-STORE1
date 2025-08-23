@@ -1,3 +1,21 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(20px);
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  background: #111;
+  color: #fff;
+  font: 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 9999;
+}
+[data-theme="dark"] .toast { background: #e7e9ee; color: #111; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* ===================== TOKENS & RESET ===================== */
 :root {
   --bg: #0b0c10;

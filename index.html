@@ -6,10 +6,12 @@
   <title>V-STORE — Home</title>
   <meta name="description" content="V-STORE: your one-stop shop for top products at great prices." />
   <link rel="stylesheet" href="style.css" />
-  <link rel="script" href="script.js">
   <link rel="icon" href="/favicon.ico" />
+  <!-- Correct script include -->
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Skip link for accessibility -->
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Top Promo Ticker -->
@@ -33,11 +35,11 @@
         <li><a href="login.html">Login</a></li>
         <li><a href="categories.html">Categories</a></li>
         <li>
-          <a href="cart.html" class="cart-link">Cart
-            (<span id="cart-count" class="badge" aria-live="polite">0</span>)
+          <a href="cart.html" class="cart-link" aria-label="Cart">
+            Cart (<span id="cart-count" class="badge" aria-live="polite">0</span>)
           </a>
         </li>
-        <li><a href="order history.html">Orders</a></li>
+        <li><a href="orders.html">Orders</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li>
           <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button>
@@ -54,8 +56,9 @@
       <p class="hero-sub">Your one-stop shop for the best products.</p>
 
       <form id="search-form" class="search" role="search" aria-label="Product search">
+        <label for="search-input" class="visually-hidden">Search products</label>
         <input id="search-input" type="search" placeholder="Search products…" autocomplete="off" aria-label="Search products" />
-        <button type="submit">Search</button>
+        <button type="submit" aria-label="Run search">Search</button>
       </form>
 
       <div class="trust-badges" aria-label="Trust badges">
@@ -76,30 +79,31 @@
           <span class="ribbon">-30%</span>
           <h3>Summer Essentials</h3>
           <p>Save on apparel bundles.</p>
-          <a href="summer essiential page.html" class="btn-ghost">Shop Now →</a>
+          <a href="summer-essentials.html" class="btn-ghost" aria-label="Shop Summer Essentials">Shop Now →</a>
         </article>
         <article class="deal-card">
           <span class="ribbon">Hot</span>
           <h3>Gadgets Under £50</h3>
           <p>Top electronics steals.</p>
-          <a href="gadgets under 50.html" class="btn-ghost">Browse →</a>
+          <a href="gadgets-under-50.html" class="btn-ghost" aria-label="Browse gadgets under £50">Browse →</a>
         </article>
         <article class="deal-card">
           <span class="ribbon">New</span>
           <h3>Home Refresh</h3>
           <p>Cozy upgrades for less.</p>
-          <a href="Home Refresh.html" class="btn-ghost">Discover →</a>
+          <a href="home-refresh.html" class="btn-ghost" aria-label="Discover Home Refresh">Discover →</a>
         </article>
       </div>
     </section>
 
-    <!-- Category Highlights -->
-     <section class="controls" aria-label="Browse controls">
+    <!-- Browse controls -->
+    <section class="controls" aria-label="Browse controls">
       <div class="chips" id="category-chips" role="tablist" aria-label="Categories">
         <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
-        <button class="chip" data-filter="apparel" role="tab">Apparel</button>
-        <button class="chip" data-filter="electronics" role="tab">Electronics</button>
-        <button class="chip" data-filter="home" role="tab">Home</button>
+        <button class="chip" data-filter="apparel" role="tab" aria-selected="false">Apparel</button>
+        <button class="chip" data-filter="electronics" role="tab" aria-selected="false">Electronics</button>
+        <button class="chip" data-filter="home" role="tab" aria-selected="false">Home</button>
+        <button class="chip" data-filter="groceries" role="tab" aria-selected="false">Groceries</button>
       </div>
       <label class="sort">
         <span class="visually-hidden">Sort</span>
@@ -113,25 +117,26 @@
       </label>
     </section>
 
+    <!-- Category Highlights -->
     <section class="categories-highlight" aria-label="Featured categories">
       <h2 class="section-title">Shop by Category</h2>
       <div class="cat-grid">
-        <a class="cat-card" href="categories.html#apparel">
-          <div class="cat-media apparel"></div>
+        <a class="cat-card" href="categories.html#groceries" aria-label="Shop Groceries">
+          <div class="cat-media groceries" aria-hidden="true"></div>
           <div class="cat-body">
-            <h3>groceries</h3>
-            <p>Fresh fits for every day.</p>
+            <h3>Groceries</h3>
+            <p>Fresh staples for every day.</p>
           </div>
         </a>
-        <a class="cat-card" href="electronics.html">
-          <div class="cat-media electronics"></div>
+        <a class="cat-card" href="categories.html#electronics" aria-label="Shop Electronics">
+          <div class="cat-media electronics" aria-hidden="true"></div>
           <div class="cat-body">
             <h3>Electronics</h3>
             <p>Smart picks, sharp prices.</p>
           </div>
         </a>
-        <a class="cat-card" href="home essentials.html#home">
-          <div class="cat-media home"></div>
+        <a class="cat-card" href="categories.html#home" aria-label="Shop Home">
+          <div class="cat-media home" aria-hidden="true"></div>
           <div class="cat-body">
             <h3>Home</h3>
             <p>Make your space yours.</p>
@@ -140,57 +145,61 @@
       </div>
     </section>
 
-    <!-- Controls -->
-
-
-    <!-- Products -->
-    <section class="featured-products">
+    <!-- Featured Products -->
+    <section class="featured-products" aria-label="Featured products">
       <h2 class="section-title">Featured Products</h2>
 
-      <!-- Skeletons (show by default, you can hide via JS when data loads) -->
-      <div class="product-grid show-skeletons" id="product-grid">
-        <article class="product-item" data-id="1" data-name="Product 1" data-price="20" data-category="electronics">
-          <button class="wishlist" aria-label="Add Product 1 to wishlist" title="Add to wishlist">♡</button>
+      <div class="product-grid show-skeletons" id="product-grid" aria-live="polite">
+        <!-- Example product cards.
+             script.js reads data-* and the title to handle cart + images.
+             Place images in /images/products/<slugified-name>.jpg -->
+        <article class="product-item" data-id="1" data-name="Wireless Earbuds" data-price="29.99" data-category="electronics">
+          <button class="wishlist" aria-label="Add Wireless Earbuds to wishlist" title="Add to wishlist">♡</button>
           <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Product 1" loading="lazy" decoding="async" />
+            <img src="https://via.placeholder.com/200" alt="Wireless Earbuds" loading="lazy" decoding="async" />
           </div>
-          <h3 class="product-title">Product 1</h3>
-          <div class="rating" aria-label="Rated 4 out of 5 stars">
-            ★★★★☆
-          </div>
-          <p class="price" data-currency="GBP">£20.00</p>
-          <button class="add-to-cart">Add to Cart</button>
+          <h3 class="product-title">Wireless Earbuds</h3>
+          <div class="rating" aria-label="Rated 4 out of 5 stars">★★★★☆</div>
+          <p class="price" data-currency="GBP">£29.99</p>
+          <button class="add-to-cart" aria-label="Add Wireless Earbuds to cart">Add to Cart</button>
         </article>
 
-        <article class="product-item" data-id="2" data-name="Product 2" data-price="25" data-category="apparel">
-          <button class="wishlist" aria-label="Add Product 2 to wishlist" title="Add to wishlist">♡</button>
+        <article class="product-item" data-id="2" data-name="Cotton T-Shirt" data-price="12.50" data-category="apparel">
+          <button class="wishlist" aria-label="Add Cotton T-Shirt to wishlist" title="Add to wishlist">♡</button>
           <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Product 2" loading="lazy" decoding="async" />
+            <img src="https://via.placeholder.com/200" alt="Cotton T-Shirt" loading="lazy" decoding="async" />
           </div>
-          <h3 class="product-title">Product 2</h3>
-          <div class="rating" aria-label="Rated 5 out of 5 stars">
-            ★★★★★
-          </div>
-          <p class="price" data-currency="GBP">£25.00</p>
-          <button class="add-to-cart">Add to Cart</button>
+          <h3 class="product-title">Cotton T-Shirt</h3>
+          <div class="rating" aria-label="Rated 5 out of 5 stars">★★★★★</div>
+          <p class="price" data-currency="GBP">£12.50</p>
+          <button class="add-to-cart" aria-label="Add Cotton T-Shirt to cart">Add to Cart</button>
         </article>
 
-        <article class="product-item" data-id="3" data-name="Product 3" data-price="30" data-category="home">
-          <button class="wishlist" aria-label="Add Product 3 to wishlist" title="Add to wishlist">♡</button>
+        <article class="product-item" data-id="3" data-name="Ceramic Mug" data-price="8.00" data-category="home">
+          <button class="wishlist" aria-label="Add Ceramic Mug to wishlist" title="Add to wishlist">♡</button>
           <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Product 3" loading="lazy" decoding="async" />
+            <img src="https://via.placeholder.com/200" alt="Ceramic Mug" loading="lazy" decoding="async" />
           </div>
-          <h3 class="product-title">Product 3</h3>
-          <div class="rating" aria-label="Rated 3 out of 5 stars">
-            ★★★☆☆
+          <h3 class="product-title">Ceramic Mug</h3>
+          <div class="rating" aria-label="Rated 3 out of 5 stars">★★★☆☆</div>
+          <p class="price" data-currency="GBP">£8.00</p>
+          <button class="add-to-cart" aria-label="Add Ceramic Mug to cart">Add to Cart</button>
+        </article>
+
+        <article class="product-item" data-id="4" data-name="Organic Pasta Pack" data-price="3.25" data-category="groceries">
+          <button class="wishlist" aria-label="Add Organic Pasta Pack to wishlist" title="Add to wishlist">♡</button>
+          <div class="media">
+            <img src="https://via.placeholder.com/200" alt="Organic Pasta Pack" loading="lazy" decoding="async" />
           </div>
-          <p class="price" data-currency="GBP">£30.00</p>
-          <button class="add-to-cart">Add to Cart</button>
+          <h3 class="product-title">Organic Pasta Pack</h3>
+          <div class="rating" aria-label="Rated 4 out of 5 stars">★★★★☆</div>
+          <p class="price" data-currency="GBP">£3.25</p>
+          <button class="add-to-cart" aria-label="Add Organic Pasta Pack to cart">Add to Cart</button>
         </article>
       </div>
     </section>
 
-    <!-- Testimonials (CSS carousel) -->
+    <!-- Testimonials -->
     <section class="testimonials" aria-label="What our customers say">
       <h2 class="section-title">Loved by Shoppers</h2>
       <div class="carousel" aria-roledescription="carousel">
@@ -225,11 +234,12 @@
         <p>Yes! Verify your student status at checkout for an instant discount.</p>
       </details>
     </section>
-
   </main>
 
+  <!-- Toast area (used by script.js) -->
   <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-grid">
@@ -243,14 +253,15 @@
             <li><a href="categories.html#electronics">Electronics</a></li>
             <li><a href="categories.html#apparel">Apparel</a></li>
             <li><a href="categories.html#home">Home</a></li>
+            <li><a href="categories.html#groceries">Groceries</a></li>
           </ul>
         </div>
         <div>
           <h4>Support</h4>
           <ul>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="#">Shipping</a></li>
-            <li><a href="#">Returns</a></li>
+            <li><a href="shipping.html">Shipping</a></li>
+            <li><a href="returns.html">Returns</a></li>
           </ul>
         </div>
         <div>
@@ -266,5 +277,5 @@
       <p class="legal">© <span id="year"></span> V-STORE. All rights reserved.</p>
     </div>
   </footer>
-
-  
+</body>
+</html>
