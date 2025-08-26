@@ -6,13 +6,14 @@
   <title>V-STORE — Home</title>
   <meta name="description" content="V-STORE: your one-stop shop for top products at great prices." />
   <link rel="stylesheet" href="style.css" />
-  <link rel="script" href="script.js">
   <link rel="icon" href="/favicon.ico" />
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Accessibility -->
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Top Promo Ticker -->
+  <!-- Promo -->
   <div class="promo" role="status" aria-live="polite">
     <div class="promo-track">
       <span>🚚 Free shipping over £49</span>
@@ -26,9 +27,7 @@
   <nav class="nav" role="navigation" aria-label="Main">
     <div class="nav-inner">
       <a class="logo" href="/" aria-label="V-STORE Home">V-STORE</a>
-
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
-
       <ul id="nav-menu" class="nav-links">
         <li><a href="login.html">Login</a></li>
         <li><a href="categories.html">Categories</a></li>
@@ -39,25 +38,23 @@
         </li>
         <li><a href="order history.html">Orders</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li>
-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button>
-        </li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
       </ul>
     </div>
   </nav>
 
   <!-- Hero -->
+   <!-- Search results (global) -->
+  <div id="search-results" class="search-results" hidden></div>
   <header class="hero" role="banner">
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-content">
       <h1 class="hero-title">Welcome to V-STORE</h1>
       <p class="hero-sub">Your one-stop shop for the best products.</p>
-
       <form id="search-form" class="search" role="search" aria-label="Product search">
         <input id="search-input" type="search" placeholder="Search products…" autocomplete="off" aria-label="Search products" />
         <button type="submit">Search</button>
       </form>
-
       <div class="trust-badges" aria-label="Trust badges">
         <div class="badge-item">🛡️ SSL Secure</div>
         <div class="badge-item">↩️ 30-day Returns</div>
@@ -67,8 +64,9 @@
     </div>
   </header>
 
+  <!-- Main -->
   <main id="main">
-    <!-- Daily Deals strip -->
+    <!-- Deals -->
     <section class="deals" aria-label="Deals">
       <h2 class="section-title">Today’s Picks</h2>
       <div class="deal-cards">
@@ -93,8 +91,8 @@
       </div>
     </section>
 
-    <!-- Category Highlights -->
-     <section class="controls" aria-label="Browse controls">
+    <!-- Browse controls -->
+    <section class="controls" aria-label="Browse controls">
       <div class="chips" id="category-chips" role="tablist" aria-label="Categories">
         <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
         <button class="chip" data-filter="apparel" role="tab">Apparel</button>
@@ -113,6 +111,7 @@
       </label>
     </section>
 
+    <!-- Category highlights -->
     <section class="categories-highlight" aria-label="Featured categories">
       <h2 class="section-title">Shop by Category</h2>
       <div class="cat-grid">
@@ -140,96 +139,59 @@
       </div>
     </section>
 
-    <!-- Controls -->
-
-
     <!-- Products -->
     <section class="featured-products">
       <h2 class="section-title">Featured Products</h2>
-
-      <!-- Skeletons (show by default, you can hide via JS when data loads) -->
       <div class="product-grid show-skeletons" id="product-grid">
         <article class="product-item" data-id="1" data-name="Product 1" data-price="20" data-category="electronics">
           <button class="wishlist" aria-label="Add Product 1 to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Product 1" loading="lazy" decoding="async" />
-          </div>
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Product 1" loading="lazy" decoding="async" /></div>
           <h3 class="product-title">Product 1</h3>
-          <div class="rating" aria-label="Rated 4 out of 5 stars">
-            ★★★★☆
-          </div>
+          <div class="rating" aria-label="Rated 4 out of 5 stars">★★★★☆</div>
           <p class="price" data-currency="GBP">£20.00</p>
           <button class="add-to-cart">Add to Cart</button>
         </article>
 
         <article class="product-item" data-id="2" data-name="Product 2" data-price="25" data-category="apparel">
           <button class="wishlist" aria-label="Add Product 2 to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Product 2" loading="lazy" decoding="async" />
-          </div>
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Product 2" loading="lazy" decoding="async" /></div>
           <h3 class="product-title">Product 2</h3>
-          <div class="rating" aria-label="Rated 5 out of 5 stars">
-            ★★★★★
-          </div>
+          <div class="rating" aria-label="Rated 5 out of 5 stars">★★★★★</div>
           <p class="price" data-currency="GBP">£25.00</p>
           <button class="add-to-cart">Add to Cart</button>
         </article>
 
         <article class="product-item" data-id="3" data-name="Product 3" data-price="30" data-category="home">
           <button class="wishlist" aria-label="Add Product 3 to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Product 3" loading="lazy" decoding="async" />
-          </div>
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Product 3" loading="lazy" decoding="async" /></div>
           <h3 class="product-title">Product 3</h3>
-          <div class="rating" aria-label="Rated 3 out of 5 stars">
-            ★★★☆☆
-          </div>
+          <div class="rating" aria-label="Rated 3 out of 5 stars">★★★☆☆</div>
           <p class="price" data-currency="GBP">£30.00</p>
           <button class="add-to-cart">Add to Cart</button>
         </article>
       </div>
     </section>
 
-    <!-- Testimonials (CSS carousel) -->
+    <!-- Testimonials -->
     <section class="testimonials" aria-label="What our customers say">
       <h2 class="section-title">Loved by Shoppers</h2>
       <div class="carousel" aria-roledescription="carousel">
-        <figure class="slide">
-          <blockquote>“Fast delivery and great prices. My go-to store!”</blockquote>
-          <figcaption>— Asha M.</figcaption>
-        </figure>
-        <figure class="slide">
-          <blockquote>“Amazing customer support. Resolved my issue in minutes.”</blockquote>
-          <figcaption>— Daniel R.</figcaption>
-        </figure>
-        <figure class="slide">
-          <blockquote>“Quality products. The electronics section is 🔥.”</blockquote>
-          <figcaption>— Priya N.</figcaption>
-        </figure>
+        <figure class="slide"><blockquote>“Fast delivery and great prices. My go-to store!”</blockquote><figcaption>— Asha M.</figcaption></figure>
+        <figure class="slide"><blockquote>“Amazing customer support. Resolved my issue in minutes.”</blockquote><figcaption>— Daniel R.</figcaption></figure>
+        <figure class="slide"><blockquote>“Quality products. The electronics section is 🔥.”</blockquote><figcaption>— Priya N.</figcaption></figure>
       </div>
     </section>
 
     <!-- FAQ -->
     <section class="faq" aria-label="Frequently Asked Questions">
       <h2 class="section-title">FAQ</h2>
-      <details>
-        <summary>What is your return policy?</summary>
-        <p>We offer a 30-day return window on most items. See Returns at checkout for details.</p>
-      </details>
-      <details>
-        <summary>How long does shipping take?</summary>
-        <p>1–3 business days within the UK. International shipping varies by region.</p>
-      </details>
-      <details>
-        <summary>Do you offer student discounts?</summary>
-        <p>Yes! Verify your student status at checkout for an instant discount.</p>
-      </details>
+      <details><summary>What is your return policy?</summary><p>We offer a 30-day return window on most items. See Returns at checkout for details.</p></details>
+      <details><summary>How long does shipping take?</summary><p>1–3 business days within the UK. International shipping varies by region.</p></details>
+      <details><summary>Do you offer student discounts?</summary><p>Yes! Verify your student status at checkout for an instant discount.</p></details>
     </section>
-
   </main>
 
-  <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
-
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-grid">
@@ -267,4 +229,18 @@
     </div>
   </footer>
 
-  
+  <!-- Chat Assistant (vertical right-side tab) -->
+  <button id="chat-open" class="chat-open" aria-label="Open assistant">Chat</button>
+  <div id="chat-box" class="chat-box" hidden>
+    <div class="chat-header">
+      <strong>V-STORE Assistant</strong>
+      <button id="chat-close" aria-label="Close">✕</button>
+    </div>
+    <div id="chat-log" class="chat-log" aria-live="polite"></div>
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input id="chat-input" type="text" placeholder="Ask: add 2 product 1, phones under £500…" required />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</body>
+</html>
