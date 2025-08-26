@@ -1,15 +1,27 @@
 {
   "name": "v-store",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "description": "V-STORE — Full-stack e-commerce app using React (Vite) + Express + MongoDB.",
+  "main": "server.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "client": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "start": "node server.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -18,11 +30,32 @@
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
+    "concurrently": "^9.0.1",
     "eslint": "^9.11.1",
     "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
     "globals": "^15.9.0",
+    "nodemon": "^3.1.10",
     "vite": "^5.4.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MandapatiVamsikrishna/V-STORE1.git"
+  },
+  "keywords": [
+    "ecommerce",
+    "mern",
+    "react",
+    "vite",
+    "express",
+    "mongodb",
+    "jwt"
+  ],
+  "author": "Mandapatii Vamsi krishna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MandapatiVamsikrishna/V-STORE1/issues"
+  },
+  "homepage": "https://github.com/MandapatiVamsikrishna/V-STORE1#readme"
 }
