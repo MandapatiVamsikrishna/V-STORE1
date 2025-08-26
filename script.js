@@ -1,3 +1,174 @@
+/* ============ V-STORE core ============ */
+// replace with the backend tunnel URL cloudflared printed
+const API_BASE = "https://<your-backend>.trycloudflare.com";
+
+
+const CART_KEY = "vstore_cart";
+
+const $ = (sel, el = document) => el.querySelector(sel);
+const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
+
+/* ---------- Cart state ---------- */
+function getCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+  catch { return []; }
+}
+function setCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartCount();
+}
+function updateCartCount() {
+  const cart = getCart();
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  const badge = $("#cart-count");
+  if (badge) badge.textContent = count;
+}
+function addToCart(product) {
+  const cart = getCart();
+  const idx = cart.findIndex(i => i.id === product.id);
+  if (idx >= 0) {
+    cart[idx].qty += 1;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  setCart(cart);
+  toast(`${product.name} added to cart`);
+}
+
+/* ---------- UI helpers ---------- */
+function toast(msg) {
+  const t = $("#toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.hidden = false;
+  t.classList.add("show");
+  clearTimeout(toast._h);
+  toast._h = setTimeout(() => {
+    t.classList.remove("show");
+    t.hidden = true;
+  }, 1800);
+}
+
+/* ---------- Image mapping by product name ---------- */
+/* Place images in: /images/products/<slug>.jpg
+   slug = product name lowercased, non-letters -> '-', trimmed dashes.
+   Examples:
+     "Product 1"            -> images/products/product-1.jpg
+     "Gadgets Under £50"    -> images/products/gadgets-under-50.jpg
+     "Home Refresh"         -> images/products/home-refresh.jpg
+*/
+function slugify(name) {
+  return name
+    .toLowerCase()
+    .replace(/£/g, "gbp")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+function applyProductImages() {
+  $$(".product-item").forEach(card => {
+    const name = (card.dataset.name || $(".product-title", card)?.textContent || "").trim();
+    const slug = slugify(name);
+    const imgEl = $("img", card);
+    if (!imgEl || !slug) return;
+    // Change extension if you use .png/.webp
+    const candidate = `images/products/${slug}.jpg`;
+    // Optimistically set; keep existing alt
+    imgEl.src = candidate;
+    imgEl.alt = name;
+    imgEl.loading = "lazy";
+    imgEl.decoding = "async";
+  });
+}
+
+/* ---------- Wire “Add to Cart” buttons ---------- */
+function bindAddToCart() {
+  const grid = $("#product-grid");
+  if (!grid) return;
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".add-to-cart");
+    if (!btn) return;
+
+    const card = e.target.closest(".product-item");
+    if (!card) return;
+
+    const id = Number(card.dataset.id) || Date.now();
+    const name = card.dataset.name || $(".product-title", card)?.textContent?.trim() || "Item";
+    const price = Number(card.dataset.price) || 0;
+    const image = $("img", card)?.getAttribute("src") || "";
+    const category = card.dataset.category || "misc";
+
+    addToCart({ id, name, price, image, category });
+  });
+}
+
+/* ---------- Theme toggle (already in your HTML) ---------- */
+function bindThemeToggle() {
+  const btn = $("#theme-toggle");
+  if (!btn) return;
+  const root = document.documentElement;
+
+  function setTheme(mode) {
+    root.setAttribute("data-theme", mode);
+    localStorage.setItem("vstore_theme", mode);
+  }
+  const saved = localStorage.getItem("vstore_theme");
+  if (saved) setTheme(saved);
+
+  btn.addEventListener("click", () => {
+    const current = root.getAttribute("data-theme") || "light";
+    setTheme(current === "light" ? "dark" : "light");
+  });
+}
+
+/* ---------- Newsletter + year small touches ---------- */
+function bindNewsletter() {
+  const form = $("#newsletter-form");
+  const hint = $("#newsletter-hint");
+  if (!form || !hint) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = $("#newsletter-email")?.value?.trim();
+    if (!email) return;
+    hint.textContent = "Thanks for subscribing!";
+    toast("Subscribed 🎉");
+    form.reset();
+  });
+}
+function setYear() {
+  const y = $("#year");
+  if (y) y.textContent = new Date().getFullYear();
+}
+
+/* ---------- Optional: basic search (keeps your form) ---------- */
+function bindSearch() {
+  const form = $("#search-form");
+  const input = $("#search-input");
+  const grid = $("#product-grid");
+  if (!form || !input || !grid) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = input.value.trim().toLowerCase();
+    $$(".product-item", grid).forEach(card => {
+      const name = (card.dataset.name || $(".product-title", card)?.textContent || "").toLowerCase();
+      card.style.display = !q || name.includes(q) ? "" : "none";
+    });
+  });
+}
+
+/* ---------- Init ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  applyProductImages();
+  bindAddToCart();
+  bindThemeToggle();
+  bindNewsletter();
+  bindSearch();
+  setYear();
+  updateCartCount();
+});
+
 // script.js — universal, page-safe logic for V-STORE
 (() => {
   /* ========================= Helpers / Config ========================= */
