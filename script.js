@@ -39,7 +39,7 @@
     updateBadge();
 
     initGlobalClicks();         // add-to-cart, qty +/-, wishlist
-    initSearch();               // search forms (safe no-op)
+    initSearch();               // search forms (safe no-op: filters grid on page)
     initFiltersAndSort();       // category pages (safe no-op)
     initCartRendering();        // cart page (safe no-op)
     initPromoUI();              // promo inputs (safe no-op)
@@ -47,6 +47,9 @@
     initOrderSummaryInline();   // inline summary on checkout page (safe no-op)
     initOrdersPage();           // orders.html logic (safe no-op)
     initThankYou();             // thank-you.html receipt (safe no-op)
+
+    // Chat assistant boot (catalog + UI)
+    initChatAssistant();
   });
 
   /* ========================= UI basics ========================= */
@@ -226,7 +229,7 @@
       : parsePrice(card?.querySelector(".price, .product-price")?.textContent);
     const img = card?.querySelector("img")?.src;
     const qtyWrap = card?.querySelector(".qty, .quantity-controls");
-    theQty: {
+    {
       const qEl = qtyWrap?.querySelector(".q, .quantity");
       const qty = Math.max(QMIN, Math.min(QMAX, parseInt(qEl?.textContent || "1", 10)));
       return { id, name, price, qty, img };
@@ -383,6 +386,7 @@
       };
       if (catChecks.some(c => !c.checked))
         catChecks.filter(c => c.checked).forEach(c => addChip(c.value, () => { c.checked = false; filterAndSort(); }));
+      const { minP, maxP } = activeFilterState();
       if (minP > 0)    addChip(`Min ${GBP.format(minP)}`, () => { if(minPriceEl) minPriceEl.value = "0"; filterAndSort(); });
       if (maxP < 9999) addChip(`Max ${GBP.format(maxP)}`, () => { if(maxPriceEl) maxPriceEl.value = "9999"; filterAndSort(); });
       const rSel2 = ratingRadios.find(r => r.checked)?.value ?? "all";
@@ -732,7 +736,7 @@
       let payMeta = { method };
 
       if (method === "credit-card") {
-        const rawDigits = sanitizeDigits(numEl || {value:""});
+        const rawDigits = (numEl?.value||"").replace(/\D/g,"");
         const brandInfo = detectBrand(rawDigits);
         if (!luhnOk(rawDigits)){ toast("Invalid card number"); return; }
         if (!expiryOk(expEl?.value || "")){ toast("Invalid expiry"); return; }
@@ -764,8 +768,7 @@
       const order = {
         id: "ORD-" + Date.now(),
         createdAt: new Date().toISOString(),
-        items: items.map(it => ({ id:it.id, name:it.name, price:+it.price||0, qty:+it.qty||1, img:it.img||null })),
-        totals,
+        items: items.map(it => ({ id:it.id, name:it.name, price:+it.price||0, qty:+it.qty||1, img:it.img||null })),        totals,
         customer,
         payment: payMeta
       };
@@ -1069,4 +1072,186 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     listOrders: () => JSON.parse(localStorage.getItem(ORDERS_KEY)||"[]"),
     seedOrders: () => { localStorage.removeItem(ORDERS_KEY); seedOrdersIfEmpty(); console.log("Seeded demo orders."); }
   };
+
+  /* ========================= Chat Assistant (results INSIDE chat) ========================= */
+  function initChatAssistant(){
+    const chatOpen = $("#chat-open");
+    const chatBox  = $("#chat-box");
+    const chatClose= $("#chat-close");
+    const chatLog  = $("#chat-log");
+    const chatForm = $("#chat-form");
+    const chatInput= $("#chat-input");
+
+    // Local catalog shared by chat
+    let CATALOG = [];
+
+    async function loadCatalog(){
+      try{
+        const res = await fetch('products.json', { cache: 'no-store' });
+        if(!res.ok) throw new Error('No products.json found');
+        CATALOG = await res.json();
+      } catch (e){
+        // Fallback: scrape visible products on the current page
+        CATALOG = [...document.querySelectorAll('.product-item')].map(el => ({
+          id: el.getAttribute('data-id'),
+          name: el.getAttribute('data-name'),
+          category: el.getAttribute('data-category'),
+          price: parseFloat(el.getAttribute('data-price')),
+          img: el.querySelector('img')?.src || ''
+        }));
+      }
+    }
+
+    // Add to cart via window.cart using catalog item
+    function addToCartById(id, qty=1){
+      const p = CATALOG.find(x=>String(x.id)===String(id));
+      if(!p) return;
+      window.cart.add({ id: p.id, name: p.name, price: p.price, qty, img: p.img });
+      toast(`${qty} × ${p.name} added to cart`);
+    }
+
+    // Text helpers
+    const WORD_TO_NUM = { one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10 };
+    const numFrom = (text) => {
+      const n = text.match(/\b(\d+)\b/); if(n) return parseInt(n[1],10);
+      for (const [w,v] of Object.entries(WORD_TO_NUM)){ if (new RegExp(`\\b${w}\\b`,'i').test(text)) return v; }
+      return 1;
+    };
+    const capFrom = (text) => {
+      const m = text.match(/(?:under|below|<=?|less than)\s*£?\s*(\d+)/i);
+      return m ? parseFloat(m[1]) : null;
+    };
+
+    // Catalog search
+    function chatSearch(q, cap=null){
+      q = (q||"").trim().toLowerCase();
+      let list = CATALOG.filter(p =>
+        (p.name||"").toLowerCase().includes(q) || (p.category||"").toLowerCase().includes(q)
+      );
+      if(cap!=null) list = list.filter(p=> (p.price||0) <= cap);
+      return list.slice(0, 10);
+    }
+
+    // Chat log
+    function logMsg(role, text){
+      if (!chatLog || !text) return;
+      const d = document.createElement('div');
+      d.className = `chat-msg ${role}`;
+      d.textContent = text;
+      chatLog.appendChild(d);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    // Render product cards INSIDE chat
+    function chatRenderProducts(list){
+      if (!chatLog) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg bot';
+
+      if (!list.length) {
+        wrap.textContent = "No matches. Try another name or category.";
+      } else {
+        const box = document.createElement('div');
+        box.style.display = 'grid';
+        box.style.gap = '8px';
+        box.style.maxWidth = '100%';
+
+        list.slice(0,5).forEach(p => {
+          const card = document.createElement('div');
+          card.style.border = '1px solid var(--border)';
+          card.style.borderRadius = '10px';
+          card.style.padding = '8px';
+          card.style.display = 'grid';
+          card.style.gridTemplateColumns = '56px 1fr auto';
+          card.style.alignItems = 'center';
+          card.style.gap = '8px';
+          card.innerHTML = `
+            <img src="${p.img||'https://via.placeholder.com/80'}" alt="${p.name}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;">
+            <div>
+              <div style="font-weight:600">${p.name}</div>
+              <div class="muted" style="font-size:.9rem">${p.category||''}</div>
+            </div>
+            <div style="text-align:right;">
+              <div>£${p.price}</div>
+              <button data-chat-add="${p.id}" style="margin-top:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer">Add</button>
+            </div>
+          `;
+          box.appendChild(card);
+        });
+
+        wrap.appendChild(box);
+      }
+
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    // Delegate Add clicks inside chat
+    chatLog?.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-chat-add]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-chat-add');
+      addToCartById(id, 1);
+      const p = (id && CATALOG.find(x => String(x.id) === String(id)));
+      if (p) logMsg('bot', `Added 1 × ${p.name} to your cart.`);
+    });
+
+    // NLU-ish intent parsing
+    function parseIntent(t){
+      const s = (t||"").toLowerCase();
+      if (/^(show|what('| )?s)\s+(in\s+)?(my\s+)?cart/.test(s)) return {type:'show_cart'};
+      if (/^(empty|clear)\s+cart/.test(s)) return {type:'clear_cart'};
+      if (/\badd\b/.test(s) || /\bto cart\b/.test(s)) {
+        const qty = numFrom(s);
+        const name = s.replace(/add|\bto cart\b/gi,'').trim();
+        return {type:'add', name, qty};
+      }
+      const cap = capFrom(s);
+      return {type:'search', query:s.replace(/^(find|show|search|browse)\s+/,'').trim()||'all', cap};
+    }
+
+    function handleIntent(i){
+      if(i.type==='show_cart'){
+        const cart = window.cart.get();
+        if(!cart.length) return "Your cart is empty.";
+        const lines = cart.map(x=>`${x.qty} × ${x.name} (£${x.price})`).join('\n');
+        const total = cart.reduce((s,x)=>s+(x.price||0)*(x.qty||0),0).toFixed(2);
+        return `In your cart:\n${lines}\nTotal: £${total}`;
+      }
+      if(i.type==='clear_cart'){ window.cart.clear(); return "Cart cleared."; }
+      if(i.type==='add'){
+        const cap = capFrom(i.name);
+        const q = i.name.replace(/under.*$/,'').trim();
+        const list = chatSearch(q, cap);
+        if(!list.length) return "I couldn't find that item.";
+        addToCartById(list[0].id, i.qty||1);
+        return `Added ${i.qty||1} × ${list[0].name} to your cart.`;
+      }
+      if(i.type==='search'){
+        const list = i.query==='all' ? CATALOG.slice(0,5) : chatSearch(i.query, i.cap);
+        chatRenderProducts(list);                     // render inside chat
+        if(!list.length) return "";                   // nothing else to say
+        return `Here are some options. Tap Add to put one in your cart.`;
+      }
+      return "Sorry, I didn't catch that.";
+    }
+
+    // Wire UI
+    chatOpen?.addEventListener("click", ()=> chatBox && (chatBox.hidden=false));
+    chatClose?.addEventListener("click", ()=> chatBox && (chatBox.hidden=true));
+    chatForm?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const text = (chatInput?.value || "").trim();
+      if(!text) return;
+      logMsg('user', text);
+      if (CATALOG.length === 0) await loadCatalog();
+      const intent = parseIntent(text);
+      const reply = handleIntent(intent);
+      if (reply) logMsg('bot', reply);
+      if (chatInput) chatInput.value = '';
+    });
+
+    // Preload catalog quietly (not required, but snappier)
+    loadCatalog();
+  }
 })();
