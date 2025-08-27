@@ -7,7 +7,9 @@
   <meta name="description" content="V-STORE: your one-stop shop for top products at great prices." />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="/favicon.ico" />
-
+</head>
+<body>
+  <!-- Skip link for accessibility -->
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Promo -->
@@ -24,7 +26,9 @@
   <nav class="nav" role="navigation" aria-label="Main">
     <div class="nav-inner">
       <a class="logo" href="/" aria-label="V-STORE Home">V-STORE</a>
+
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+
       <ul id="nav-menu" class="nav-links">
         <li><a href="login.html">Login</a></li>
         <li><a href="categories.html">Categories</a></li>
@@ -33,22 +37,25 @@
             Cart (<span id="cart-count" class="badge" aria-live="polite">0</span>)
           </a>
         </li>
-        <li><a href="order history.html">Orders</a></li>
+        <li><a href="orders.html">Orders</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+        <li>
+          <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button>
+        </li>
       </ul>
     </div>
   </nav>
 
-  <!-- Hero -->
-   <!-- Search results (global) -->
+  <!-- Search results (global) -->
   <div id="search-results" class="search-results" hidden></div>
+
+  <!-- Hero -->
   <header class="hero" role="banner">
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-content">
       <h1 class="hero-title">Welcome to V-STORE</h1>
       <p class="hero-sub">Your one-stop shop for the best products.</p>
-      <form id="search-form" class="search" role="search" aria-label="Product search">
+      <form id="search-form" class="search" role="search" aria-label="Product search" autocomplete="off">
         <label for="search-input" class="visually-hidden">Search products</label>
         <input id="search-input" type="search" placeholder="Search products…" autocomplete="off" aria-label="Search products" />
         <button type="submit" aria-label="Run search">Search</button>
@@ -93,10 +100,10 @@
     <section class="controls" aria-label="Browse controls">
       <div class="chips" id="category-chips" role="tablist" aria-label="Categories">
         <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
-        <button class="chip" data-filter="apparel" role="tab" aria-selected="false">Apparel</button>
         <button class="chip" data-filter="electronics" role="tab" aria-selected="false">Electronics</button>
-        <button class="chip" data-filter="home" role="tab" aria-selected="false">Home</button>
+        <button class="chip" data-filter="home" role="tab" aria-selected="false">Home Essentials</button>
         <button class="chip" data-filter="groceries" role="tab" aria-selected="false">Groceries</button>
+        <button class="chip" data-filter="apparel" role="tab" aria-selected="false">Apparel</button>
       </div>
       <label class="sort">
         <span class="visually-hidden">Sort</span>
@@ -110,6 +117,7 @@
       </label>
     </section>
 
+    <!-- Featured categories -->
     <section class="categories-highlight" aria-label="Featured categories">
       <h2 class="section-title">Shop by Category</h2>
       <div class="cat-grid">
@@ -142,9 +150,9 @@
       <h2 class="section-title">Featured Products</h2>
 
       <div class="product-grid show-skeletons" id="product-grid" aria-live="polite">
-        <!-- Example product cards.
-             script.js reads data-* and the title to handle cart + images.
-             Place images in /images/products/<slugified-name>.jpg -->
+        <!-- NOTE:
+             - Update image src as you like.
+             - The script uses data-id, data-name, data-price, data-category. -->
         <article class="product-item" data-id="1" data-name="Wireless Earbuds" data-price="29.99" data-category="electronics">
           <button class="wishlist" aria-label="Add Wireless Earbuds to wishlist" title="Add to wishlist">♡</button>
           <div class="media">
@@ -222,7 +230,6 @@
           <h4>Shop</h4>
           <ul>
             <li><a href="categories.html#electronics">Electronics</a></li>
-            <li><a href="categories.html#apparel">Apparel</a></li>
             <li><a href="categories.html#home">Home</a></li>
             <li><a href="categories.html#groceries">Groceries</a></li>
           </ul>
@@ -249,7 +256,7 @@
     </div>
   </footer>
 
-  <!-- Chat Assistant (vertical right-side tab) -->
+  <!-- Chat Assistant (floating button + panel) -->
   <button id="chat-open" class="chat-open" aria-label="Open assistant">Chat</button>
   <div id="chat-box" class="chat-box" hidden>
     <div class="chat-header">
@@ -258,9 +265,12 @@
     </div>
     <div id="chat-log" class="chat-log" aria-live="polite"></div>
     <form id="chat-form" class="chat-form" autocomplete="off">
-      <input id="chat-input" type="text" placeholder="Ask: add 2 product 1, phones under £500…" required />
+      <input id="chat-input" type="text" placeholder='Try: "add 2 earbuds", "show cart", "phones under £500"' required />
       <button type="submit">Send</button>
     </form>
   </div>
+
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
 </body>
 </html>
