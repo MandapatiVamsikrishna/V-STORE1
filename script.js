@@ -1,175 +1,4 @@
-/* ============ V-STORE core ============ */
-// replace with the backend tunnel URL cloudflared printed
-const API_BASE = "https://<your-backend>.trycloudflare.com";
-
-
-const CART_KEY = "vstore_cart";
-
-const $ = (sel, el = document) => el.querySelector(sel);
-const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
-
-/* ---------- Cart state ---------- */
-function getCart() {
-  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
-  catch { return []; }
-}
-function setCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  updateCartCount();
-}
-function updateCartCount() {
-  const cart = getCart();
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
-  const badge = $("#cart-count");
-  if (badge) badge.textContent = count;
-}
-function addToCart(product) {
-  const cart = getCart();
-  const idx = cart.findIndex(i => i.id === product.id);
-  if (idx >= 0) {
-    cart[idx].qty += 1;
-  } else {
-    cart.push({ ...product, qty: 1 });
-  }
-  setCart(cart);
-  toast(`${product.name} added to cart`);
-}
-
-/* ---------- UI helpers ---------- */
-function toast(msg) {
-  const t = $("#toast");
-  if (!t) return;
-  t.textContent = msg;
-  t.hidden = false;
-  t.classList.add("show");
-  clearTimeout(toast._h);
-  toast._h = setTimeout(() => {
-    t.classList.remove("show");
-    t.hidden = true;
-  }, 1800);
-}
-
-/* ---------- Image mapping by product name ---------- */
-/* Place images in: /images/products/<slug>.jpg
-   slug = product name lowercased, non-letters -> '-', trimmed dashes.
-   Examples:
-     "Product 1"            -> images/products/product-1.jpg
-     "Gadgets Under £50"    -> images/products/gadgets-under-50.jpg
-     "Home Refresh"         -> images/products/home-refresh.jpg
-*/
-function slugify(name) {
-  return name
-    .toLowerCase()
-    .replace(/£/g, "gbp")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-function applyProductImages() {
-  $$(".product-item").forEach(card => {
-    const name = (card.dataset.name || $(".product-title", card)?.textContent || "").trim();
-    const slug = slugify(name);
-    const imgEl = $("img", card);
-    if (!imgEl || !slug) return;
-    // Change extension if you use .png/.webp
-    const candidate = `images/products/${slug}.jpg`;
-    // Optimistically set; keep existing alt
-    imgEl.src = candidate;
-    imgEl.alt = name;
-    imgEl.loading = "lazy";
-    imgEl.decoding = "async";
-  });
-}
-
-/* ---------- Wire “Add to Cart” buttons ---------- */
-function bindAddToCart() {
-  const grid = $("#product-grid");
-  if (!grid) return;
-
-  grid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".add-to-cart");
-    if (!btn) return;
-
-    const card = e.target.closest(".product-item");
-    if (!card) return;
-
-    const id = Number(card.dataset.id) || Date.now();
-    const name = card.dataset.name || $(".product-title", card)?.textContent?.trim() || "Item";
-    const price = Number(card.dataset.price) || 0;
-    const image = $("img", card)?.getAttribute("src") || "";
-    const category = card.dataset.category || "misc";
-
-    addToCart({ id, name, price, image, category });
-  });
-}
-
-/* ---------- Theme toggle (already in your HTML) ---------- */
-function bindThemeToggle() {
-  const btn = $("#theme-toggle");
-  if (!btn) return;
-  const root = document.documentElement;
-
-  function setTheme(mode) {
-    root.setAttribute("data-theme", mode);
-    localStorage.setItem("vstore_theme", mode);
-  }
-  const saved = localStorage.getItem("vstore_theme");
-  if (saved) setTheme(saved);
-
-  btn.addEventListener("click", () => {
-    const current = root.getAttribute("data-theme") || "light";
-    setTheme(current === "light" ? "dark" : "light");
-  });
-}
-
-/* ---------- Newsletter + year small touches ---------- */
-function bindNewsletter() {
-  const form = $("#newsletter-form");
-  const hint = $("#newsletter-hint");
-  if (!form || !hint) return;
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = $("#newsletter-email")?.value?.trim();
-    if (!email) return;
-    hint.textContent = "Thanks for subscribing!";
-    toast("Subscribed 🎉");
-    form.reset();
-  });
-}
-function setYear() {
-  const y = $("#year");
-  if (y) y.textContent = new Date().getFullYear();
-}
-
-/* ---------- Optional: basic search (keeps your form) ---------- */
-function bindSearch() {
-  const form = $("#search-form");
-  const input = $("#search-input");
-  const grid = $("#product-grid");
-  if (!form || !input || !grid) return;
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const q = input.value.trim().toLowerCase();
-    $$(".product-item", grid).forEach(card => {
-      const name = (card.dataset.name || $(".product-title", card)?.textContent || "").toLowerCase();
-      card.style.display = !q || name.includes(q) ? "" : "none";
-    });
-  });
-}
-
-/* ---------- Init ---------- */
-document.addEventListener("DOMContentLoaded", () => {
-  applyProductImages();
-  bindAddToCart();
-  bindThemeToggle();
-  bindNewsletter();
-  bindSearch();
-  setYear();
-  updateCartCount();
-});
-
-// script.js — universal, page-safe logic for V-STORE
+/* ========================= V-STORE — single, unified script.js ========================= */
 (() => {
   /* ========================= Helpers / Config ========================= */
   const $  = (s, r=document) => r.querySelector(s);
@@ -181,23 +10,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const PROMO_KEY   = "vstore_promo";
   const ORDER_KEY   = "vstore_last_order";     // thank-you page reads this
   const CKOUT_INFO  = "vstore_checkout_info";  // optional saved shipping info
-
-  // Orders storage
   const ORDERS_KEY  = "vstore_orders";
-  const ORDERS_PAGE_SIZE = 8;
 
-  // Currency + limits
-  const GBP = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
-  const QMIN = 1, QMAX = 99;
-  const FREE_SHIP_THRESHOLD = 49;
-
-  // Node cache
+  // UI nodes (if present on page)
   const themeBtn  = $("#theme-toggle");
   const navToggle = $(".nav-toggle");
   const navMenu   = $("#nav-menu");
   const toastEl   = $("#toast");
   const yearEl    = $("#year");
   const badge     = $("#cart-count");
+
+  // Misc
+  const ORDERS_PAGE_SIZE   = 8;
+  const GBP  = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
+  const QMIN = 1, QMAX = 99;
+  const FREE_SHIP_THRESHOLD = 49;
 
   /* ========================= Boot ========================= */
   document.addEventListener("DOMContentLoaded", () => {
@@ -210,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBadge();
 
     initGlobalClicks();         // add-to-cart, qty +/-, wishlist
-    initSearch();               // search forms (safe no-op: filters grid on page)
+    initSearch();               // search forms (safe no-op if absent)
     initFiltersAndSort();       // category pages (safe no-op)
     initCartRendering();        // cart page (safe no-op)
     initPromoUI();              // promo inputs (safe no-op)
@@ -219,8 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initOrdersPage();           // orders.html logic (safe no-op)
     initThankYou();             // thank-you.html receipt (safe no-op)
 
-    // Chat assistant boot (catalog + UI)
-    initChatAssistant();
+    initChatAssistant();        // chat with commands + inline product cards
   });
 
   /* ========================= UI basics ========================= */
@@ -228,8 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!toastEl) return;
     toastEl.textContent = msg;
     toastEl.hidden = false;
+    toastEl.classList.add("show");
     clearTimeout(toast._t);
-    toast._t = setTimeout(() => (toastEl.hidden = true), ms);
+    toast._t = setTimeout(() => {
+      toastEl.classList.remove("show");
+      toastEl.hidden = true;
+    }, ms);
   }
 
   function initTheme() {
@@ -252,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const ex = navToggle.getAttribute("aria-expanded") === "true";
       navToggle.setAttribute("aria-expanded", String(!ex));
       navMenu.setAttribute("aria-expanded", String(!ex));
+      // IMPORTANT: toggle .open so your CSS can display the mobile menu
+      navMenu.classList.toggle("open", !ex);
     });
   }
 
@@ -318,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
       count: () => readCart().reduce((n, it) => n + (it.qty || 0), 0),
       add: (item) => {
         const items = readCart();
-        const f = items.find(i => i.id === item.id);
+        const f = items.find(i => String(i.id) === String(item.id));
         if (f) f.qty = Math.min(QMAX, (f.qty || 0) + (item.qty || 1));
         else items.push({ ...item, qty: Math.max(QMIN, item.qty || 1) });
         writeCart(items);
@@ -326,13 +158,19 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       setQty: (id, qty) => {
         const items = readCart();
-        const it = items.find(i => i.id === id);
+        const it = items.find(i => String(i.id) === String(id));
         if (!it) return;
         it.qty = Math.max(QMIN, Math.min(QMAX, qty|0));
         writeCart(items);
         updateBadge();
       },
-      remove: (id) => { writeCart(readCart().filter(i => i.id !== id)); updateBadge(); },
+      remove: (id) => { writeCart(readCart().filter(i => String(i.id) !== String(id))); updateBadge(); },
+      removeByName: (name) => {
+        const items = readCart().map(it => ({...it}));
+        const idx = items.findIndex(i => (i.name||"").toLowerCase().includes(String(name||"").toLowerCase()));
+        if (idx === -1) return false;
+        items.splice(idx,1); writeCart(items); updateBadge(); return true;
+      },
       clear: () => { writeCart([]); updateBadge(); }
     };
     document.addEventListener("cart:updated", updateBadge);
@@ -383,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function parsePrice(str) {
     if (typeof str === "number") return str;
     if (!str) return 0;
-    const m = String(str).replace(",", ".").match(/(\d+(\.\d+)?)/);
+    const m = String(str).replace(",", ".").match(/(\d+(\.\d{1,2})?)/);
     return m ? parseFloat(m[1]) : 0;
   }
   function slugify(s) {
@@ -400,11 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
       : parsePrice(card?.querySelector(".price, .product-price")?.textContent);
     const img = card?.querySelector("img")?.src;
     const qtyWrap = card?.querySelector(".qty, .quantity-controls");
-    {
-      const qEl = qtyWrap?.querySelector(".q, .quantity");
-      const qty = Math.max(QMIN, Math.min(QMAX, parseInt(qEl?.textContent || "1", 10)));
-      return { id, name, price, qty, img };
-    }
+    const qEl = qtyWrap?.querySelector(".q, .quantity");
+    const qty = Math.max(QMIN, Math.min(QMAX, parseInt(qEl?.textContent || "1", 10)));
+    return { id, name, price, qty, img };
   }
 
   /* ========================= Global clicks (works on all pages) ========================= */
@@ -565,7 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentSearch) addChip(`“${currentSearch}”`, () => { const s = $("#search-input"); if (s) s.value = ""; currentSearch = ""; filterAndSort(); });
     }
   }
-
   function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn.apply(null, a), ms); }; }
 
   /* ========================= Cart / Summary rendering ========================= */
@@ -868,7 +703,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const s = (handle||"").toLowerCase();
       if (!/@/.test(s)) return null;
       const dom = s.split("@")[1] || "";
-      if (/(ybl|phonepe)/.test(dom))      return { name:"PhonePe", icon:"🟪" };
+      if (/(ybl|phonepe)/.test(dom))      return { name:"PhonePe", icon:'<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fbrandfetch.com%2Fphonepe.com&psig=AOvVaw2bGQmLNjZ2snOzhmUdcP93&ust=1756403936148000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCKCboNbIq48DFQAAAAAdAAAAABAK">' };
       if (/(ok|google)/.test(dom))        return { name:"Google Pay", icon:"🟦" };
       if (/paytm/.test(dom))              return { name:"Paytm", icon:"🟦" };
       if (/(oksbi|sbi)/.test(dom))        return { name:"SBI UPI", icon:"🔵" };
@@ -1016,7 +851,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========================= Orders page controller ========================= */
   function initOrdersPage(){
-    // Detect required elements. If not present, no-op (safe on other pages).
     const els = {
       count: $("#orders-count"),
       body: $("#orders-body"),
@@ -1035,7 +869,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     if (!els.body && !els.empty && !els.exportCsv) return; // not on orders.html
 
-    // (Dev) seed once so the page isn't empty
     seedOrdersIfEmpty();
 
     const badges = {
@@ -1078,7 +911,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (els.count) els.count.textContent = `${state.filtered.length} ${state.filtered.length===1?"order":"orders"}`;
 
-      // Empty/table toggles
       if (els.empty && els.card) {
         const empty = state.filtered.length === 0;
         els.empty.style.display = empty ? "" : "none";
@@ -1182,7 +1014,6 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       if (btn.classList.contains("cancel")) return cancelOrder(id);
     });
 
-    // Kick off
     render();
   }
 
@@ -1191,13 +1022,11 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     const host = $("#thank-you");
     if (!host) return;
 
-    // Load from session first (falls back to local for file:// cases)
     let o = null;
     try { o = JSON.parse(sessionStorage.getItem(ORDER_KEY) || "null"); } catch {}
     if (!o) { try { o = JSON.parse(localStorage.getItem(ORDER_KEY) || "null"); } catch {} }
     if (!o) { host.innerHTML = `<p class="muted">No recent order found.</p>`; return; }
 
-    // Populate simple placeholders if they exist
     $("#thank-order-id") && ($("#thank-order-id").textContent = o.id);
     $("#thank-order-date") && ($("#thank-order-date").textContent = fmtDate(o.createdAt));
     $("#thank-order-total") && ($("#thank-order-total").textContent = formatGBP(o.totals?.total||0));
@@ -1213,7 +1042,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
         const li = document.createElement("li");
         li.className = "card";
         li.innerHTML = `
-          <div style="display:grid;grid-template-columns:72px 1fr auto;gap:.6rem;align-items:center;">
+          <div style="display:grid;grid-template-columns:72px 1/1 1fr auto;gap:.6rem;align-items:center;">
             <div class="media" style="aspect-ratio:1/1;">
               <img src="${it.img||'https://via.placeholder.com/120?text=Item'}" alt="">
             </div>
@@ -1227,13 +1056,11 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       });
     }
 
-    // Totals
     $("#thank-subtotal") && ($("#thank-subtotal").textContent = formatGBP(o.totals?.subtotal||0));
     $("#thank-discount") && ($("#thank-discount").textContent = o.totals?.discount ? "– " + formatGBP(o.totals.discount) : "– £0.00");
     $("#thank-shipping") && ($("#thank-shipping").textContent = (o.totals?.shipping||0) === 0 ? "Free" : formatGBP(o.totals?.shipping||0));
     $("#thank-total")    && ($("#thank-total").textContent    = formatGBP(o.totals?.total||0));
 
-    // Clear stored last order on print / done button (optional)
     $("#thank-print")?.addEventListener("click", () => window.print());
     $("#thank-view-orders")?.addEventListener("click", () => { window.location.href = `orders.html`; });
   }
@@ -1244,7 +1071,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     seedOrders: () => { localStorage.removeItem(ORDERS_KEY); seedOrdersIfEmpty(); console.log("Seeded demo orders."); }
   };
 
-  /* ========================= Chat Assistant (results INSIDE chat) ========================= */
+  /* ========================= Chat Assistant (commands + inline cards) ========================= */
   function initChatAssistant(){
     const chatOpen = $("#chat-open");
     const chatBox  = $("#chat-box");
@@ -1273,23 +1100,36 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       }
     }
 
-    // Add to cart via window.cart using catalog item
+    // Add/remove via window.cart using catalog item
     function addToCartById(id, qty=1){
       const p = CATALOG.find(x=>String(x.id)===String(id));
-      if(!p) return;
+      if(!p) return false;
       window.cart.add({ id: p.id, name: p.name, price: p.price, qty, img: p.img });
       toast(`${qty} × ${p.name} added to cart`);
+      return true;
+    }
+    function removeFromCartByIdOrName(term, qty=1){
+      const s = String(term||"").toLowerCase().trim();
+      const items = window.cart.get();
+      const byId = items.find(i => String(i.id)===s);
+      const byName = items.find(i => (i.name||"").toLowerCase().includes(s));
+      const it = byId || byName;
+      if (!it) return false;
+      const newQty = (it.qty||1) - (qty||1);
+      if (newQty > 0) window.cart.setQty(it.id, newQty);
+      else window.cart.remove(it.id);
+      return true;
     }
 
     // Text helpers
     const WORD_TO_NUM = { one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10 };
-    const numFrom = (text) => {
+    const numFrom = (text, def=1) => {
       const n = text.match(/\b(\d+)\b/); if(n) return parseInt(n[1],10);
       for (const [w,v] of Object.entries(WORD_TO_NUM)){ if (new RegExp(`\\b${w}\\b`,'i').test(text)) return v; }
-      return 1;
+      return def;
     };
-    const capFrom = (text) => {
-      const m = text.match(/(?:under|below|<=?|less than)\s*£?\s*(\d+)/i);
+    const priceCapFrom = (text) => {
+      const m = text.match(/(?:under|below|<=?|less than)\s*£?\s*(\d+(?:\.\d{1,2})?)/i);
       return m ? parseFloat(m[1]) : null;
     };
 
@@ -1362,47 +1202,79 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       const btn = e.target.closest('[data-chat-add]');
       if (!btn) return;
       const id = btn.getAttribute('data-chat-add');
-      addToCartById(id, 1);
-      const p = (id && CATALOG.find(x => String(x.id) === String(id)));
+      const ok = addToCartById(id, 1);
+      const p = ok && CATALOG.find(x => String(x.id) === String(id));
       if (p) logMsg('bot', `Added 1 × ${p.name} to your cart.`);
     });
 
-    // NLU-ish intent parsing
-    function parseIntent(t){
-      const s = (t||"").toLowerCase();
-      if (/^(show|what('| )?s)\s+(in\s+)?(my\s+)?cart/.test(s)) return {type:'show_cart'};
-      if (/^(empty|clear)\s+cart/.test(s)) return {type:'clear_cart'};
-      if (/\badd\b/.test(s) || /\bto cart\b/.test(s)) {
-        const qty = numFrom(s);
-        const name = s.replace(/add|\bto cart\b/gi,'').trim();
-        return {type:'add', name, qty};
+    // Intent parsing — supports:
+    // add X product Y | add X <name> | add <name>
+    // remove X product Y | remove X <name> | remove <name>
+    // show cart | clear cart
+    // <category> under £price | under £price
+    // fallback: search
+    function parseIntent(text){
+      const s = (text||"").toLowerCase().trim();
+
+      if (/^(show|what('| )?s)\s+(in\s+)?(my\s+)?cart/.test(s)) return { type:'show_cart' };
+      if (/^(empty|clear)\s+cart$/.test(s)) return { type:'clear_cart' };
+
+      // add 2 product 1 / add product 1 / add 2 earbuds / add earbuds
+      let m = s.match(/^add\s+(?:(\d+|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b)\s*)?(?:product\s+(\w+)|(.+))$/i);
+      if (m) {
+        const qty = numFrom(m[1]||"", 1);
+        const term = (m[2] || m[3] || "").trim();
+        return { type:'add', qty, term };
       }
-      const cap = capFrom(s);
-      return {type:'search', query:s.replace(/^(find|show|search|browse)\s+/,'').trim()||'all', cap};
+
+      // remove 1 product 2 / remove product 2 / remove 1 earbuds / remove earbuds
+      m = s.match(/^remove\s+(?:(\d+|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b)\s*)?(?:product\s+(\w+)|(.+))$/i);
+      if (m) {
+        const qty = numFrom(m[1]||"", 1);
+        const term = (m[2] || m[3] || "").trim();
+        return { type:'remove', qty, term };
+      }
+
+      // "<category> under £price" or just "under £price"
+      m = s.match(/^(?:(\w+)\s+)?under\s+£?\s*(\d+(?:\.\d{1,2})?)$/i);
+      if (m) {
+        return { type:'search', query: (m[1]||'').trim(), cap: parseFloat(m[2]) };
+      }
+
+      return { type:'search', query: s.replace(/^(find|show|search|browse)\s+/,'').trim()||'all', cap: priceCapFrom(s) };
     }
 
     function handleIntent(i){
       if(i.type==='show_cart'){
         const cart = window.cart.get();
         if(!cart.length) return "Your cart is empty.";
-        const lines = cart.map(x=>`${x.qty} × ${x.name} (£${x.price})`).join('\n');
+        const lines = cart.map(x=>`${x.qty} × ${x.name} (${GBP.format(x.price)})`).join('\n');
         const total = cart.reduce((s,x)=>s+(x.price||0)*(x.qty||0),0).toFixed(2);
         return `In your cart:\n${lines}\nTotal: £${total}`;
       }
       if(i.type==='clear_cart'){ window.cart.clear(); return "Cart cleared."; }
       if(i.type==='add'){
-        const cap = capFrom(i.name);
-        const q = i.name.replace(/under.*$/,'').trim();
-        const list = chatSearch(q, cap);
-        if(!list.length) return "I couldn't find that item.";
+        // If they said "product 1", try ID match first; else search by name
+        const byId = i.term && /^\w+$/.test(i.term) && CATALOG.find(p => String(p.id)===String(i.term));
+        if (byId) {
+          addToCartById(byId.id, i.qty||1);
+          return `Added ${i.qty||1} × ${byId.name} to your cart.`;
+        }
+        const list = chatSearch(i.term, null);
+        if(!list.length) return `I couldn't find "${i.term}".`;
         addToCartById(list[0].id, i.qty||1);
         return `Added ${i.qty||1} × ${list[0].name} to your cart.`;
       }
+      if(i.type==='remove'){
+        const ok = removeFromCartByIdOrName(i.term, i.qty||1);
+        return ok ? `Removed ${i.qty||1} × ${i.term} from your cart.` : `I couldn't find "${i.term}" in your cart.`;
+      }
       if(i.type==='search'){
-        const list = i.query==='all' ? CATALOG.slice(0,5) : chatSearch(i.query, i.cap);
-        chatRenderProducts(list);                     // render inside chat
-        if(!list.length) return "";                   // nothing else to say
-        return `Here are some options. Tap Add to put one in your cart.`;
+        const list = i.query==='all' ? CATALOG.slice(0,5) : chatSearch(i.query, i.cap ?? null);
+        chatRenderProducts(list);
+        if(!list.length) return "";
+        const capMsg = i.cap != null ? ` under £${i.cap}` : "";
+        return `Here are some options${capMsg}. Tap Add to put one in your cart.`;
       }
       return "Sorry, I didn't catch that.";
     }
