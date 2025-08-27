@@ -82,8 +82,7 @@
       const ex = navToggle.getAttribute("aria-expanded") === "true";
       navToggle.setAttribute("aria-expanded", String(!ex));
       navMenu.setAttribute("aria-expanded", String(!ex));
-      // IMPORTANT: toggle .open so your CSS can display the mobile menu
-      navMenu.classList.toggle("open", !ex);
+      navMenu.classList.toggle("open", !ex); // ensure CSS can show mobile menu
     });
   }
 
@@ -703,7 +702,7 @@
       const s = (handle||"").toLowerCase();
       if (!/@/.test(s)) return null;
       const dom = s.split("@")[1] || "";
-      if (/(ybl|phonepe)/.test(dom))      return { name:"PhonePe", icon:'<img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fbrandfetch.com%2Fphonepe.com&psig=AOvVaw2bGQmLNjZ2snOzhmUdcP93&ust=1756403936148000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCKCboNbIq48DFQAAAAAdAAAAABAK">' };
+      if (/(ybl|phonepe)/.test(dom))      return { name:"PhonePe", icon:"🟪" };
       if (/(ok|google)/.test(dom))        return { name:"Google Pay", icon:"🟦" };
       if (/paytm/.test(dom))              return { name:"Paytm", icon:"🟦" };
       if (/(oksbi|sbi)/.test(dom))        return { name:"SBI UPI", icon:"🔵" };
@@ -1042,7 +1041,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
         const li = document.createElement("li");
         li.className = "card";
         li.innerHTML = `
-          <div style="display:grid;grid-template-columns:72px 1/1 1fr auto;gap:.6rem;align-items:center;">
+          <div style="display:grid;grid-template-columns:72px 1fr auto;gap:.6rem;align-items:center;">
             <div class="media" style="aspect-ratio:1/1;">
               <img src="${it.img||'https://via.placeholder.com/120?text=Item'}" alt="">
             </div>
@@ -1071,7 +1070,59 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     seedOrders: () => { localStorage.removeItem(ORDERS_KEY); seedOrdersIfEmpty(); console.log("Seeded demo orders."); }
   };
 
-  /* ========================= Chat Assistant (commands + inline cards) ========================= */
+  /* ========================= Chat Assistant (site-wide search + links) ========================= */
+
+  // -------- Normalizers to make search forgiving (apples vs apple, accents, punctuation) ------
+  const normalize = (s) => String(s||"")
+    .toLowerCase()
+    .normalize("NFKD").replace(/[\u0300-\u036f]/g,"") // strip accents
+    .replace(/&/g," and ")
+    .replace(/[^a-z0-9\s]/g," ") // remove punctuation
+    .replace(/\s+/g," ")
+    .trim();
+
+  const singularize = (w) => {
+    // very lightweight English plural -> singular (covers common s/es)
+    if (w.endsWith("ies")) return w.slice(0,-3) + "y";
+    if (w.endsWith("ses") || w.endsWith("xes") || w.endsWith("zes") || w.endsWith("ches") || w.endsWith("shes")) return w.slice(0,-2);
+    if (w.endsWith("s") && w.length > 3) return w.slice(0,-1);
+    return w;
+  };
+
+  const tokenize = (s) => {
+    const n = normalize(s);
+    const words = n.split(" ").filter(Boolean);
+    const set = new Set(words.concat(words.map(singularize)));
+    return Array.from(set);
+  };
+
+  // Build link for a product if none provided
+  function productLink(p) {
+    if (p.link) return p.link;
+    return `product.html?id=${encodeURIComponent(p.id)}`;
+  }
+
+  // Parse HTML into Document to scrape cards
+  function parseHTML(htmlText) {
+    const parser = new DOMParser();
+    return parser.parseFromString(htmlText, "text/html");
+  }
+
+  // Scrape .product-item cards from a *document* (page or parsed HTML)
+  function scrapeProductsFromDoc(doc) {
+    return [...doc.querySelectorAll('.product-item')].map(el => {
+      const id = el.getAttribute('data-id') || slugify(el.getAttribute('data-name'));
+      const name = el.getAttribute('data-name') || el.querySelector('.product-title')?.textContent?.trim() || 'Item';
+      const category = el.getAttribute('data-category') || (doc.querySelector('h1,.page-title')?.textContent?.trim() || '');
+      const price = parseFloat(el.getAttribute('data-price')) || 0;
+      const img = el.querySelector('img')?.src || '';
+      const linkEl = el.querySelector('a[href*=".html"], a[href*="?id="]');
+      const link = linkEl ? linkEl.getAttribute('href') : productLink({ id, name });
+      const tags = (el.getAttribute('data-tags')||"").split(",").map(x=>x.trim()).filter(Boolean);
+      return { id, name, category, price, img, link, tags };
+    });
+  }
+
   function initChatAssistant(){
     const chatOpen = $("#chat-open");
     const chatBox  = $("#chat-box");
@@ -1080,70 +1131,100 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     const chatForm = $("#chat-form");
     const chatInput= $("#chat-input");
 
-    // Local catalog shared by chat
+    // ---------- 1) SITE INDEX (pages) ----------
+    // Include common typos/variants so navigation still works
+    let SITE_INDEX = [
+      { title:"Home",       url:"/index.html",           keywords:["home","start","v-store"] },
+      { title:"Categories", url:"/categories.html",      keywords:["categories","browse","shop by category"] },
+      { title:"Fruits",     url:"/fruits.html",          keywords:["fruit","fruits","fresh fruits"] },
+      { title:"Vegetables", url:"/vegetables.html",      keywords:["veg","vegetable","vegetables"] },
+      { title:"Groceries",  url:"/groceries.html",       keywords:["grocery","staples","pantry"] },
+      { title:"Pantry",     url:"/pantry.html",          keywords:["pantry","pantery"] },
+      { title:"Dairy",      url:"/dairy.html",           keywords:["dairy","milk","diary"] },
+      { title:"Eggs",       url:"/eggs.html",            keywords:["eggs","egges"] },
+      { title:"Beverages",  url:"/beverages.html",       keywords:["drinks","beverage"] },
+      { title:"Home",       url:"/home.html",            keywords:["home supplies","home goods"] },
+      { title:"Electronics",url:"/electronics.html",     keywords:["electronics","gadgets"] },
+      { title:"Meat",       url:"/meat.html",            keywords:["meat","butcher"] },
+      { title:"Cart",       url:"/cart.html",            keywords:["cart","basket","bag","checkout"] },
+      { title:"Orders",     url:"/orders.html",          keywords:["orders","order history","track","status"] },
+      { title:"Contact",    url:"/contact.html",         keywords:["contact","support","help","customer service"] },
+      { title:"Shipping",   url:"/shipping.html",        keywords:["shipping","delivery","postage"] },
+      { title:"Returns",    url:"/returns.html",         keywords:["returns","refund","exchange"] },
+      { title:"Gadgets Under £50", url:"/gadgets-under-50.html", keywords:["gadgets","electronics","under 50"] },
+      { title:"Home Refresh",      url:"/home-refresh.html",     keywords:["home","refresh","decor"] },
+      { title:"Summer Essentials", url:"/summer-essentials.html",keywords:["summer","apparel","essentials"] },
+    ];
+
+    // Also learn links from your current nav
+    $$("#nav-menu a[href]").forEach(a => {
+      const url = a.getAttribute("href");
+      const title = a.textContent.trim();
+      if (!url) return;
+      if (!SITE_INDEX.some(p => p.url === url)) {
+        SITE_INDEX.push({ title, url, keywords:[normalize(title)] });
+      }
+    });
+
+    // ---------- 2) PRODUCT CATALOG ----------
+    // Pages that contain product cards to index site-wide
+    const CATALOG_SOURCES = [
+      "/index.html",
+      "/categories.html",
+      "/fruits.html",
+      "/groceries.html",
+      "/electronics.html",
+      "/home.html",
+      "/vegetables.html",
+      "/pantry.html",   // correct spelling
+      "/pantery.html",  // tolerate old typo
+      "/meat.html",
+      "/beverages.html",
+      "/dairy.html",
+      "/Diary.html",    // tolerate case/typo
+      "/eggs.html",
+      "/egges.html"     // tolerate typo
+    ];
+
     let CATALOG = [];
 
-    async function loadCatalog(){
-      try{
-        const res = await fetch('products.json', { cache: 'no-store' });
-        if(!res.ok) throw new Error('No products.json found');
-        CATALOG = await res.json();
-      } catch (e){
-        // Fallback: scrape visible products on the current page
-        CATALOG = [...document.querySelectorAll('.product-item')].map(el => ({
-          id: el.getAttribute('data-id'),
-          name: el.getAttribute('data-name'),
-          category: el.getAttribute('data-category'),
-          price: parseFloat(el.getAttribute('data-price')),
-          img: el.querySelector('img')?.src || ''
-        }));
-      }
+    // ---------- 3) SEARCH ----------
+    function searchPages(q) {
+      const tokens = tokenize(q);
+      const scored = SITE_INDEX.map(p => {
+        const hay = normalize(p.title + " " + (p.keywords||[]).join(" "));
+        // score: full match > any-token > substring
+        let score = 0;
+        if (tokens.every(tok => hay.includes(tok))) score += 5;
+        else if (tokens.some(tok => hay.includes(tok))) score += 3;
+        return { p, score };
+      }).filter(r => r.score > 0);
+      return scored.sort((a,b)=>b.score-a.score).map(r => r.p).slice(0,6);
     }
 
-    // Add/remove via window.cart using catalog item
-    function addToCartById(id, qty=1){
-      const p = CATALOG.find(x=>String(x.id)===String(id));
-      if(!p) return false;
-      window.cart.add({ id: p.id, name: p.name, price: p.price, qty, img: p.img });
-      toast(`${qty} × ${p.name} added to cart`);
-      return true;
-    }
-    function removeFromCartByIdOrName(term, qty=1){
-      const s = String(term||"").toLowerCase().trim();
-      const items = window.cart.get();
-      const byId = items.find(i => String(i.id)===s);
-      const byName = items.find(i => (i.name||"").toLowerCase().includes(s));
-      const it = byId || byName;
-      if (!it) return false;
-      const newQty = (it.qty||1) - (qty||1);
-      if (newQty > 0) window.cart.setQty(it.id, newQty);
-      else window.cart.remove(it.id);
-      return true;
-    }
-
-    // Text helpers
-    const WORD_TO_NUM = { one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10 };
-    const numFrom = (text, def=1) => {
-      const n = text.match(/\b(\d+)\b/); if(n) return parseInt(n[1],10);
-      for (const [w,v] of Object.entries(WORD_TO_NUM)){ if (new RegExp(`\\b${w}\\b`,'i').test(text)) return v; }
-      return def;
-    };
-    const priceCapFrom = (text) => {
-      const m = text.match(/(?:under|below|<=?|less than)\s*£?\s*(\d+(?:\.\d{1,2})?)/i);
-      return m ? parseFloat(m[1]) : null;
-    };
-
-    // Catalog search
-    function chatSearch(q, cap=null){
-      q = (q||"").trim().toLowerCase();
+    function searchProducts(q, cap=null) {
+      const tokens = tokenize(q);
+      const match = (s) => {
+        const hay = normalize(s);
+        return tokens.every(tok => hay.includes(tok));
+      };
       let list = CATALOG.filter(p =>
-        (p.name||"").toLowerCase().includes(q) || (p.category||"").toLowerCase().includes(q)
+        match(p.name) || match(p.category||"") || (p.tags||[]).some(match)
       );
-      if(cap!=null) list = list.filter(p=> (p.price||0) <= cap);
+      if (cap != null) list = list.filter(p => (p.price||0) <= cap);
+
+      // Boost starts-with on normalized name
+      const nQ = normalize(q);
+      list.sort((a,b) => {
+        const aStart = normalize(a.name).startsWith(nQ) ? 1 : 0;
+        const bStart = normalize(b.name).startsWith(nQ) ? 1 : 0;
+        return bStart - aStart;
+      });
+
       return list.slice(0, 10);
     }
 
-    // Chat log
+    // ---------- 4) CHAT UI helpers ----------
     function logMsg(role, text){
       if (!chatLog || !text) return;
       const d = document.createElement('div');
@@ -1153,14 +1234,39 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    // Render product cards INSIDE chat
-    function chatRenderProducts(list){
+    function renderPagesInChat(pages){
+      if (!chatLog) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg bot';
+      if (!pages.length) {
+        wrap.textContent = "No relevant pages found.";
+      } else {
+        const list = document.createElement('ul');
+        list.style.listStyle = 'none';
+        list.style.padding = '0';
+        list.style.margin = '0';
+        pages.forEach(pg => {
+          const li = document.createElement('li');
+          li.style.margin = '6px 0';
+          li.innerHTML = `
+            <a href="${pg.url}" style="text-decoration:underline" target="_self" rel="noopener">
+              ${pg.title}
+            </a>`;
+          list.appendChild(li);
+        });
+        wrap.appendChild(list);
+      }
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function renderProductsInChat(list){
       if (!chatLog) return;
       const wrap = document.createElement('div');
       wrap.className = 'chat-msg bot';
 
       if (!list.length) {
-        wrap.textContent = "No matches. Try another name or category.";
+        wrap.textContent = "No products matched that.";
       } else {
         const box = document.createElement('div');
         box.style.display = 'grid';
@@ -1181,9 +1287,10 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
             <div>
               <div style="font-weight:600">${p.name}</div>
               <div class="muted" style="font-size:.9rem">${p.category||''}</div>
+              <a href="${productLink(p)}" target="_self" rel="noopener" style="font-size:.9rem;text-decoration:underline">View</a>
             </div>
             <div style="text-align:right;">
-              <div>£${p.price}</div>
+              <div>£${(p.price||0).toFixed(2)}</div>
               <button data-chat-add="${p.id}" style="margin-top:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer">Add</button>
             </div>
           `;
@@ -1197,40 +1304,58 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    // Delegate Add clicks inside chat
+    // clicks on product "Add" inside chat
     chatLog?.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-chat-add]');
       if (!btn) return;
       const id = btn.getAttribute('data-chat-add');
-      const ok = addToCartById(id, 1);
-      const p = ok && CATALOG.find(x => String(x.id) === String(id));
-      if (p) logMsg('bot', `Added 1 × ${p.name} to your cart.`);
+      const p  = CATALOG.find(x => String(x.id) === String(id));
+      if (!p) return;
+      window.cart.add({ id:p.id, name:p.name, price:p.price, qty:1, img:p.img });
+      logMsg('bot', `Added 1 × ${p.name} to your cart.`);
     });
 
-    // Intent parsing — supports:
-    // add X product Y | add X <name> | add <name>
-    // remove X product Y | remove X <name> | remove <name>
-    // show cart | clear cart
-    // <category> under £price | under £price
-    // fallback: search
+    // ---------- 5) Intent parsing ----------
+    const WORD_TO_NUM = { one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10 };
+    const numberFrom = (text, def=1) => {
+      const n = text.match(/\b(\d+)\b/); if(n) return parseInt(n[1],10);
+      for (const [w,v] of Object.entries(WORD_TO_NUM)){ if (new RegExp(`\\b${w}\\b`,'i').test(text)) return v; }
+      return def;
+    };
+    const priceCapFrom = (text) => {
+      const m = text.match(/(?:under|below|<=?|less than)\s*£?\s*(\d+(?:\.\d{1,2})?)/i);
+      return m ? parseFloat(m[1]) : null;
+    };
+
+    function bestPageFor(term){
+      const results = searchPages(term);
+      return results[0] || null;
+    }
+
     function parseIntent(text){
-      const s = (text||"").toLowerCase().trim();
+      const s = (text||"").trim();
 
-      if (/^(show|what('| )?s)\s+(in\s+)?(my\s+)?cart/.test(s)) return { type:'show_cart' };
-      if (/^(empty|clear)\s+cart$/.test(s)) return { type:'clear_cart' };
+      // Navigation intents
+      if (/^(open|go to|take me to)\s+/i.test(s)) {
+        const q = s.replace(/^(open|go to|take me to)\s+/i,'').trim();
+        return { type:'nav', page: bestPageFor(q) || { title:q, url:q } };
+      }
 
-      // add 2 product 1 / add product 1 / add 2 earbuds / add earbuds
+      if (/^(show|what('| )?s)\s+(in\s+)?(my\s+)?cart$/i.test(s)) return { type:'show_cart' };
+      if (/^(empty|clear)\s+cart$/i.test(s)) return { type:'clear_cart' };
+
+      // add 2 product 1 | add earbuds
       let m = s.match(/^add\s+(?:(\d+|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b)\s*)?(?:product\s+(\w+)|(.+))$/i);
       if (m) {
-        const qty = numFrom(m[1]||"", 1);
+        const qty = numberFrom(m[1]||"", 1);
         const term = (m[2] || m[3] || "").trim();
         return { type:'add', qty, term };
       }
 
-      // remove 1 product 2 / remove product 2 / remove 1 earbuds / remove earbuds
+      // remove 1 product 2 | remove earbuds
       m = s.match(/^remove\s+(?:(\d+|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b)\s*)?(?:product\s+(\w+)|(.+))$/i);
       if (m) {
-        const qty = numFrom(m[1]||"", 1);
+        const qty = numberFrom(m[1]||"", 1);
         const term = (m[2] || m[3] || "").trim();
         return { type:'remove', qty, term };
       }
@@ -1241,45 +1366,81 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
         return { type:'search', query: (m[1]||'').trim(), cap: parseFloat(m[2]) };
       }
 
-      return { type:'search', query: s.replace(/^(find|show|search|browse)\s+/,'').trim()||'all', cap: priceCapFrom(s) };
+      // Generic: do both page + product search
+      return { type:'search_all', query: s, cap: priceCapFrom(s) };
     }
 
     function handleIntent(i){
+      if(i.type==='nav'){
+        if (i.page?.url) {
+          renderPagesInChat([i.page]);
+          window.location.href = i.page.url; // auto-navigate
+          return `Opening ${i.page.title || i.page.url}…`;
+        }
+        return "I couldn't find that page.";
+      }
       if(i.type==='show_cart'){
         const cart = window.cart.get();
         if(!cart.length) return "Your cart is empty.";
-        const lines = cart.map(x=>`${x.qty} × ${x.name} (${GBP.format(x.price)})`).join('\n');
+        const lines = cart.map(x=>`${x.qty} × ${x.name} (£${x.price.toFixed(2)})`).join('\n');
         const total = cart.reduce((s,x)=>s+(x.price||0)*(x.qty||0),0).toFixed(2);
         return `In your cart:\n${lines}\nTotal: £${total}`;
       }
       if(i.type==='clear_cart'){ window.cart.clear(); return "Cart cleared."; }
+
       if(i.type==='add'){
-        // If they said "product 1", try ID match first; else search by name
         const byId = i.term && /^\w+$/.test(i.term) && CATALOG.find(p => String(p.id)===String(i.term));
         if (byId) {
-          addToCartById(byId.id, i.qty||1);
+          window.cart.add({ id:byId.id, name:byId.name, price:byId.price, qty:i.qty||1, img:byId.img });
           return `Added ${i.qty||1} × ${byId.name} to your cart.`;
         }
-        const list = chatSearch(i.term, null);
+        const list = searchProducts(i.term);
         if(!list.length) return `I couldn't find "${i.term}".`;
-        addToCartById(list[0].id, i.qty||1);
-        return `Added ${i.qty||1} × ${list[0].name} to your cart.`;
+        const p = list[0];
+        window.cart.add({ id:p.id, name:p.name, price:p.price, qty:i.qty||1, img:p.img });
+        return `Added ${i.qty||1} × ${p.name} to your cart.`;
       }
+
       if(i.type==='remove'){
-        const ok = removeFromCartByIdOrName(i.term, i.qty||1);
-        return ok ? `Removed ${i.qty||1} × ${i.term} from your cart.` : `I couldn't find "${i.term}" in your cart.`;
+        const s = String(i.term||"").toLowerCase().trim();
+        const items = window.cart.get();
+        const byId = items.find(x => String(x.id)===s);
+        const byName = items.find(x => (x.name||"").toLowerCase().includes(s));
+        const it = byId || byName;
+        if (!it) return `I couldn't find "${i.term}" in your cart.`;
+        const newQty = (it.qty||1) - (i.qty||1);
+        if (newQty > 0) window.cart.setQty(it.id, newQty);
+        else window.cart.remove(it.id);
+        return `Removed ${i.qty||1} × ${it.name} from your cart.`;
       }
+
       if(i.type==='search'){
-        const list = i.query==='all' ? CATALOG.slice(0,5) : chatSearch(i.query, i.cap ?? null);
-        chatRenderProducts(list);
-        if(!list.length) return "";
+        const products = searchProducts(i.query || "", i.cap ?? null);
+        renderProductsInChat(products);
+        if (!products.length) return "No products found.";
         const capMsg = i.cap != null ? ` under £${i.cap}` : "";
-        return `Here are some options${capMsg}. Tap Add to put one in your cart.`;
+        return `Here are some options${capMsg}.`;
       }
+
+      if(i.type==='search_all'){
+        const pages = searchPages(i.query);
+        const products = searchProducts(i.query, i.cap ?? null);
+        if (pages.length) {
+          logMsg('bot', `Pages matching “${i.query}” :`);
+          renderPagesInChat(pages);
+        }
+        if (products.length) {
+          logMsg('bot', `Products matching “${i.query}” :`);
+          renderProductsInChat(products);
+          return "Tap View to open a page, or Add to put it in your cart.";
+        }
+        return "No pages or products matched that. Try a different phrase.";
+      }
+
       return "Sorry, I didn't catch that.";
     }
 
-    // Wire UI
+    // ---------- 6) Wire UI ----------
     chatOpen?.addEventListener("click", ()=> chatBox && (chatBox.hidden=false));
     chatClose?.addEventListener("click", ()=> chatBox && (chatBox.hidden=true));
     chatForm?.addEventListener('submit', async (e)=>{
@@ -1294,7 +1455,67 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       if (chatInput) chatInput.value = '';
     });
 
-    // Preload catalog quietly (not required, but snappier)
+    // Preload quietly so first search is snappy
     loadCatalog();
+
+    async function loadCatalog(){
+      const collected = [];
+
+      // 1) Try products.json first (if you maintain one)
+      try{
+        const res = await fetch('products.json', { cache: 'no-store' });
+        if(!res.ok) throw new Error('no products.json');
+        const raw = await res.json();
+        raw.forEach(p => {
+          collected.push({
+            id: p.id ?? p.slug ?? slugify(p.name),
+            name: p.name,
+            category: p.category ?? "",
+            price: Number(p.price||0),
+            img: p.img || p.image || "",
+            link: p.link || p.url || productLink({ id: p.id ?? p.slug, name: p.name }),
+            tags: p.tags || []
+          });
+        });
+      } catch(_) {
+        // optional: ignore if missing
+      }
+
+      // 2) Always scrape the current page (quick win)
+      collected.push(...scrapeProductsFromDoc(document));
+
+      // 3) Fetch and scrape other known product pages (skip current path)
+      const here = location.pathname.replace(/\/+$/, '').toLowerCase();
+      const toFetch = CATALOG_SOURCES
+        .map(u => u.replace(/\/+$/, '').toLowerCase())
+        .filter(u => u && u !== here);
+
+      const results = await Promise.allSettled(
+        toFetch.map(async (url) => {
+          try {
+            const res = await fetch(url, { cache: 'no-store' });
+            if (!res.ok) throw new Error(`Fetch failed: ${url}`);
+            const text = await res.text();
+            const doc = parseHTML(text);
+            return scrapeProductsFromDoc(doc);
+          } catch {
+            return []; // tolerate 404s or typos
+          }
+        })
+      );
+
+      results.forEach(r => { if (r.status === 'fulfilled') collected.push(...r.value); });
+
+      // 4) De-duplicate (prefer first occurrence)
+      const seen = new Map();
+      for (const p of collected) {
+        const key = String(p.id || slugify(p.name));
+    if (!seen.has(key)) seen.set(key, { ...p, id: key });
   }
+
+  CATALOG = Array.from(seen.values());
+}
+
+}
+
 })();
