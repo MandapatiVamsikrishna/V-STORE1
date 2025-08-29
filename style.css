@@ -788,7 +788,7 @@ input[type="search"], input[type="date"], select { width:100%; padding:.6rem .7r
   grid-template-rows: auto 1fr auto;
   overflow: hidden;
   z-index: 1001;
-  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  box-shadow: 0 16px 40px rgba(199, 232, 12, 0.25);
 }
 .chat-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg-elev);}
 .chat-log{padding:10px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
