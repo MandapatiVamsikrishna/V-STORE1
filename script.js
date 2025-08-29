@@ -5,6 +5,19 @@
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const html = document.documentElement;
 
+  // ----- GH Pages base-path fix -----
+  const BASE = (() => {
+    const seg = location.pathname.split('/').filter(Boolean)[0] || "";
+    return location.hostname.endsWith("github.io") && seg ? `/${seg}` : "";
+  })();
+  const withBase = (url) => {
+    if (!url) return BASE + "/";
+    if (/^https?:\/\//i.test(url)) return url;
+    if (url.startsWith(BASE + "/")) return url;
+    if (url.startsWith("/")) return BASE + url;
+    return `${BASE}/${url.replace(/^\//, "")}`;
+  };
+
   // Storage keys
   const STORAGE_KEY = "vstore_cart";
   const PROMO_KEY   = "vstore_promo";
@@ -46,7 +59,7 @@
     initOrdersPage();           // orders.html logic (safe no-op)
     initThankYou();             // thank-you.html receipt (safe no-op)
 
-    initChatAssistant();        // chat with commands + inline product cards
+    initChatAssistant();        // chat with commands + inline product cards + health tips
   });
 
   /* ========================= UI basics ========================= */
@@ -380,7 +393,6 @@
     }
 
     if (resultCount) resultCount.textContent = `${shown} item${shown===1?"":"s"}`;
-
     if (chipsWrap) {
       chipsWrap.innerHTML = "";
       const addChip = (label, onRemove) => {
@@ -1070,7 +1082,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     seedOrders: () => { localStorage.removeItem(ORDERS_KEY); seedOrdersIfEmpty(); console.log("Seeded demo orders."); }
   };
 
-  /* ========================= Chat Assistant (site-wide search + links) ========================= */
+  /* ========================= Chat Assistant (site-wide search + links + health) ========================= */
 
   // -------- Normalizers to make search forgiving (apples vs apple, accents, punctuation) ------
   const normalize = (s) => String(s||"")
@@ -1082,7 +1094,6 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     .trim();
 
   const singularize = (w) => {
-    // very lightweight English plural -> singular (covers common s/es)
     if (w.endsWith("ies")) return w.slice(0,-3) + "y";
     if (w.endsWith("ses") || w.endsWith("xes") || w.endsWith("zes") || w.endsWith("ches") || w.endsWith("shes")) return w.slice(0,-2);
     if (w.endsWith("s") && w.length > 3) return w.slice(0,-1);
@@ -1098,8 +1109,8 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
 
   // Build link for a product if none provided
   function productLink(p) {
-    if (p.link) return p.link;
-    return `product.html?id=${encodeURIComponent(p.id)}`;
+    if (p.link) return withBase(p.link);
+    return withBase(`product.html?id=${encodeURIComponent(p.id)}`);
   }
 
   // Parse HTML into Document to scrape cards
@@ -1132,12 +1143,13 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     const chatInput= $("#chat-input");
 
     // ---------- 1) SITE INDEX (pages) ----------
-    // Include common typos/variants so navigation still works
     let SITE_INDEX = [
       { title:"Home",       url:"/index.html",           keywords:["home","start","v-store"] },
       { title:"Categories", url:"/categories.html",      keywords:["categories","browse","shop by category"] },
       { title:"Fruits",     url:"/fruits.html",          keywords:["fruit","fruits","fresh fruits"] },
-      { title:"Vegetables", url:"/vegetables.html",      keywords:["veg","vegetable","vegetables"] },
+      { title:"Vegatables", url:"/vegatables.html",      keywords:["veg","vegetable","vegatables"] },
+      { title:"sea food",   url:"/sea food.html",        keywords:["sea","sea food","live"] },
+      { title:"backery",    url:"/backery.html",         keywords:["backery","fresh","bread"] },
       { title:"Groceries",  url:"/groceries.html",       keywords:["grocery","staples","pantry"] },
       { title:"Pantry",     url:"/pantry.html",          keywords:["pantry","pantery"] },
       { title:"Dairy",      url:"/dairy.html",           keywords:["dairy","milk","diary"] },
@@ -1167,7 +1179,6 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     });
 
     // ---------- 2) PRODUCT CATALOG ----------
-    // Pages that contain product cards to index site-wide
     const CATALOG_SOURCES = [
       "/index.html",
       "/categories.html",
@@ -1175,15 +1186,14 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       "/groceries.html",
       "/electronics.html",
       "/home.html",
-      "/vegetables.html",
-      "/pantry.html",   // correct spelling
-      "/pantery.html",  // tolerate old typo
+      "/vegatables.html",
+      "/sea food.html",
+      "/pantery.html",
       "/meat.html",
       "/beverages.html",
-      "/dairy.html",
-      "/Diary.html",    // tolerate case/typo
+      "/Diary.html",
       "/eggs.html",
-      "/egges.html"     // tolerate typo
+      "/backery.html"
     ];
 
     let CATALOG = [];
@@ -1193,7 +1203,6 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       const tokens = tokenize(q);
       const scored = SITE_INDEX.map(p => {
         const hay = normalize(p.title + " " + (p.keywords||[]).join(" "));
-        // score: full match > any-token > substring
         let score = 0;
         if (tokens.every(tok => hay.includes(tok))) score += 5;
         else if (tokens.some(tok => hay.includes(tok))) score += 3;
@@ -1213,7 +1222,6 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       );
       if (cap != null) list = list.filter(p => (p.price||0) <= cap);
 
-      // Boost starts-with on normalized name
       const nQ = normalize(q);
       list.sort((a,b) => {
         const aStart = normalize(a.name).startsWith(nQ) ? 1 : 0;
@@ -1249,7 +1257,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
           const li = document.createElement('li');
           li.style.margin = '6px 0';
           li.innerHTML = `
-            <a href="${pg.url}" style="text-decoration:underline" target="_self" rel="noopener">
+            <a href="${withBase(pg.url)}" style="text-decoration:underline" target="_self" rel="noopener">
               ${pg.title}
             </a>`;
           list.appendChild(li);
@@ -1304,6 +1312,127 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
+    // --- tips renderer + product aggregation (NEW) ---
+    function renderTipsInChat(lines){
+      if (!chatLog) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg bot';
+      const ul = document.createElement('ul');
+      ul.style.margin = '0';
+      ul.style.paddingLeft = '1em';
+      lines.forEach(t => {
+        const li = document.createElement('li');
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+      const note = document.createElement('div');
+      note.className = 'muted';
+      note.style.marginTop = '6px';
+      note.style.fontSize = '.9rem';
+      note.textContent = 'This is general wellness advice, not a diagnosis. Seek medical care if symptoms worsen, last >48 hours, or include chest pain, confusion, severe dehydration, or temperature ≥39.5°C.';
+      wrap.appendChild(ul);
+      wrap.appendChild(note);
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    function productsForKeywords(keywords, cap=null){
+      const seen = new Map();
+      keywords.forEach(kw => {
+        searchProducts(kw, cap).forEach(p => {
+          if (!seen.has(p.id)) seen.set(p.id, p);
+        });
+      });
+      return Array.from(seen.values()).slice(0, 10);
+    }
+
+// --- mini health knowledge base (NEW) ---
+    const HEALTH_KB = {
+      fever: {
+        aliases: ['fever','feaver','high temperature','temperature','pyrexia','running temperature'],
+        tips: [
+          'Rest and avoid overexertion.',
+          'Drink plenty of fluids (water, oral rehydration, clear soups).',
+          'Wear light clothing and keep the room cool; apply a cool damp cloth to forehead/neck.',
+          'Eat easy foods if hungry (toast/bread, soups, yogurt, fruits).',
+          'Consider OTC fever reducers as directed on the label (e.g., paracetamol/acetaminophen). Avoid taking multiple medicines with the same ingredient.'
+        ],
+        keywords: ['water','electrolyte','oral rehydration','ORS','juice','soup','broth','bread','toast','milk','yogurt','paracetamol','acetaminophen','ibuprofen','thermometer']
+      },
+
+      cold: {
+        aliases: ['cold','common cold','runny nose','blocked nose','stuffy nose','sneezing','sore throat','chills'],
+        tips: [
+          'Stay hydrated with warm fluids like tea, broth, or warm water.',
+          'Use honey with warm water or tea to soothe the throat.',
+          'Inhale steam or use a humidifier to ease congestion.',
+          'Rest well to support your immune system.',
+          'Use lozenges or throat sprays for temporary relief.',
+          'Avoid cold drinks or exposure to chilled environments if they worsen symptoms.'
+        ],
+        keywords: ['honey','ginger','herbal tea','lozenge','throat spray','cough drops','steam','soup','broth','warm water','humidifier']
+      },
+
+      cough: {
+        aliases: ['cough','coughing','dry cough','wet cough'],
+        tips: [
+          'Sip warm water with honey and ginger to soothe irritation.',
+          'Keep hydrated to thin mucus and ease coughing.',
+          'Use lozenges or cough drops for quick relief.',
+          'Elevate your head when sleeping to reduce coughing at night.',
+          'Seek medical advice if cough persists more than 2 weeks or worsens.'
+        ],
+        keywords: ['honey','ginger','lozenge','cough drops','herbal tea','warm water','humidifier','syrup']
+      },
+
+      flu: {
+        aliases: ['flu','influenza','seasonal flu'],
+        tips: [
+          'Get plenty of rest to allow your body to recover.',
+          'Stay hydrated with water, ORS, and warm fluids.',
+          'Eat light meals like soups, broth, and fruits.',
+          'Use OTC fever reducers (paracetamol/ibuprofen) if needed.',
+          'Seek medical help if you have difficulty breathing, chest pain, or severe dehydration.'
+        ],
+        keywords: ['water','ORS','juice','broth','soup','paracetamol','ibuprofen','thermometer','blanket']
+      },
+
+      headache: {
+        aliases: ['headache','migraine','head pain','tension headache'],
+        tips: [
+          'Rest in a quiet, dark room and avoid bright screens.',
+          'Drink water — dehydration is a common cause.',
+          'Apply a cold or warm compress to your head or neck.',
+          'Avoid skipping meals; eat something light.',
+          'Seek medical help if you experience sudden, severe headache or vision changes.'
+        ],
+        keywords: ['water','snack','paracetamol','ibuprofen','coffee','tea','compress']
+      },
+
+      stomach: {
+        aliases: ['stomach','stomach ache','stomach pain','diarrhea','loose motions','food poisoning','upset stomach'],
+        tips: [
+          'Drink small sips of water or ORS to stay hydrated.',
+          'Eat bland foods like rice, toast, bananas, and yogurt.',
+          'Avoid spicy, oily, or heavy foods until you recover.',
+          'Rest and avoid unnecessary exertion.',
+          'Seek medical help if pain is severe, persistent, or includes blood in stool.'
+        ],
+        keywords: ['ORS','water','rice','banana','toast','bread','yogurt','soup','ginger tea']
+      },
+
+      dehydration: {
+        aliases: ['dehydration','dehydrated','lack of fluids','fluid loss'],
+        tips: [
+          'Sip water frequently in small amounts.',
+          'Use oral rehydration salts (ORS) to replace electrolytes.',
+          'Avoid alcohol, caffeine, and very sugary drinks.',
+          'Eat water-rich foods like fruits (watermelon, cucumber, oranges).',
+          'Seek immediate medical care if symptoms include confusion, fainting, or very low urine output.'
+        ],
+        keywords: ['water','ORS','juice','coconut water','electrolyte drink','fruit','hydration']
+      }
+    };
+
     // clicks on product "Add" inside chat
     chatLog?.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-chat-add]');
@@ -1334,6 +1463,14 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
 
     function parseIntent(text){
       const s = (text||"").trim();
+
+      // Health intents (NEW)
+      for (const [topic, cfg] of Object.entries(HEALTH_KB)) {
+        const hay = normalize(s);
+        if (cfg.aliases.some(a => hay.includes(normalize(a)))) {
+          return { type: 'health', topic };
+        }
+      }
 
       // Navigation intents
       if (/^(open|go to|take me to)\s+/i.test(s)) {
@@ -1371,10 +1508,26 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     }
 
     function handleIntent(i){
+      // Health (NEW)
+      if(i.type === 'health'){
+        const cfg = HEALTH_KB[i.topic];
+        if (!cfg) return "I can share some general tips and items.";
+        logMsg('bot', `Here are some self-care tips for ${i.topic}:`);
+        renderTipsInChat(cfg.tips);
+        const list = productsForKeywords(cfg.keywords);
+        if (list.length) {
+          logMsg('bot', 'You might also find these helpful:');
+          renderProductsInChat(list);
+          return "Tap View to open a page, or Add to put it in your cart.";
+        } else {
+          return "I couldn’t find matching items right now, but staying hydrated (water/ORS) and light foods usually help.";
+        }
+      }
+
       if(i.type==='nav'){
         if (i.page?.url) {
           renderPagesInChat([i.page]);
-          window.location.href = i.page.url; // auto-navigate
+          window.location.href = withBase(i.page.url); // base-aware navigation
           return `Opening ${i.page.title || i.page.url}…`;
         }
         return "I couldn't find that page.";
@@ -1463,7 +1616,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
 
       // 1) Try products.json first (if you maintain one)
       try{
-        const res = await fetch('products.json', { cache: 'no-store' });
+        const res = await fetch(withBase('products.json'), { cache: 'no-store' });
         if(!res.ok) throw new Error('no products.json');
         const raw = await res.json();
         raw.forEach(p => {
@@ -1485,9 +1638,9 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       collected.push(...scrapeProductsFromDoc(document));
 
       // 3) Fetch and scrape other known product pages (skip current path)
-      const here = location.pathname.replace(/\/+$/, '').toLowerCase();
+      const here = withBase(location.pathname).replace(/\/+$/, '').toLowerCase();
       const toFetch = CATALOG_SOURCES
-        .map(u => u.replace(/\/+$/, '').toLowerCase())
+        .map(u => withBase(u).replace(/\/+$/, '').toLowerCase())
         .filter(u => u && u !== here);
 
       const results = await Promise.allSettled(
@@ -1510,12 +1663,9 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       const seen = new Map();
       for (const p of collected) {
         const key = String(p.id || slugify(p.name));
-    if (!seen.has(key)) seen.set(key, { ...p, id: key });
+        if (!seen.has(key)) seen.set(key, { ...p, id: key });
+      }
+      CATALOG = Array.from(seen.values());
+    }
   }
-
-  CATALOG = Array.from(seen.values());
-}
-
-}
-
 })();
