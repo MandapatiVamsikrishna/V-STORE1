@@ -61,6 +61,40 @@
 
     initChatAssistant();        // chat with commands + inline product cards + health tips
   });
+function initNav() {
+  if (!(navToggle && navMenu)) return;
+  const overlay = document.getElementById('nav-overlay');
+
+  const setOpen = (open) => {
+    navToggle.setAttribute('aria-expanded', String(open));
+    navMenu.setAttribute('aria-expanded', String(open));
+    navMenu.classList.toggle('open', open);
+    if (overlay) {
+      overlay.hidden = !open;
+      overlay.classList.toggle('show', open);
+    }
+    // focus first link when opening (accessibility nicety)
+    if (open) navMenu.querySelector('a,button')?.focus();
+  };
+
+  navToggle.addEventListener('click', () => {
+    const ex = navToggle.getAttribute('aria-expanded') === 'true';
+    setOpen(!ex);
+  });
+
+  // close when clicking the overlay
+  overlay?.addEventListener('click', () => setOpen(false));
+
+  // close after choosing a link (so it feels like an app drawer)
+  navMenu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  // close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+}
 
   /* ========================= UI basics ========================= */
   function toast(msg, ms=2000) {
@@ -141,7 +175,21 @@
       raf = requestAnimationFrame(recalc);
     });
   }
-
+/* ========================= delivery to ========================= */
+(function(){
+  const sel = document.getElementById('deliver-select');
+  if(!sel) return;
+  const saved = JSON.parse(localStorage.getItem('vstore-country')||'{}');
+  if(saved?.code) sel.value = saved.code;
+  sel.addEventListener('change', ()=>{
+    const code = sel.value;
+    const name = sel.options[sel.selectedIndex].text;
+    localStorage.setItem('vstore-country', JSON.stringify({code, name}));
+    const live = document.getElementById('a11y-live');
+    if(live){ live.textContent = `Delivery country set to ${name}`; setTimeout(()=>live.textContent='',1200); }
+    // window.dispatchEvent(new CustomEvent('country:changed',{detail:{code,name}}));
+  });
+})();
   /* ========================= Cart storage API ========================= */
   function readCart() {
     try {
@@ -189,7 +237,354 @@
     window.addEventListener("storage", (e) => { if (e.key === STORAGE_KEY) updateBadge(); });
   }
   function updateBadge() { if (badge) badge.textContent = String(window.cart.count()); }
+/* ========================= currency value ========================= */
+// after saving the selected country to localStorage
+(function(){
+  // Map country -> currency
+  const currencyByCountry = {
+    GB:'GBP', IE:'EUR', FR:'EUR', DE:'EUR', ES:'EUR', IT:'EUR', NL:'EUR',
+    SE:'SEK', PL:'PLN', US:'USD', CA:'CAD', AU:'AUD', IN:'INR'
+  };
 
+  // Display locale per currency (for Intl formatting)
+  const localeByCurrency = {
+    GBP:'en-GB', EUR:'de-DE', SEK:'sv-SE', PLN:'pl-PL',
+    USD:'en-US', CAD:'en-CA', AUD:'en-AU', INR:'en-IN'
+  };
+
+  // FX rates: GBP -> target currency (example static rates; update server-side in production)
+  const fx = {
+    GBP: 1,
+    EUR: 1.18,
+    USD: 1.28,
+    CAD: 1.74,
+    AUD: 1.95,
+    INR: 106,
+    SEK: 13.7,
+    PLN: 5.0
+  };
+
+  // VAT (standard rate) per country (approx; adapt to your catalog rules)
+  const vatRate = {
+    GB:0.20, IE:0.23, FR:0.20, DE:0.19, ES:0.21, IT:0.22, NL:0.21,
+    SE:0.25, PL:0.23, US:0.00, CA:0.00, AU:0.10, IN:0.18
+  };
+
+  // Whether displayed prices should be tax-inclusive (EU typically yes; US/CA often pre-tax)
+  const taxInclusive = {
+    GB:true, IE:true, FR:true, DE:true, ES:true, IT:true, NL:true,
+    SE:true, PL:true, AU:true, IN:true, US:false, CA:false
+  };
+
+  // Optional regional price multiplier (e.g., market adjustments, duties); 1 means no change
+  const regionalAdj = {
+    GB:1, IE:1, FR:1, DE:1, ES:1, IT:1, NL:1, SE:1, PL:1, US:1, CA:1, AU:1, IN:1
+  };
+
+  // Helpers
+  function getSelectedCountry(){
+    try { return JSON.parse(localStorage.getItem('vstore-country') || '{}'); }
+    catch { return {}; }
+  }
+
+  function formatCurrency(amount, currency){
+    const loc = localeByCurrency[currency] || 'en-GB';
+    try {
+      return new Intl.NumberFormat(loc, { style:'currency', currency }).format(amount);
+    } catch {
+      // Fallback basic formatting with symbol guess
+      const symbol = { GBP:'£', EUR:'€', USD:'$', CAD:'CA$', AUD:'A$', INR:'₹', SEK:'kr', PLN:'zł' }[currency] || '';
+      return symbol + amount.toFixed(2);
+    }
+  }
+
+  function gbpToCountryPrice(baseGbp, countryCode){
+    const currency = currencyByCountry[countryCode] || 'GBP';
+    const rate = fx[currency] || 1;
+    const vat = vatRate[countryCode] ?? 0;
+    const incl = taxInclusive[countryCode] ?? true;
+    const adj = regionalAdj[countryCode] ?? 1;
+
+    // Convert, apply regional adj
+    let local = baseGbp * rate * adj;
+
+    // If tax-inclusive region, add VAT into display price
+    if (incl && vat > 0) {
+      local = local * (1 + vat);
+    }
+
+    // Round to sensible decimals (2 for most; 0 for JPY-like, but not used here)
+    const rounded = Math.round(local * 100) / 100;
+    return { currency, amount: rounded, formatted: formatCurrency(rounded, currency) };
+  }
+
+  function ensureBasePrice(el){
+    if (!el.dataset.baseGbp) {
+      // Prefer explicit data-price
+      const asAttr = parseFloat(el.dataset.price);
+      if (!isNaN(asAttr)) {
+        el.dataset.baseGbp = String(asAttr);
+        return asAttr;
+      }
+      // Fallback: parse text content (e.g., £29.99)
+      const priceNode = el.querySelector('.price');
+      if (priceNode) {
+        const num = parseFloat(String(priceNode.textContent || '').replace(/[^\d.]/g,''));
+        if (!isNaN(num)) {
+          el.dataset.baseGbp = String(num);
+          return num;
+        }
+      }
+      el.dataset.baseGbp = '0';
+      return 0;
+    }
+    return parseFloat(el.dataset.baseGbp);
+  }
+
+  function updateAllProductPrices(countryCode){
+    const items = document.querySelectorAll('.product-item');
+    items.forEach(item => {
+      const base = ensureBasePrice(item) || 0;
+      const out = gbpToCountryPrice(base, countryCode);
+      const priceNode = item.querySelector('.price');
+      if (priceNode) priceNode.textContent = out.formatted;
+      // If you want a data attribute for QA
+      item.dataset.currency = out.currency;
+      item.dataset.displayPrice = String(out.amount);
+    });
+
+    // (Optional) Also convert any standalone totals with data-money-gbp="123.45"
+    document.querySelectorAll('[data-money-gbp]').forEach(node => {
+      const base = parseFloat(node.getAttribute('data-money-gbp') || '0') || 0;
+      const out = gbpToCountryPrice(base, countryCode);
+      node.textContent = out.formatted;
+      node.setAttribute('data-currency', out.currency);
+    });
+  }
+
+  function init(){
+    // 1) On load, hydrate to saved country or default GB
+    const saved = getSelectedCountry();
+    const countryCode = saved?.code || 'GB';
+    updateAllProductPrices(countryCode);
+
+    // 2) React to explicit selection event from picker
+    window.addEventListener('country:changed', (e) => {
+      const code = e.detail?.code || 'GB';
+      updateAllProductPrices(code);
+    });
+
+    // 3) React if another tab changes localStorage
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'vstore-country') {
+        try {
+          const data = JSON.parse(e.newValue || '{}');
+          if (data?.code) updateAllProductPrices(data.code);
+        } catch {}
+      }
+    });
+  }
+
+  // Run
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+(function(){
+  // ---------- Helpers / shared ----------
+  const CURRENCY_MAP = { GB:'GBP', IE:'EUR', FR:'EUR', DE:'EUR', ES:'EUR', IT:'EUR', NL:'EUR', SE:'SEK', PL:'PLN', US:'USD', CA:'CAD', AU:'AUD', IN:'INR' };
+  const LOCALE_MAP   = { GBP:'en-GB', EUR:'de-DE', SEK:'sv-SE', PLN:'pl-PL', USD:'en-US', CAD:'en-CA', AUD:'en-AU', INR:'en-IN' };
+
+  // Fallback FX+VAT if global converter not present (replace with live rates if you have them)
+  const FX          = { GBP:1, EUR:1.18, USD:1.28, CAD:1.74, AUD:1.95, INR:106, SEK:13.7, PLN:5.0 };
+  const VAT         = { GB:0.20, IE:0.23, FR:0.20, DE:0.19, ES:0.21, IT:0.22, NL:0.21, SE:0.25, PL:0.23, US:0, CA:0, AU:0.10, IN:0.18 };
+  const TAX_INCL    = { GB:true, IE:true, FR:true, DE:true, ES:true, IT:true, NL:true, SE:true, PL:true, AU:true, IN:true, US:false, CA:false };
+  const ADJ         = { GB:1, IE:1, FR:1, DE:1, ES:1, IT:1, NL:1, SE:1, PL:1, US:1, CA:1, AU:1, IN:1 };
+
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  function getCountryCode(){
+    try { return (JSON.parse(localStorage.getItem('vstore-country')||'{}').code) || 'GB'; }
+    catch { return 'GB'; }
+  }
+
+  function fmt(amount, currency){
+    const loc = LOCALE_MAP[currency] || 'en-GB';
+    try { return new Intl.NumberFormat(loc, {style:'currency', currency}).format(amount); }
+    catch {
+      const sym = { GBP:'£', EUR:'€', USD:'$', CAD:'CA$', AUD:'A$', INR:'₹', SEK:'kr', PLN:'zł' }[currency] || '';
+      return sym + amount.toFixed(2);
+    }
+  }
+
+  // Use global converter if present (from your universal pricing module). Else fallback here.
+  function convertGBP(baseGbp, countryCode){
+    if (typeof window.vstoreConvertGBP === 'function') {
+      const out = window.vstoreConvertGBP(baseGbp, countryCode);
+      return { currency: out.currency || CURRENCY_MAP[countryCode] || 'GBP', amount: out.amount, formatted: out.formatted };
+    }
+    const cur = CURRENCY_MAP[countryCode] || 'GBP';
+    let local = baseGbp * (FX[cur] || 1) * (ADJ[countryCode] || 1);
+    if ((TAX_INCL[countryCode] ?? true) && (VAT[countryCode] ?? 0) > 0) local *= (1 + VAT[countryCode]);
+    local = Math.round(local * 100) / 100;
+    return { currency: cur, amount: local, formatted: fmt(local, cur) };
+  }
+
+  function extractGBPFromText(node){
+    const t = (node && node.textContent) ? node.textContent : '';
+    const m = t.replace(',', '').match(/(\d+(\.\d+)?)/);
+    return m ? parseFloat(m[1]) : 0;
+  }
+
+  function ensureBase(node){
+    // Prefer explicit attribute; else parse once from text and set it.
+    if (!node) return 0;
+    if (!node.hasAttribute('data-money-gbp')) {
+      const parsed = extractGBPFromText(node);
+      node.setAttribute('data-money-gbp', isNaN(parsed) ? '0' : String(parsed));
+    }
+    return parseFloat(node.getAttribute('data-money-gbp') || '0') || 0;
+  }
+
+  function render(node, baseGbp, code){
+    if (!node) return;
+    const out = convertGBP(baseGbp, code);
+    node.textContent = out.formatted;
+    node.setAttribute('data-currency', out.currency);
+    node.setAttribute('data-money-local', String(out.amount));
+  }
+
+  // ---------- CART PAGE ----------
+  // Works with:
+  //  - row: .cart-row or tr[data-sku]
+  //  - unit price cell: .unit-price (or [data-role="unit-price"])
+  //  - qty input: .qty input / .quantity input / input[name*="qty"]
+  //  - line subtotal: .line-subtotal (or [data-role="line-subtotal"])
+  //  - totals: #cart-subtotal, #shipping, #tax, #discount, #grand-total (or [data-role="..."])
+  function updateCart(){
+    const code = getCountryCode();
+
+    // Rows
+    $$('.cart-row, tr[data-sku], li.cart-row').forEach(row => {
+      const unitCell = row.querySelector('.unit-price, [data-role="unit-price"]');
+      const qtyInput = row.querySelector('.qty input, .quantity input, input[type="number"][name*="qty"]');
+      const subtotal = row.querySelector('.line-subtotal, [data-role="line-subtotal"]');
+
+      const unitBase = ensureBase(unitCell);
+      const qty = parseInt(qtyInput ? qtyInput.value : (row.getAttribute('data-qty') || '1'), 10) || 1;
+      const lineBase = Math.max(0, Math.round(unitBase * qty * 100) / 100);
+
+      if (subtotal) subtotal.setAttribute('data-money-gbp', String(lineBase));
+
+      // render unit & line
+      if (unitCell) render(unitCell, unitBase, code);
+      if (subtotal) render(subtotal, lineBase, code);
+    });
+
+    // Totals
+    const subtotalEl = $('#cart-subtotal, [data-role="cart-subtotal"]');
+    const shippingEl = $('#shipping, [data-role="shipping"]');
+    const taxEl      = $('#tax, [data-role="tax"]');
+    const discountEl = $('#discount, [data-role="discount"]');
+    const grandEl    = $('#grand-total, [data-role="grand-total"]');
+
+    // derive subtotal from line items if missing
+    if (subtotalEl && !subtotalEl.hasAttribute('data-money-gbp')) {
+      let sum = 0;
+      $$('.line-subtotal, [data-role="line-subtotal"]').forEach(n => sum += ensureBase(n));
+      subtotalEl.setAttribute('data-money-gbp', sum.toFixed(2));
+    }
+
+    // make sure others have base
+    [shippingEl, taxEl, discountEl, grandEl].forEach(n => { if (n) ensureBase(n); });
+
+    // If we can compute grand total, do it (unless explicitly locked by data attr)
+    if (grandEl && !grandEl.dataset.locked) {
+      const sub  = subtotalEl ? ensureBase(subtotalEl) : 0;
+      const ship = shippingEl ? ensureBase(shippingEl) : 0;
+      const tax  = taxEl ? ensureBase(taxEl) : 0;
+      const disc = discountEl ? ensureBase(discountEl) : 0;
+      const total = Math.max(0, Math.round((sub + ship + tax - disc) * 100) / 100);
+      grandEl.setAttribute('data-money-gbp', total.toFixed(2));
+    }
+
+    // render totals
+    if (subtotalEl) render(subtotalEl, ensureBase(subtotalEl), code);
+    if (shippingEl) render(shippingEl, ensureBase(shippingEl), code);
+    if (taxEl)      render(taxEl,      ensureBase(taxEl),      code);
+    if (discountEl) render(discountEl, ensureBase(discountEl), code);
+    if (grandEl)    render(grandEl,    ensureBase(grandEl),    code);
+  }
+
+  function initCart(){
+    // quantity changes
+    document.addEventListener('input', (e) => {
+      if (e.target.matches('.qty input, .quantity input, input[type="number"][name*="qty"]')) updateCart();
+    });
+    document.addEventListener('change', (e) => {
+      if (e.target.matches('.qty input, .quantity input, input[type="number"][name*="qty"]')) updateCart();
+    });
+
+    // country changes
+    window.addEventListener('country:changed', updateCart);
+
+    // first paint
+    updateCart();
+
+    // watch for dynamic additions (AJAX cart, etc.)
+    const root = $('#main') || document.body;
+    const mo = new MutationObserver(() => {
+      clearTimeout(initCart._t);
+      initCart._t = setTimeout(updateCart, 25);
+    });
+    mo.observe(root, { childList:true, subtree:true });
+  }
+
+  // ---------- ORDERS (list & details) ----------
+  function updateOrders(){
+    const code = getCountryCode();
+
+    // Convert anything already marked
+    $$('[data-money-gbp]').forEach(n => render(n, ensureBase(n), code));
+
+    // Parse and mark any plain-currency cells (only once)
+    $$('.orders-table td, .orders-table th, .order-total, .amount').forEach(n => {
+      if (!n.hasAttribute('data-money-gbp') && /[£€$₹]|USD|EUR|GBP|INR|CAD|AUD|SEK|PLN/.test(n.textContent||'')) {
+        const base = extractGBPFromText(n);
+        if (base > 0) {
+          n.setAttribute('data-money-gbp', base.toFixed(2));
+          render(n, base, code);
+        }
+      }
+    });
+  }
+
+  function initOrders(){
+    window.addEventListener('country:changed', updateOrders);
+    updateOrders();
+
+    const root = $('#main') || document.body;
+    const mo = new MutationObserver(() => {
+      clearTimeout(initOrders._t);
+      initOrders._t = setTimeout(updateOrders, 25);
+    });
+    mo.observe(root, { childList:true, subtree:true });
+  }
+
+  // ---------- Bootstrap per-page ----------
+  function boot(){
+    const isCart   = !!($('.cart-row, tr[data-sku], [data-role="cart-subtotal"], #cart-subtotal'));
+    const isOrders = !!($('.orders-table, .order-total, .order-details'));
+    if (isCart)   initCart();
+    if (isOrders) initOrders();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
   /* ========================= Promos + totals ========================= */
   function getPromo() {
     try { return JSON.parse(localStorage.getItem(PROMO_KEY)) || { code:null, type:null, value:0 }; }
