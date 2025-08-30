@@ -3,13 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>V-STORE — Home</title>
-  <meta name="description" content="V-STORE: your one-stop shop for top products at great prices." />
+
+  <title>V-STORE — Great picks. Better prices.</title>
+  <meta name="description" content="Shop electronics, home, and groceries with fast dispatch, secure checkout, and great prices." />
+  <meta name="theme-color" content="#0b0c10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <link rel="canonical" href="https://your-domain.com/" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/icons/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="V-STORE — Great picks. Better prices.">
+  <meta property="og:description" content="Your one-stop shop for electronics, home, and groceries.">
+  <meta property="og:url" content="https://your-domain.com/">
+  <meta property="og:image" content="https://your-domain.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="V-STORE — Great picks. Better prices.">
+  <meta name="twitter:description" content="Top products at sharp prices.">
+  <meta name="twitter:image" content="https://your-domain.com/og-image.jpg">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="/favicon.ico" />
+
+  <!-- ensure two-row sticky header stacks correctly -->
+  <style>
+    .nav.utility-bar{position:sticky;top:0;z-index:1001;}
+    .nav.dept-bar{position:sticky;top:var(--nav-h);z-index:1000;}
+  </style>
 </head>
 <body>
-  <!-- Skip link for accessibility -->
+  <!-- Skip -->
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Promo -->
@@ -22,179 +52,212 @@
     </div>
   </div>
 
-  <!-- Navigation -->
-  <nav class="nav" role="navigation" aria-label="Main">
-    <div class="nav-inner">
-      <a class="logo" href="/" aria-label="V-STORE Home">V-STORE</a>
+  <!-- ================== HEADER (2 rows) ================== -->
+  <header class="site-header" role="banner" aria-label="Site header">
+    <!-- Row 1: Utility bar -->
+    <nav class="nav utility-bar" role="navigation" aria-label="Main">
+      <div class="nav-inner">
+        <a class="logo" href="index.html" aria-label="V-STORE Home">V-STORE</a>
 
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+        <!-- Mobile burger -->
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
 
-      <ul id="nav-menu" class="nav-links">
-        <li><a href="login.html">Login</a></li>
-        <li><a href="categories.html">Categories</a></li>
-        <li>
-          <a href="cart.html" class="cart-link" aria-label="Cart">
-            Cart (<span id="cart-count" class="badge" aria-live="polite">0</span>)
-          </a>
-        </li>
-        <li><a href="orders.html">Orders</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li>
-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button>
-        </li>
-      </ul>
-    </div>
-  </nav>
+        <!-- Deliver to -->
+        <label class="deliver-inline" for="deliver-select" title="Delivery country">
+          📦 Deliver to
+          <select id="deliver-select" aria-label="Delivery country">
+            <option value="GB">United Kingdom</option>
+            <option value="IE">Ireland</option>
+            <option value="FR">France</option>
+            <option value="DE">Germany</option>
+            <option value="ES">Spain</option>
+            <option value="IT">Italy</option>
+            <option value="NL">Netherlands</option>
+            <option value="SE">Sweden</option>
+            <option value="PL">Poland</option>
+            <option value="US">United States</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="IN">India</option>
+          </select>
+        </label>
 
-  <!-- Search results (global) -->
-  <div id="search-results" class="search-results" hidden></div>
+        <!-- Big search -->
+        <form id="search-form" class="header-search" role="search" aria-label="Search all" autocomplete="off">
+          <label for="search-input" class="visually-hidden">Search products</label>
+          <select id="search-scope" aria-label="Search category">
+            <option value="all">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="home">Home</option>
+            <option value="groceries">Groceries</option>
+            <option value="apparel">Apparel</option>
+          </select>
+          <input id="search-input" type="search" placeholder="Search V-STORE…" autocomplete="off" />
+          <button type="submit" aria-label="Run search">Search</button>
+        </form>
 
-  <!-- Hero -->
-  <header class="hero" role="banner">
-    <div class="hero-glow" aria-hidden="true"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">Welcome to V-STORE</h1>
-      <p class="hero-sub">Your one-stop shop for the best products.</p>
-      <form id="search-form" class="search" role="search" aria-label="Product search" autocomplete="off">
-        <label for="search-input" class="visually-hidden">Search products</label>
-        <input id="search-input" type="search" placeholder="Search products…" autocomplete="off" aria-label="Search products" />
-        <button type="submit" aria-label="Run search">Search</button>
-      </form>
-      <div class="trust-badges" aria-label="Trust badges">
-        <div class="badge-item">🛡️ SSL Secure</div>
-        <div class="badge-item">↩️ 30-day Returns</div>
-        <div class="badge-item">⭐ 4.8/5 Rated</div>
-        <div class="badge-item">📦 Fast Dispatch</div>
+        <!-- Right links (also used as the mobile drawer) -->
+        <ul id="nav-menu" class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="categories.html">Categories</a></li>
+          <li><a href="order history.html">Orders</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a class="cart-link" href="cart.html">🛒 Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+          <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+        </ul>
       </div>
-    </div>
+    </nav>
+
+    <!-- Row 2: Departments chips -->
+    <nav class="nav dept-bar" role="navigation" aria-label="Departments">
+      <div class="nav-inner">
+        <a class="chip" href="categories.html#deals">Today’s Deals</a>
+        <a class="chip" href="categories.html#electronics">Electronics</a>
+        <a class="chip" href="categories.html#home">Home & Kitchen</a>
+        <a class="chip" href="fruits.html">Fruits</a>
+        <a class="chip" href="vegatables.html">Vegetables</a>
+        <a class="chip" href="Diary.html">Diary</a>
+        <a class="chip" href="eggs.html">Eggs</a>
+        <a class="chip" href="meat.html">Meat</a>
+        <a class="chip" href="sea food.html">Sea food</a>
+        <a class="chip" href="pantery.html">Pantery</a>
+        <a class="chip" href="beverages.html">Beverages</a>
+      </div>
+    </nav>
   </header>
 
-  <!-- Main -->
+  <!-- (Optional) overlay for mobile drawer -->
+  <div id="nav-overlay" class="nav-overlay" hidden></div>
+
+  <!-- Inline global search suggestions -->
+  <div id="search-results" class="search-results" hidden></div>
+
+  <!-- ================== MAIN ================== -->
   <main id="main">
+    <!-- HERO -->
+    <section class="hero hero-amz" aria-label="Featured">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <aside id="sidebar" class="side-cats" aria-label="Browse categories">
+          <ul>
+            <li><a href="categories.html#best-sellers">Best Sellers</a></li>
+            <li><a href="categories.html#new-releases">New Releases</a></li>
+            <li><a href="categories.html#gift-ideas">Gift Ideas</a></li>
+            <li><a href="categories.html#voucher">Vouchers</a></li>
+            <li><a href="categories.html#prime">Prime Picks</a></li>
+          </ul>
+        </aside>
+
+        <div class="carousel hero-carousel" aria-roledescription="carousel" aria-label="Hero promotions">
+          <figure class="slide" aria-current="true">
+            <img src="C:\Users\vtu16\Downloads\ChatGPT Image Aug 30, 2025, 04_29_40 AM.png" alt="Back to School deals banner" width="1200" height="400" loading="eager">
+          </figure>
+          <figure class="slide">
+            <img src="https://via.placeholder.com/1200x400?text=Electronics+Super+Sale" alt="Electronics Super Sale" width="1200" height="400" loading="lazy">
+          </figure>
+          <figure class="slide">
+            <img src="https://via.placeholder.com/1200x400?text=Home+Refresh" alt="Home Refresh picks" width="1200" height="400" loading="lazy">
+          </figure>
+        </div>
+
+        <div class="hero-panels">
+          <article class="panel">
+            <h3>Sign in for your best experience</h3>
+            <a class="btn-ghost" href="login.html">Sign in securely →</a>
+          </article>
+          <article class="panel">
+            <h3>Top picks near you</h3>
+            <p>Popular in UK this week.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shelves -->
+    <section class="shelf" aria-label="Groceries under £10">
+      <h2 class="section-title">Groceries under £10</h2>
+      <div class="product-grid" id="shelf-groceries">
+        <article class="product-item card" data-id="401" data-name="Organic Pasta Pack" data-price="3.25" data-category="groceries">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Organic Pasta Pack" width="200" height="200" loading="lazy" decoding="async"></div>
+          <h3 class="product-title">Organic Pasta Pack</h3>
+          <p class="price">£3.25</p>
+          <button class="add-to-cart" aria-label="Add Organic Pasta Pack to cart">Add to Cart</button>
+        </article>
+        <article class="product-item card" data-id="402" data-name="Granola" data-price="2.99" data-category="groceries">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Granola" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">Granola</h3>
+          <p class="price">£2.99</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-item card" data-id="403" data-name="Olive Oil 500ml" data-price="4.50" data-category="groceries">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Olive Oil 500ml" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">Olive Oil 500ml</h3>
+          <p class="price">£4.50</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-item card" data-id="404" data-name="Brown Bread" data-price="1.20" data-category="groceries">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Brown Bread" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">Brown Bread</h3>
+          <p class="price">£1.20</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="shelf" aria-label="Best Sellers in Electronics">
+      <h2 class="section-title">Best Sellers in Electronics</h2>
+      <div class="product-grid" id="shelf-electronics">
+        <article class="product-item card" data-id="201" data-name="Wireless Earbuds" data-price="29.99" data-category="electronics">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Wireless Earbuds" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">Wireless Earbuds</h3>
+          <div class="rating" aria-label="4 out of 5">★★★★☆</div>
+          <p class="price">£29.99</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-item card" data-id="202" data-name="Smart Watch" data-price="49.99" data-category="electronics">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Smart Watch" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">Smart Watch</h3>
+          <div class="rating" aria-label="5 out of 5">★★★★★</div>
+          <p class="price">£49.99</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-item card" data-id="203" data-name="Bluetooth Speaker" data-price="19.99" data-category="electronics">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="Bluetooth Speaker" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">Bluetooth Speaker</h3>
+          <div class="rating" aria-label="4 out of 5">★★★★☆</div>
+          <p class="price">£19.99</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+        <article class="product-item card" data-id="204" data-name="USB-C Charger" data-price="9.99" data-category="electronics">
+          <div class="media"><img src="https://via.placeholder.com/200" alt="USB-C Charger" width="200" height="200" loading="lazy"></div>
+          <h3 class="product-title">USB-C Charger</h3>
+          <p class="price">£9.99</p>
+          <button class="add-to-cart">Add to Cart</button>
+        </article>
+      </div>
+    </section>
+
     <!-- Deals -->
-    <section class="deals" aria-label="Deals">
+    <section class="deals" aria-label="Deals of the day">
       <h2 class="section-title">Today’s Picks</h2>
       <div class="deal-cards">
         <article class="deal-card">
           <span class="ribbon">-30%</span>
           <h3>Summer Essentials</h3>
           <p>Save on apparel bundles.</p>
-          <a href="summer-essentials.html" class="btn-ghost" aria-label="Shop Summer Essentials">Shop Now →</a>
+          <a href="summer-essentials.html" class="btn-ghost">Shop Now →</a>
         </article>
         <article class="deal-card">
           <span class="ribbon">Hot</span>
           <h3>Gadgets Under £50</h3>
           <p>Top electronics steals.</p>
-          <a href="gadgets-under-50.html" class="btn-ghost" aria-label="Browse gadgets under £50">Browse →</a>
+          <a href="gadgets-under-50.html" class="btn-ghost">Browse →</a>
         </article>
         <article class="deal-card">
           <span class="ribbon">New</span>
           <h3>Home Refresh</h3>
           <p>Cozy upgrades for less.</p>
-          <a href="home-refresh.html" class="btn-ghost" aria-label="Discover Home Refresh">Discover →</a>
-        </article>
-      </div>
-    </section>
-
-    <!-- Browse controls -->
-    <section class="controls" aria-label="Browse controls">
-      <div class="chips" id="category-chips" role="tablist" aria-label="Categories">
-        <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
-        <button class="chip" data-filter="electronics" role="tab" aria-selected="false">Electronics</button>
-        <button class="chip" data-filter="home" role="tab" aria-selected="false">Home Essentials</button>
-        <button class="chip" data-filter="groceries" role="tab" aria-selected="false">Groceries</button>
-        <button class="chip" data-filter="apparel" role="tab" aria-selected="false">Apparel</button>
-      </div>
-      <label class="sort">
-        <span class="visually-hidden">Sort</span>
-        <select id="sort-select" aria-label="Sort products">
-          <option value="latest">Latest</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-          <option value="name-asc">Name: A → Z</option>
-          <option value="name-desc">Name: Z → A</option>
-        </select>
-      </label>
-    </section>
-
-    <!-- Featured categories -->
-    <section class="categories-highlight" aria-label="Featured categories">
-      <h2 class="section-title">Shop by Category</h2>
-      <div class="cat-grid">
-        <a class="cat-card" href="categories.html#groceries" aria-label="Shop Groceries">
-          <div class="cat-media groceries" aria-hidden="true"></div>
-          <div class="cat-body">
-            <h3>Groceries</h3>
-            <p>Fresh staples for every day.</p>
-          </div>
-        </a>
-        <a class="cat-card" href="categories.html#electronics" aria-label="Shop Electronics">
-          <div class="cat-media electronics" aria-hidden="true"></div>
-          <div class="cat-body">
-            <h3>Electronics</h3>
-            <p>Smart picks, sharp prices.</p>
-          </div>
-        </a>
-        <a class="cat-card" href="categories.html#home" aria-label="Shop Home">
-          <div class="cat-media home" aria-hidden="true"></div>
-          <div class="cat-body">
-            <h3>Home</h3>
-            <p>Make your space yours.</p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- Featured Products -->
-    <section class="featured-products" aria-label="Featured products">
-      <h2 class="section-title">Featured Products</h2>
-
-      <div class="product-grid show-skeletons" id="product-grid" aria-live="polite">
-        <!-- NOTE:
-             - Update image src as you like.
-             - The script uses data-id, data-name, data-price, data-category. -->
-        <article class="product-item" data-id="1" data-name="Wireless Earbuds" data-price="29.99" data-category="electronics">
-          <button class="wishlist" aria-label="Add Wireless Earbuds to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Wireless Earbuds" loading="lazy" decoding="async" />
-          </div>
-          <h3 class="product-title">Wireless Earbuds</h3>
-          <div class="rating" aria-label="Rated 4 out of 5 stars">★★★★☆</div>
-          <p class="price" data-currency="GBP">£29.99</p>
-          <button class="add-to-cart" aria-label="Add Wireless Earbuds to cart">Add to Cart</button>
-        </article>
-
-        <article class="product-item" data-id="2" data-name="Cotton T-Shirt" data-price="12.50" data-category="apparel">
-          <button class="wishlist" aria-label="Add Cotton T-Shirt to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Cotton T-Shirt" loading="lazy" decoding="async" />
-          </div>
-          <h3 class="product-title">Cotton T-Shirt</h3>
-          <div class="rating" aria-label="Rated 5 out of 5 stars">★★★★★</div>
-          <p class="price" data-currency="GBP">£12.50</p>
-          <button class="add-to-cart" aria-label="Add Cotton T-Shirt to cart">Add to Cart</button>
-        </article>
-
-        <article class="product-item" data-id="3" data-name="Ceramic Mug" data-price="8.00" data-category="home">
-          <button class="wishlist" aria-label="Add Ceramic Mug to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Ceramic Mug" loading="lazy" decoding="async" />
-          </div>
-          <h3 class="product-title">Ceramic Mug</h3>
-          <div class="rating" aria-label="Rated 3 out of 5 stars">★★★☆☆</div>
-          <p class="price" data-currency="GBP">£8.00</p>
-          <button class="add-to-cart" aria-label="Add Ceramic Mug to cart">Add to Cart</button>
-        </article>
-
-        <article class="product-item" data-id="4" data-name="Organic Pasta Pack" data-price="3.25" data-category="groceries">
-          <button class="wishlist" aria-label="Add Organic Pasta Pack to wishlist" title="Add to wishlist">♡</button>
-          <div class="media">
-            <img src="https://via.placeholder.com/200" alt="Organic Pasta Pack" loading="lazy" decoding="async" />
-          </div>
-          <h3 class="product-title">Organic Pasta Pack</h3>
-          <div class="rating" aria-label="Rated 4 out of 5 stars">★★★★☆</div>
-          <p class="price" data-currency="GBP">£3.25</p>
-          <button class="add-to-cart" aria-label="Add Organic Pasta Pack to cart">Add to Cart</button>
+          <a href="home-refresh.html" class="btn-ghost">Discover →</a>
         </article>
       </div>
     </section>
@@ -202,10 +265,19 @@
     <!-- Testimonials -->
     <section class="testimonials" aria-label="What our customers say">
       <h2 class="section-title">Loved by Shoppers</h2>
-      <div class="carousel" aria-roledescription="carousel">
-        <figure class="slide"><blockquote>“Fast delivery and great prices. My go-to store!”</blockquote><figcaption>— Asha M.</figcaption></figure>
-        <figure class="slide"><blockquote>“Amazing customer support. Resolved my issue in minutes.”</blockquote><figcaption>— Daniel R.</figcaption></figure>
-        <figure class="slide"><blockquote>“Quality products. The electronics section is 🔥.”</blockquote><figcaption>— Priya N.</figcaption></figure>
+      <div class="carousel" aria-roledescription="carousel" aria-label="Testimonials">
+        <figure class="slide" aria-current="true">
+          <blockquote>“Fast delivery and great prices. My go-to store!”</blockquote>
+          <figcaption>— Asha M.</figcaption>
+        </figure>
+        <figure class="slide">
+          <blockquote>“Amazing customer support. Resolved my issue in minutes.”</blockquote>
+          <figcaption>— Daniel R.</figcaption>
+        </figure>
+        <figure class="slide">
+          <blockquote>“Quality products. The electronics section is 🔥.”</blockquote>
+          <figcaption>— Priya N.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -239,7 +311,7 @@
           <ul>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="shipping.html">Shipping</a></li>
-            <li><a href="returns.html">Returns</a></li>
+            <li><a href="orders.html">Returns</a></li>
           </ul>
         </div>
         <div>
@@ -252,15 +324,21 @@
           </form>
         </div>
       </div>
-      <p class="legal">© <span id="year"></span> V-STORE. All rights reserved.</p>
+      <p class="legal">© <span id="year"></span> V-STORE. All rights reserved. <a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a> • <a href="cookies.html">Cookies</a></p>
     </div>
   </footer>
 
-  <!-- Chat Assistant (floating button + panel) -->
-  <button id="chat-open" class="chat-open" aria-label="Open assistant">Chat</button>
-  <div id="chat-box" class="chat-box" hidden>
+  <!-- Toast for JS notifications -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- A11y live region -->
+  <div id="a11y-live" class="visually-hidden" role="status" aria-live="polite"></div>
+
+  <!-- Chat Assistant -->
+  <button id="chat-open" class="chat-open" aria-label="Open assistant" aria-haspopup="dialog">Chat</button>
+  <div id="chat-box" class="chat-box" role="dialog" aria-modal="true" aria-labelledby="chat-title" hidden>
     <div class="chat-header">
-      <strong>V-STORE Assistant</strong>
+      <strong id="chat-title">V-STORE Assistant</strong>
       <button id="chat-close" aria-label="Close">✕</button>
     </div>
     <div id="chat-log" class="chat-log" aria-live="polite"></div>
