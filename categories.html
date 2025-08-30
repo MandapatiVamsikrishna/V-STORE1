@@ -3,147 +3,169 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Categories — V-STORE</title>
+  <title>FreshMart — Home</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="categories.js" defer></script>
-  <script src="script.js" defer></script>
-
-  <link rel="script" href="script.js" />
-  <link rel="checkout" href="checkout.html" />
+  <!-- remove any <link rel="script" href="script.js"> lines — they don’t do anything -->
   <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-  <!-- Top Navigation -->
-  <nav class="nav" role="navigation" aria-label="Main">
-    <div class="nav-inner">
-      <a class="logo" href="index.html">V-STORE</a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
-      <ul id="nav-menu" class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a aria-current="page" href="categories.html">Categories</a></li>
-        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
-        <li><a href="order history.html">Orders</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
-      </ul>
-    </div>
-  </nav>
 
-  <header class="page-hero">
-    <div class="hero-inner">
-      <h1>Shop Categories</h1>
-      <p class="muted">Filter by category, price, and rating — or search for anything.</p>
+  <!-- ========================= Site Header (2 rows) ========================= -->
+  <header class="site-header">
 
-      <!-- Search + Sort row -->
-      <div class="row">
-        <form id="search-form" role="search" aria-label="Search products" class="search">
-          <input id="search-input" type="search" placeholder="Search groceries, electronics, apparel…" autocomplete="off" />
+    <!-- Row 1: Utility bar (logo, search, links) -->
+    <nav class="nav utility-bar" role="navigation" aria-label="Main">
+      <div class="nav-inner">
+        <a class="logo" href="index.html">FreshMart</a>
+
+        <!-- Mobile burger -->
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+
+        <!-- Search -->
+        <form id="search-form" class="header-search" role="search" aria-label="Search store">
+          <select aria-label="Department">
+            <option value="">All</option>
+            <option value="fruits">Fruits</option>
+            <option value="vegetables">Vegetables</option>
+            <option value="dairy">Dairy</option>
+            <option value="eggs">Eggs</option>
+            <option value="meat">Meat</option>
+            <option value="seafood">Seafood</option>
+            <option value="bakery">Bakery</option>
+            <option value="pantry">Pantry</option>
+            <option value="beverages">Beverages</option>
+          </select>
+          <input id="search-input" type="search" placeholder="Search FreshMart…" autocomplete="off" />
           <button type="submit">Search</button>
         </form>
 
-        <label class="sort">
-          <span class="visually-hidden">Sort</span>
-          <select id="sort-select" aria-label="Sort results">
-            <option value="relevance">Sort: Relevance</option>
-            <option value="price-asc">Price: Low → High</option>
-            <option value="price-desc">Price: High → Low</option>
-            <option value="name-asc">Name: A → Z</option>
-            <option value="name-desc">Name: Z → A</option>
-            <option value="rating-desc">Rating: High → Low</option>
-          </select>
-        </label>
+        <!-- Right-side links (be sure to keep id="nav-menu" for JS) -->
+        <ul id="nav-menu" class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="categories.html">Categories</a></li>
+          <li><a href="orders.html">Orders</a></li>
+          <li><a class="cart-link" href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+        </ul>
       </div>
-    </div>
+    </nav>
+
+    <!-- Row 2: Departments chips (quick menu) -->
+    <nav class="nav dept-bar" aria-label="Departments">
+      <div class="nav-inner">
+        <a class="chip" href="fruits.html">Fruits</a>
+        <a class="chip" href="vegatables.html">Vegetables</a>
+        <a class="chip" href="diary.html">Diary</a>
+        <a class="chip" href="eggs.html">Eggs</a>
+        <a class="chip" href="meat.html">Meat</a>
+        <a class="chip" href="sea food.html">Seafood</a>
+        <a class="chip" href="backery.html">Bakery</a>
+        <a class="chip" href="pantery.html">Pantry</a>
+        <a class="chip" href="beverages.html">Beverages</a>
+      </div>
+    </nav>
   </header>
 
-  <!-- NEW: Department quick links (chips) -->
+  <!-- overlay for mobile drawer -->
+  <div id="nav-overlay" class="nav-overlay" hidden></div>
 
+  <!-- ========================= Optional Promo Bar ========================= -->
+  <div class="promo" role="region" aria-label="Promotions">
+    <div class="promo-track">
+      <span>🎉 Free shipping over £49</span>
+      <span>✨ Use code WELCOME10 for 10% off</span>
+      <span>🕑 Same-day delivery in select areas</span>
+    </div>
+  </div>
 
-  <!-- NEW: Visual department grid -->
-  <section class="dept-grid-wrap" aria-label="Shop by Department">
-    <h2 class="section-title">Shop by Department</h2>
-    <div class="dept-grid">
-      <a class="dept-card fruits" href="fruits.html"><span class="dept-emoji" aria-hidden="true">🍎</span><span class="dept-name">Fruits</span></a>
-      <a class="dept-card vegetables" href="vegatables.html"><span class="dept-emoji" aria-hidden="true">🥕</span><span class="dept-name">Vegetables</span></a>
-      <a class="dept-card dairy" href="diary.html"><span class="dept-emoji" aria-hidden="true">🥛</span><span class="dept-name">Diary</span></a>
-      <a class="dept-card eggs" href="eggs.html"><span class="dept-emoji" aria-hidden="true">🥚</span><span class="dept-name">Eggs</span></a>
-      <a class="dept-card meat" href="meat.html"><span class="dept-emoji" aria-hidden="true">🍗</span><span class="dept-name">Meat</span></a>
-      <a class="dept-card seafood" href="sea food.html"><span class="dept-emoji" aria-hidden="true">🦐</span><span class="dept-name">Sea food</span></a>
-      <a class="dept-card bakery" href="backery.html"><span class="dept-emoji" aria-hidden="true">🥖</span><span class="dept-name">Backery</span></a>
-      <a class="dept-card pantry" href="pantery.html"><span class="dept-emoji" aria-hidden="true">🥫</span><span class="dept-name">Pantery</span></a>
-      <a class="dept-card beverages" href="beverages.html"><span class="dept-emoji" aria-hidden="true">🥤</span><span class="dept-name">Beverages</span></a>
+  <!-- ========================= Hero (example layout) ========================= -->
+  <section class="hero hero-amz">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-grid">
+      <!-- Left categories (optional quick links) -->
+      <aside class="side-cats" aria-label="Shop by category">
+        <a href="fruits.html">🍎 Fruits</a>
+        <a href="vegatables.html">🥕 Vegetables</a>
+        <a href="Diary.html">🥛 Dairy</a>
+        <a href="eggs.html">🥚 Eggs</a>
+        <a href="meat.html">🥩 Meat</a>
+        <a href="sea food.html">🦐 Seafood</a>
+        <a href="backery.html">🥖 Bakery</a>
+        <a href="pantery.html">🧂 Pantry</a>
+        <a href="beverages.html">🥤 Beverages</a>
+      </aside>
+
+      <!-- Center: simple static hero carousel -->
+      <div class="carousel" aria-label="Featured">
+        <div class="slide" aria-current="true">
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1600&auto=format&fit=crop" alt="Fresh summer fruits on sale" />
+        </div>
+      </div>
+
+      <!-- Right: panels -->
+      <div class="hero-panels">
+        <div class="panel">
+          <h3>New to FreshMart?</h3>
+          <p>Use <strong>WELCOME10</strong> for 10% off your first order.</p>
+        </div>
+        <div class="panel">
+          <h3>Need help?</h3>
+          <p>Chat with our assistant or <a href="contact.html">contact us</a>.</p>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="featured-rows container" aria-label="Featured by Department">
-      <h2 class="section-title">Featured by Department</h2>
-      <div id="featured-rows"></div>
+
+  <!-- ========================= Shelves (examples) ========================= -->
+  <section class="shelf">
+    <h2 class="section-title">Popular this week</h2>
+    <div class="product-grid">
+      <!-- Example product cards that match your global script -->
+      <article class="product-item card" data-id="p-apple" data-name="Red Apples" data-price="2.99" data-category="fruits" data-rating="4.6">
+        <div class="media"><img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=800&auto=format&fit=crop" alt="Red Apples"></div>
+        <h3 class="product-title">Red Apples</h3>
+        <div class="meta"><span class="rating">★★★★★</span><span class="price">£2.99 / lb</span></div>
+        <div class="actions">
+          <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </article>
+
+      <article class="product-item card" data-id="p-orange" data-name="Navel Oranges" data-price="3.49" data-category="citrus" data-rating="4.2">
+        <div class="media"><img src="https://images.unsplash.com/photo-1547514701-42782101795e?q=80&w=800&auto=format&fit=crop" alt="Navel Oranges"></div>
+        <h3 class="product-title">Navel Oranges</h3>
+        <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / lb</span></div>
+        <div class="actions">
+          <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </article>
+
+      <article class="product-item card" data-id="p-blue" data-name="Blueberries" data-price="5.99" data-category="berries" data-rating="4.9">
+        <div class="media"><img src="https://www.healthyfood.com/wp-content/uploads/2017/03/Why_we_like_blueberries.jpg" alt="Blueberries"></div>
+        <h3 class="product-title">Blueberries</h3>
+        <div class="meta"><span class="rating">★★★★★</span><span class="price">£5.99 / pint</span></div>
+        <div class="actions">
+          <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </article>
+    </div>
   </section>
 
-  <main class="container">
-    <aside class="filters" aria-label="Filters">
-      <h2 class="filters-title">Filters</h2>
-
-      <section>
-        <h3>Category</h3>
-        <ul class="checklist">
-          <li><label><input type="checkbox" name="cat" value="fruits" checked> Fruits</label></li>
-          <li><label><input type="checkbox" name="cat" value="vegetables" checked> Vegetables</label></li>
-          <li><label><input type="checkbox" name="cat" value="dairy" checked> Dairy</label></li>
-          <li><label><input type="checkbox" name="cat" value="eggs" checked> Eggs</label></li>
-          <li><label><input type="checkbox" name="cat" value="meat" checked> Meat</label></li>
-          <li><label><input type="checkbox" name="cat" value="bakery" checked> Bakery</label></li>
-          <li><label><input type="checkbox" name="cat" value="pantry" checked> Pantry</label></li>
-          <li><label><input type="checkbox" name="cat" value="beverages" checked> Beverages</label></li>
-        </ul>
-      </section>
-
-      <section>
-        <h3>Price</h3>
-        <div class="range">
-          <label for="min-price">Min £</label>
-          <input id="min-price" type="number" inputmode="decimal" min="0" step="0.01" value="0">
-          <label for="max-price">Max £</label>
-          <input id="max-price" type="number" inputmode="decimal" min="0" step="0.01" value="9999">
-        </div>
-      </section>
-
-      <section>
-        <h3>Rating</h3>
-        <ul class="checklist">
-          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
-          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
-          <li><label><input type="radio" name="rating" value="3"> 3★ & up</label></li>
-        </ul>
-      </section>
-
-      <div class="filter-actions">
-        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
-        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
-      </div>
-    </aside>
-
-    <section class="results" aria-live="polite">
-      <div class="toolbar">
-        <span id="result-count">0 items</span>
-        <div class="chips" id="active-chips" aria-label="Active filters"></div>
-      </div>
-
-      <!-- Product Grid -->
-      <div class="grid" id="product-grid">
-        <!-- product cards (unchanged) -->
-        <!-- ... your existing product cards here ... -->
-      </div>
-    </section>
-  </main>
-
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-
+  <!-- ========================= Footer ========================= -->
   <footer class="footer">
     <div class="footer-inner">
-      <p>© <span id="year"></span> V-STORE</p>
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="categories.js" defer></script>
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Global JS (contains initNav replacement you added earlier) -->
+  <script src="script.js" defer></script>
 </body>
 </html>
