@@ -1,17 +1,17 @@
-import mariadb from "mariadb";
-import dotenv from "dotenv";
-dotenv.config();
+// db.js — MariaDB pool (CommonJS)
+const mariadb = require("mariadb");
+require("dotenv").config();
 
-export const pool = mariadb.createPool({
-  host: process.env.DB_HOST,
+const pool = mariadb.createPool({
+  host: process.env.DB_HOST || "localhost",
   port: Number(process.env.DB_PORT || 3306),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  connectionLimit: 5
+  user: process.env.DB_USER || "vstore_user",
+  password: process.env.DB_PASS || "supersecret",
+  database: process.env.DB_NAME || "vstore",
+  connectionLimit: 5,
 });
 
-export async function ping() {
+async function ping() {
   let conn;
   try {
     conn = await pool.getConnection();
@@ -21,3 +21,5 @@ export async function ping() {
     if (conn) conn.release();
   }
 }
+
+module.exports = { pool, ping };
