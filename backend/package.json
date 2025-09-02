@@ -4,15 +4,25 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+    "start": "node server.js"
   },
   "dependencies": {
+    "axios": "^1.11.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.3.0",
-    "morgan": "^1.10.0"
-  }
+    "mongoose": "^8.18.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "db.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
