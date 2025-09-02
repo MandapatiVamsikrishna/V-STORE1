@@ -2063,4 +2063,43 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       CATALOG = Array.from(seen.values());
     }
   }
+  const API_BASE = "http://localhost:5173/api"; // change to your deployed backend later
+
+async function api(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    ...options
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Request failed: ${res.status}`);
+  return data;
+}
+
+// Products example
+async function loadProducts() {
+  const products = await api("/products");
+  // TODO: render product cards using your existing DOM code
+  console.log(products);
+}
+
+// Auth example
+async function login(email, password) {
+  const data = await api("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password })
+  });
+  localStorage.setItem("token", data.token);
+  return data;
+}
+
+// Order example
+async function createOrder(items) {
+  const token = localStorage.getItem("token");
+  return await api("/orders", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ items }) // [{product_id, quantity, price_each}]
+  });
+}
+
 })();
