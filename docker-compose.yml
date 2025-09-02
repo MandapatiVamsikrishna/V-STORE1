@@ -1,0 +1,18 @@
+services:
+  mariadb:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpw
+      MARIADB_DATABASE: vstore
+      MARIADB_USER: vstore_user
+      MARIADB_PASSWORD: supersecret
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+volumes:
+  dbdata:
