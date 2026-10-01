@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Checkout — V-STORE</title>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation (same pattern as your other pages) -->
+<!-- Page Hero -->
+<header class="page-hero">
+<div class="hero-inner"><ol aria-label="Checkout progress" class="steps"><li class="done"><span>1</span>Cart</li><li aria-current="step" class="current"><span>2</span>Delivery &amp; payment</li><li class=""><span>3</span>Confirmation</li></ol>
+<h1>Checkout</h1>
+<p class="muted">Secure payment &amp; fast delivery. Enter your details below.</p>
+<p class="muted" hidden="" id="checkout-signin-note">Signed in as <strong id="checkout-user"></strong>. Your order will appear in <a href="orders.html">Orders</a>.</p>
+</div>
+</header>
+<!-- Layout: left = Order Summary (sticky), right = Checkout Form -->
+<main class="container" id="main" style="align-items:start;">
+<!-- Order Summary (script.js renders items & totals here) -->
+<aside aria-label="Order summary" class="filters">
+<h2 class="filters-title">Order Summary</h2>
+<ul id="cart-items" style="list-style:none; padding:0; margin:0;"></ul>
+<hr style="border:none;border-top:1px solid color-mix(in oklab, var(--text) 10%, transparent); margin:.8rem 0;"/>
+<!-- Promo code -->
+<form class="newsletter" id="promo-form" style="margin:.4rem 0 .6rem;">
+<input autocomplete="off" id="promo-code" placeholder="Promo code (e.g. WELCOME10)" type="text"/>
+<button type="submit">Apply</button>
+</form>
+<p class="form-hint" id="promo-hint">
+        Codes: <strong>WELCOME10</strong> (10% off), <strong>FREESHIP</strong> (free shipping), <strong>SAVE5</strong> (£5 off)
+      </p>
+<!-- Totals -->
+<div class="summary-lines" style="display:grid; gap:.35rem; margin-top:.4rem;">
+<div class="meta" style="display:flex; justify-content:space-between;">
+<span>Subtotal</span><strong id="summary-subtotal">£0.00</strong>
+</div>
+<div class="meta" style="display:flex; justify-content:space-between;">
+<span>Discount</span><strong id="summary-discount">– £0.00</strong>
+</div>
+<div class="meta" style="display:flex; justify-content:space-between;">
+<span>Shipping</span><strong id="summary-shipping">£0.00</strong>
+</div>
+<p class="form-hint" id="shipping-note" style="margin:.1rem 0 0;"></p>
+<div class="meta" style="display:flex; justify-content:space-between; border-top:1px solid color-mix(in oklab, var(--text) 10%, transparent); padding-top:.5rem; margin-top:.4rem;">
+<strong>Total</strong><strong id="summary-total">£0.00</strong>
+</div>
+</div>
+</aside>
+<!-- Checkout Form -->
+<section aria-live="polite" class="results" style="width:100%;">
+<div class="toolbar" style="margin-bottom:.8rem;">
+<span id="item-count">0 items</span>
+</div>
+<form class="card" id="checkout-form" style="padding:1rem;">
+<h2 style="margin:.2rem 0 .6rem;">Shipping Details</h2>
+<div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem;">
+<div>
+<label for="name">Full Name</label>
+<input id="name" name="name" required="" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" type="text"/>
+</div>
+<div>
+<label for="phone">Phone</label>
+<input id="phone" inputmode="tel" name="phone" placeholder="+44 7700 900123" required="" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" type="tel"/>
+</div>
+<div style="grid-column:1 / -1;">
+<label for="address">Address</label>
+<input id="address" name="address" placeholder="House, street, area" required="" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" type="text"/>
+</div>
+<div>
+<label for="city">City</label>
+<input id="city" name="city" required="" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" type="text"/>
+</div>
+<div>
+<!-- rename id to 'zip' so script.js captures it -->
+<label for="zip">Postcode</label>
+<input id="zip" name="zip" placeholder="SW1A 1AA" required="" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" type="text"/>
+</div>
+</div>
+<div class="slot-picker" id="slot-picker"></div><h2 style="margin:1rem 0 .6rem;">Payment</h2>
+<div class="payment-options" style="display:grid; gap:.6rem;">
+<!-- Credit Card -->
+<label class="payment-option chip" style="cursor:pointer;">
+<input name="payment-method" required="" type="radio" value="credit-card"/>
+<span style="margin-left:.4rem;">Credit / Debit Card</span>
+</label>
+<div class="payment-details" id="credit-card-details" style="display:none;">
+<div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem;">
+<div style="grid-column:1 / -1;">
+<label for="card-number">
+                  Card Number
+                  <!-- brand badge used by script.js -->
+<span class="chip" id="card-brand" style="display:none; margin-left:.5rem;"></span>
+</label>
+<input autocomplete="cc-number" id="card-number" inputmode="numeric" name="card-number" placeholder="1234 5678 9012 3456" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);"/>
+</div>
+<div>
+<label for="card-name">Name on Card</label>
+<input autocomplete="cc-name" id="card-name" name="card-name" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);"/>
+</div>
+<div>
+<label for="expiry-date">Expiry (MM/YY)</label>
+<input autocomplete="cc-exp" id="expiry-date" inputmode="numeric" name="expiry-date" placeholder="MM/YY" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);"/>
+</div>
+<div>
+<label for="cvv">CVV</label>
+<input autocomplete="cc-csc" id="cvv" inputmode="numeric" name="cvv" placeholder="123" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);"/>
+</div>
+</div>
+</div>
+<!-- PayPal -->
+<label class="payment-option chip" style="cursor:pointer;">
+<input name="payment-method" type="radio" value="paypal"/>
+<span style="margin-left:.4rem;">PayPal</span>
+</label>
+<div class="payment-details" id="paypal-details" style="display:none;">
+<p class="form-hint">You’ll be redirected to PayPal to complete your payment.</p>
+</div>
+<!-- UPI -->
+<label class="payment-option chip" style="cursor:pointer;">
+<input name="payment-method" type="radio" value="upi"/>
+<span style="margin-left:.4rem;">UPI</span>
+</label>
+<div class="payment-details" id="upi-details" style="display:none;">
+<label for="upi-id">UPI ID</label>
+<input id="upi-id" name="upi-id" placeholder="yourname@upi" style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" type="text"/>
+<div class="meta" id="upi-platform-display" style="display:none; align-items:center; gap:.5rem; margin-top:.35rem;">
+<span aria-hidden="true" id="upi-platform-icon">💳</span>
+<span class="muted" id="upi-platform-name"></span>
+</div>
+</div>
+<!-- Cash on delivery -->
+<label class="payment-option chip" style="cursor:pointer;">
+<input name="payment-method" type="radio" value="cod"/>
+<span style="margin-left:.4rem;">Cash on delivery</span>
+</label>
+<div class="payment-details" id="cod-details" style="display:none;">
+<p class="form-hint">Pay the driver when your order arrives.</p>
+</div>
+</div>
+<p class="form-hint">Demo store: payments are simulated — no real card is charged. Try card 4242 4242 4242 4242, any future expiry, any CVC.</p>
+<button class="btn-primary" style="margin-top:1rem;" type="submit">Place order</button>
+</form>
+</section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- ✅ load your unified logic -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

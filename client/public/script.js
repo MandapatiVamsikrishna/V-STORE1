@@ -1,0 +1,1855 @@
+/* ========================= V-STORE — single, unified script.js ========================= */
+(() => {
+  /* ========================= Helpers / Config ========================= */
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const html = document.documentElement;
+
+  // ----- GH Pages base-path fix -----
+  const BASE = (() => {
+    const seg = location.pathname.split('/').filter(Boolean)[0] || "";
+    return location.hostname.endsWith("github.io") && seg ? `/${seg}` : "";
+  })();
+  const withBase = (url) => {
+    if (!url) return BASE + "/";
+    if (/^https?:\/\//i.test(url)) return url;
+    if (url.startsWith(BASE + "/")) return url;
+    if (url.startsWith("/")) return BASE + url;
+    return `${BASE}/${url.replace(/^\//, "")}`;
+  };
+
+  // Storage keys
+  const STORAGE_KEY = "vstore_cart";
+  const PROMO_KEY   = "vstore_promo";
+  const ORDER_KEY   = "vstore_last_order";     // thank-you page reads this
+  const CKOUT_INFO  = "vstore_checkout_info";  // optional saved shipping info
+  const ORDERS_KEY  = "vstore_orders";
+
+  // UI nodes (if present on page)
+  const themeBtn  = $("#theme-toggle");
+  const navToggle = $(".nav-toggle");
+  const navMenu   = $("#nav-menu");
+  const toastEl   = $("#toast");
+  const yearEl    = $("#year");
+  const badge     = $("#cart-count");
+
+  // Misc
+  const ORDERS_PAGE_SIZE   = 8;
+  const GBP  = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
+  // Money in the shopper's market (see market.js). `cur` = currency the amount is already in.
+  const money = (n, cur) => window.VMarket ? window.VMarket.format(n, cur) : GBP.format(Number(n) || 0);
+  const shelf = (gbp) => window.VMarket ? window.VMarket.fromGBP(gbp) : (Number(gbp) || 0);
+  const QMIN = 1, QMAX = 99;
+  const FREE_SHIP_THRESHOLD = 49;
+
+  /* ========================= Boot ========================= */
+  document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    initNav();
+    initYear();
+
+    initPromoTicker();          // safe no-op if absent
+    initCartAPI();              // window.cart*
+    updateBadge();
+
+    initGlobalClicks();         // add-to-cart, qty +/-, wishlist
+    initSearch();               // search forms (safe no-op if absent)
+    initFiltersAndSort();       // category pages (safe no-op)
+    initCartRendering();        // cart page (safe no-op)
+    initPromoUI();              // promo inputs (safe no-op)
+    initCheckout();             // checkout form (safe no-op)
+    document.addEventListener("market:changed", () => renderCart());
+    initOrderSummaryInline();   // inline summary on checkout page (safe no-op)
+    initOrdersPage();           // orders.html logic (safe no-op)
+    initThankYou();             // thank-you.html receipt (safe no-op)
+
+    initChatAssistant();        // chat with commands + inline product cards + health tips
+  });
+function initNav() {
+  if (!(navToggle && navMenu)) return;
+  const overlay = document.getElementById('nav-overlay');
+
+  const setOpen = (open) => {
+    navToggle.setAttribute('aria-expanded', String(open));
+    navMenu.setAttribute('aria-expanded', String(open));
+    navMenu.classList.toggle('open', open);
+    if (overlay) {
+      overlay.hidden = !open;
+      overlay.classList.toggle('show', open);
+    }
+    // focus first link when opening (accessibility nicety)
+    if (open) navMenu.querySelector('a,button')?.focus();
+  };
+
+  navToggle.addEventListener('click', () => {
+    const ex = navToggle.getAttribute('aria-expanded') === 'true';
+    setOpen(!ex);
+  });
+
+  // close when clicking the overlay
+  overlay?.addEventListener('click', () => setOpen(false));
+
+  // close after choosing a link (so it feels like an app drawer)
+  navMenu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  // close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+}
+
+  /* ========================= UI basics ========================= */
+  function toast(msg, ms=2000) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    toastEl.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => {
+      toastEl.classList.remove("show");
+      toastEl.hidden = true;
+    }, ms);
+  }
+
+  function initTheme() {
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved) html.setAttribute("data-theme", saved);
+    } catch {}
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        const next = (html.getAttribute("data-theme") || "light") === "light" ? "dark" : "light";
+        html.setAttribute("data-theme", next);
+        try { localStorage.setItem("theme", next); } catch {}
+      });
+    }
+  }
+
+  function initNav() {
+    if (!(navToggle && navMenu)) return;
+    navToggle.addEventListener("click", () => {
+      const ex = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!ex));
+      navMenu.setAttribute("aria-expanded", String(!ex));
+      navMenu.classList.toggle("open", !ex); // ensure CSS can show mobile menu
+    });
+  }
+
+  function initYear() { if (yearEl) yearEl.textContent = new Date().getFullYear(); }
+
+  /* ========================= Optional promo ticker ========================= */
+  function initPromoTicker() {
+    const bar   = $(".promo");
+    const track = $(".promo .promo-track");
+    if (!bar || !track) return;
+
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduce.matches) return;
+
+    try {
+      if (localStorage.getItem("promo:hidden") === "1") {
+        bar.style.display = "none"; return;
+      }
+    } catch {}
+
+    track.innerHTML = track.innerHTML + track.innerHTML;
+    const SPEED = 90; // px/s
+    const recalc = () => {
+      const baseWidth = track.scrollWidth / 2;
+      const dur = Math.max(12, Math.round(baseWidth / SPEED));
+      track.style.setProperty("--dur", `${dur}s`);
+      track.classList.add("is-ready");
+    };
+    recalc();
+
+    bar.addEventListener("mouseenter", () => track.style.animationPlayState = "paused");
+    bar.addEventListener("mouseleave", () => track.style.animationPlayState = "running");
+
+    const close = $(".promo-close", bar);
+    if (close) close.addEventListener("click", () => {
+      bar.style.display = "none";
+      try { localStorage.setItem("promo:hidden","1"); } catch {}
+    });
+
+    let raf;
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(recalc);
+    });
+  }
+/* ========================= delivery to ========================= */
+(function(){
+  const sel = document.getElementById('deliver-select');
+  if(!sel) return;
+  const saved = JSON.parse(localStorage.getItem('vstore-country')||'{}');
+  if(saved?.code) sel.value = saved.code;
+  sel.addEventListener('change', ()=>{
+    const code = sel.value;
+    const name = sel.options[sel.selectedIndex].text;
+    localStorage.setItem('vstore-country', JSON.stringify({code, name}));
+    const live = document.getElementById('a11y-live');
+    if(live){ live.textContent = `Delivery country set to ${name}`; setTimeout(()=>live.textContent='',1200); }
+    window.dispatchEvent(new CustomEvent('country:changed',{detail:{code,name}}));
+  });
+})();
+  /* ========================= Cart storage API ========================= */
+  function readCart() {
+    try {
+      const legacy = localStorage.getItem("cart"); // migration support
+      const raw = localStorage.getItem(STORAGE_KEY) ?? legacy;
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
+  function writeCart(items) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    document.dispatchEvent(new CustomEvent("cart:updated"));
+  }
+  function initCartAPI() {
+    if (window.cart) return;
+    window.cart = {
+      get: () => readCart(),
+      set: (items) => writeCart(items),
+      count: () => readCart().reduce((n, it) => n + (it.qty || 0), 0),
+      add: (item) => {
+        const items = readCart();
+        const f = items.find(i => String(i.id) === String(item.id));
+        if (f) f.qty = Math.min(QMAX, (f.qty || 0) + (item.qty || 1));
+        else items.push({ ...item, qty: Math.max(QMIN, item.qty || 1) });
+        writeCart(items);
+        updateBadge();
+      },
+      setQty: (id, qty) => {
+        const items = readCart();
+        const it = items.find(i => String(i.id) === String(id));
+        if (!it) return;
+        it.qty = Math.max(QMIN, Math.min(QMAX, qty|0));
+        writeCart(items);
+        updateBadge();
+      },
+      remove: (id) => { writeCart(readCart().filter(i => String(i.id) !== String(id))); updateBadge(); },
+      removeByName: (name) => {
+        const items = readCart().map(it => ({...it}));
+        const idx = items.findIndex(i => (i.name||"").toLowerCase().includes(String(name||"").toLowerCase()));
+        if (idx === -1) return false;
+        items.splice(idx,1); writeCart(items); updateBadge(); return true;
+      },
+      clear: () => { writeCart([]); updateBadge(); }
+    };
+    document.addEventListener("cart:updated", updateBadge);
+    window.addEventListener("storage", (e) => { if (e.key === STORAGE_KEY) updateBadge(); });
+  }
+  function updateBadge() { if (badge) { const n = window.cart.count(); badge.textContent = String(n); badge.dataset.zero = String(n === 0); } }
+  /* ========================= Promos + totals ========================= */
+  function getPromo() {
+    try { return JSON.parse(localStorage.getItem(PROMO_KEY)) || { code:null, type:null, value:0 }; }
+    catch { return { code:null, type:null, value:0 }; }
+  }
+  function setPromo(p) {
+    localStorage.setItem(PROMO_KEY, JSON.stringify(p || { code:null, type:null, value:0 }));
+    document.dispatchEvent(new CustomEvent("promo:updated"));
+  }
+  // Check a code against the database (Admin → Discounts); offline, use the built-in defaults
+  async function checkPromo(codeRaw) {
+    const code = (codeRaw || "").trim().toUpperCase();
+    if (!code) return { error: "Enter a promo code" };
+    const VS = window.VStore;
+    if (VS && await VS.online) {
+      try { return await VS.api.get(`/promos/check/${encodeURIComponent(code)}`); }
+      catch (err) { return { error: err.message || "That promo code isn't valid" }; }
+    }
+    const p = (window.VMarket?.defaultPromos || []).find(x => x.code === code);
+    return p || { error: "That promo code isn't valid" };
+  }
+  async function applyPromo(raw) {
+    const p = await checkPromo(raw);
+    if (p.error) { toast(p.error); return; }
+    setPromo(p);
+    toast(`Applied code ${p.code}`);
+    renderCart();
+  }
+
+  function computeTotals(items) {
+    // Same rules as the server (markets.json): currency, tax, delivery fee, free-delivery threshold
+    const promo = getPromo();
+    if (window.VMarket) return window.VMarket.totals(items, promo?.code ? promo : null);
+    const subtotal = items.reduce((t, it) => t + (Number(it.price)||0) * (Number(it.qty)||0), 0);
+    const shipping = items.length && subtotal < FREE_SHIP_THRESHOLD ? 1.99 : 0;
+    return { subtotal, discount: 0, shipping, tax: 0, taxIncluded: 0, total: subtotal + shipping, promo, toFree: Math.max(0, FREE_SHIP_THRESHOLD - subtotal) };
+  }
+
+  /* ========================= Product helpers ========================= */
+  function parsePrice(str) {
+    if (typeof str === "number") return str;
+    if (!str) return 0;
+    const m = String(str).replace(",", ".").match(/(\d+(\.\d{1,2})?)/);
+    return m ? parseFloat(m[1]) : 0;
+  }
+  function slugify(s) {
+    return String(s || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+  function getCardFromButton(btn) {
+    return btn.closest("[data-id][data-name]") ||
+           btn.closest(".product-item, article, .product-card");
+  }
+  function readProductFromCard(card) {
+    const id = card?.dataset.id || slugify(card?.dataset.name || card?.querySelector(".title, .product-title")?.textContent);
+    const name = card?.dataset.name || card?.querySelector(".title, .product-title")?.textContent?.trim() || "Item";
+    const price = card?.dataset.price ? parseFloat(card.dataset.price)
+      : parsePrice(card?.querySelector(".price, .product-price")?.textContent);
+    const img = card?.querySelector("img")?.src;
+    const qtyWrap = card?.querySelector(".qty, .quantity-controls");
+    const qEl = qtyWrap?.querySelector(".q, .quantity");
+    const qty = Math.max(QMIN, Math.min(QMAX, parseInt(qEl?.textContent || "1", 10)));
+    const dept = card?.dataset.dept || undefined;   // used for country delivery rules
+    return { id, name, price, qty, img, dept };
+  }
+
+  /* ========================= Global clicks (works on all pages) ========================= */
+  function initGlobalClicks() {
+    document.addEventListener("click", (e) => {
+      const t = e.target;
+
+      // Add to cart
+      const addBtn = t.closest(".add-to-cart");
+      if (addBtn) {
+        e.preventDefault();
+        const card = getCardFromButton(addBtn);
+        if (!card) return;
+        const item = readProductFromCard(card);
+        if (!item || !item.id) return;
+        window.cart.add(item);
+        if (!(window.VStoreShop && window.VStoreShop.onAdd(item))) toast(`Added ${item.qty} × ${item.name} 🛒`);
+        return;
+      }
+
+      // Quantity +/- on product cards
+      if (t.closest(".inc") || t.closest(".dec")) {
+        const wrap = t.closest(".qty, .quantity-controls");
+        const qEl  = wrap?.querySelector(".q, .quantity");
+        if (!qEl) return;
+        e.preventDefault();
+        let q = parseInt(qEl.textContent, 10) || 1;
+        q = t.closest(".inc") ? Math.min(QMAX, q + 1) : Math.max(QMIN, q - 1);
+        qEl.textContent = String(q);
+        return;
+      }
+
+      // Wishlist heart toggles
+      const wish = t.closest(".wishlist, .wish");
+      if (wish) {
+        e.preventDefault();
+        const card = getCardFromButton(wish);
+        const sku = card?.dataset.id;
+        if (sku && window.VStore) {
+          const on = window.VStore.wishlist.toggle(sku); // repaints hearts + nav count
+          toast(on ? "Saved to wishlist ♥" : "Removed from wishlist");
+        } else {
+          wish.classList.toggle("active");
+          toast(wish.classList.contains("active") ? "Saved to wishlist ♥" : "Removed from wishlist");
+        }
+      }
+    });
+  }
+
+  /* ========================= Search (any page) ========================= */
+  function initSearch() {
+    $$("#search-form").forEach(form => {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const q = form.querySelector('input[type="search"]')?.value?.trim() ?? "";
+        const grid = $("#product-grid, .grid");
+        if (!grid) { if (q) toast(`Searching “${q}” 🔎`); return; }
+        currentSearch = q.toLowerCase();
+        filterAndSort();
+      });
+    });
+  }
+
+  /* ========================= Sort + Filters (category pages) ========================= */
+  let currentSearch = "";
+  const grid = $("#product-grid, .grid");
+  const resultCount = $("#result-count");
+  const sortSelect  = $("#sort-select");
+  const chipsWrap   = $("#active-chips") || $("#active-chips.chips");
+  const minPriceEl  = $("#min-price");
+  const maxPriceEl  = $("#max-price");
+  const ratingRadios= $$('input[name="rating"]');
+  const catChecks   = $$('input[name="cat"]');
+  const applyBtn    = $("#apply-filters");
+  const clearBtn    = $("#clear-filters");
+
+  function initFiltersAndSort() {
+    if (!grid) return;
+    filterAndSort(); // initial
+    sortSelect?.addEventListener("change", filterAndSort);
+    applyBtn?.addEventListener("click", filterAndSort);
+    [...catChecks, ...ratingRadios].forEach(el => el.addEventListener("change", filterAndSort));
+    minPriceEl?.addEventListener("input", debounce(filterAndSort, 250));
+    maxPriceEl?.addEventListener("input", debounce(filterAndSort, 250));
+    clearBtn?.addEventListener("click", () => {
+      catChecks.forEach(c => c.checked = true);
+      ratingRadios.forEach(r => r.checked = r.value === "all");
+      if (minPriceEl) minPriceEl.value = "0";
+      if (maxPriceEl) maxPriceEl.value = "9999";
+      const s = $("#search-input"); if (s) s.value = "";
+      currentSearch = "";
+      if (sortSelect) sortSelect.value = "relevance";
+      filterAndSort();
+    });
+  }
+
+  function activeFilterState() {
+    const cats = catChecks.filter(c => c.checked).map(c => c.value);
+    const minP = minPriceEl ? parseFloat(minPriceEl.value || "0") : 0;
+    const maxP = maxPriceEl ? parseFloat(maxPriceEl.value || "9999") : 9999;
+    const rSel = ratingRadios.find(r => r.checked)?.value ?? "all";
+    const rMin = rSel === "all" ? 0 : parseFloat(rSel);
+    return { cats, minP, maxP, rMin, search: currentSearch.trim() };
+  }
+
+  function filterAndSort() {
+    const cards = $$(".product-item, .card.product-item, [data-name]", grid);
+    const { cats, minP, maxP, rMin, search } = activeFilterState();
+
+    let shown = 0;
+    cards.forEach(c => {
+      const name  = (c.dataset.name || c.querySelector(".title, .product-title")?.textContent || "").toLowerCase();
+      const cat   = (c.dataset.category || "").toLowerCase();
+      const price = c.dataset.price ? parseFloat(c.dataset.price) : parsePrice(c.querySelector(".price, .product-price")?.textContent);
+      const rate  = parseFloat(c.dataset.rating || "0");
+
+      const okCat   = cats.length ? cats.includes(cat) : true;
+      const okPrice = price >= minP && price <= maxP;
+      const okRate  = rate >= rMin;
+      const okSearch= search ? name.includes(search) : true;
+
+      const visible = okCat && okPrice && okRate && okSearch;
+      c.style.display = visible ? "" : "none";
+      if (visible) shown++;
+    });
+
+    if (sortSelect) {
+      const v = sortSelect.value;
+      const vis = cards.filter(c => c.style.display !== "none");
+      const nameF  = c => (c.dataset.name || c.querySelector(".title, .product-title")?.textContent || "").trim().toLowerCase();
+      const priceF = c => c.dataset.price ? parseFloat(c.dataset.price) : parsePrice(c.querySelector(".price, .product-price")?.textContent);
+      const rateF  = c => parseFloat(c.dataset.rating || "0");
+      const sorters = {
+        "relevance":    () => 0,
+        "price-asc":    (a,b) => priceF(a) - priceF(b),
+        "price-desc":   (a,b) => priceF(b) - priceF(a),
+        "name-asc":     (a,b) => nameF(a).localeCompare(nameF(b)),
+        "name-desc":    (a,b) => nameF(b).localeCompare(nameF(a)),
+        "rating-desc":  (a,b) => rateF(b) - rateF(a),
+      };
+      (vis.sort(sorters[v] || sorters.relevance)).forEach(c => grid.appendChild(c));
+    }
+
+    if (resultCount) resultCount.textContent = `${shown} item${shown===1?"":"s"}`;
+    if (chipsWrap) {
+      chipsWrap.innerHTML = "";
+      const addChip = (label, onRemove) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.innerHTML = `${label} <button type="button" aria-label="Remove">×</button>`;
+        chip.querySelector("button").addEventListener("click", onRemove);
+        chipsWrap.appendChild(chip);
+      };
+      if (catChecks.some(c => !c.checked))
+        catChecks.filter(c => c.checked).forEach(c => addChip(c.value, () => { c.checked = false; filterAndSort(); }));
+      const { minP, maxP } = activeFilterState();
+      if (minP > 0)    addChip(`Min ${GBP.format(minP)}`, () => { if(minPriceEl) minPriceEl.value = "0"; filterAndSort(); });
+      if (maxP < 9999) addChip(`Max ${GBP.format(maxP)}`, () => { if(maxPriceEl) maxPriceEl.value = "9999"; filterAndSort(); });
+      const rSel2 = ratingRadios.find(r => r.checked)?.value ?? "all";
+      if (rSel2 !== "all") addChip(`${rSel2}★ & up`, () => { const all = ratingRadios.find(r => r.value === "all"); if (all) all.checked = true; filterAndSort(); });
+      if (currentSearch) addChip(`“${currentSearch}”`, () => { const s = $("#search-input"); if (s) s.value = ""; currentSearch = ""; filterAndSort(); });
+    }
+  }
+  function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn.apply(null, a), ms); }; }
+
+  /* ========================= Cart / Summary rendering ========================= */
+  function initCartRendering() {
+    document.addEventListener("cart:updated", renderCart);
+    document.addEventListener("promo:updated", renderCart);
+    renderCart();
+
+    $("#clear-cart")?.addEventListener("click", () => {
+      if (!confirm("Clear all items from the cart?")) return;
+      window.cart.clear();
+      renderCart();
+      toast("Cart cleared");
+    });
+
+    const checkoutBtn = $("#proceed-to-checkout") || $("#checkout");
+    checkoutBtn?.addEventListener("click", () => { window.location.href = "checkout.html"; });
+
+    $("#cart-items")?.addEventListener("click", (e) => {
+      const row = e.target.closest("li.card"); if (!row) return;
+      const id = row.dataset.id;
+      if (e.target.classList.contains("remove")) {
+        window.cart.remove(id);
+        renderCart();
+        toast("Item removed");
+        return;
+      }
+      if (e.target.classList.contains("inc") || e.target.classList.contains("dec")) {
+        const qEl = row.querySelector(".q");
+        let q = parseInt(qEl.textContent, 10) || 1;
+        q = e.target.classList.contains("inc") ? Math.min(QMAX, q + 1) : Math.max(QMIN, q - 1);
+        qEl.textContent = q;
+        window.cart.setQty(id, q);
+        renderCart();
+      }
+    });
+  }
+
+  function renderCart() {
+    const list = $("#cart-items");
+    const items = window.cart.get();
+
+    const count = window.cart.count();
+    $("#item-count") && ($("#item-count").textContent = `${count} item${count===1?"":"s"}`);
+    updateBadge();
+
+    if (!list) { updateSummariesOnly(items); return; }
+
+    const emptyCard  = $("#empty-cart");
+    const listAction = $("#list-actions");
+    if (emptyCard) {
+      if (items.length === 0) {
+        emptyCard.style.display = "";
+        list.innerHTML = "";
+        if (listAction) listAction.style.display = "none";
+      } else {
+        emptyCard.style.display = "none";
+        if (listAction) listAction.style.display = "flex";
+      }
+    }
+
+    list.innerHTML = "";
+    for (const it of items) {
+      const line = (it.price || 0) * (it.qty || 0);
+      const li = document.createElement("li");
+      li.className = "card";
+      li.dataset.id = it.id;
+      li.innerHTML = `
+        <div style="display:grid;grid-template-columns:96px 1fr auto;gap:.8rem;align-items:center;">
+          <div class="media" style="aspect-ratio:1/1;">
+            <img src="${it.img || 'https://via.placeholder.com/200?text=Item'}" alt="">
+          </div>
+          <div>
+            <h3 class="title" style="margin:.1rem 0;">${it.name}</h3>
+            <div class="meta"><span class="muted">Unit</span> <strong>${money(shelf(it.price))}</strong></div>
+            ${window.VMarket && !window.VMarket.canShip(it.dept) ? `<p class="line-warn">Not available for delivery to ${window.VMarket.market().name}</p>` : ""}
+            <button class="btn-ghost remove" type="button" style="margin-top:.4rem;">Remove</button>
+          </div>
+          <div style="justify-self:end;text-align:right;">
+            <div class="qty" style="margin-bottom:.4rem;">
+              <button class="dec" aria-label="Decrease">−</button>
+              <span class="q">${it.qty || 1}</span>
+              <button class="inc" aria-label="Increase">+</button>
+            </div>
+            <div><strong>${money(shelf(it.price) * (it.qty || 0))}</strong></div>
+          </div>
+        </div>`;
+      list.appendChild(li);
+    }
+
+    updateSummariesOnly(items);
+  }
+
+  function updateSummariesOnly(items) {
+    const t = computeTotals(items);
+    const m = window.VMarket ? window.VMarket.market() : { taxInclusive: true, taxName: "VAT", name: "UK" };
+
+    const simpleTotal = $("#total-price");
+    if (simpleTotal) simpleTotal.textContent = t.total.toFixed(2);
+
+    const subEl = $("#summary-subtotal"), discEl= $("#summary-discount"), shipEl= $("#summary-shipping"),
+          totEl = $("#summary-total"), noteEl= $("#shipping-note");
+    if (subEl && discEl && shipEl && totEl) {
+      subEl.textContent  = money(t.subtotal);
+      discEl.textContent = `– ${money(t.discount)}`;
+      shipEl.textContent = !items.length ? money(0) : (t.shipping === 0 ? "Free" : money(t.shipping));
+      totEl.textContent  = money(t.total);
+      // Tax row: added on top in US/CA, "included" everywhere else
+      let taxDt = document.getElementById("summary-tax-label"), taxDd = document.getElementById("summary-tax");
+      if (!taxDd) {
+        if (shipEl.parentElement && shipEl.parentElement.tagName !== "DL") {
+          // Row layout (checkout): add a matching row under Shipping
+          const row = shipEl.parentElement.cloneNode(false);
+          taxDt = document.createElement("span"); taxDt.id = "summary-tax-label";
+          taxDd = document.createElement("strong"); taxDd.id = "summary-tax";
+          row.append(taxDt, taxDd);
+          shipEl.parentElement.after(row);
+          taxDt._row = row;
+        } else {
+          // Definition-list layout (cart)
+          taxDt = document.createElement("dt"); taxDt.id = "summary-tax-label"; taxDt.className = "muted";
+          taxDd = document.createElement("dd"); taxDd.id = "summary-tax";
+          shipEl.after(taxDt); taxDt.after(taxDd);
+        }
+      }
+      taxDt.textContent = m.taxInclusive ? `Includes ${m.taxName}` : m.taxName;
+      taxDd.textContent = m.taxInclusive ? money(t.taxIncluded) : money(t.tax);
+      const showTax = items.length ? "" : "none";
+      if (taxDt.parentElement && taxDt.parentElement.tagName !== "DL") taxDt.parentElement.style.display = showTax ? "none" : "flex";
+      else taxDt.style.display = taxDd.style.display = showTax;
+      if (noteEl) {
+        const promo = t.promo;
+        const thresholdMsg = (promo?.code && !t.qualifies) ? `${promo.code} applies to orders of ${money(t.minSpend)} or more.` : "";
+        const shipMsg = items.length === 0 ? "" : (t.shipping === 0 ? "Free delivery applied." : `Add ${money(t.toFree)} more for free delivery.`);
+        noteEl.textContent = [thresholdMsg, shipMsg].filter(Boolean).join(" ");
+      }
+    }
+    // Applied code, with a way to remove it
+    let applied = document.getElementById("promo-applied");
+    const promoBox = $("#promo-hint") || $(".form-hint.promo-codes");
+    if (t.promo?.code && promoBox) {
+      if (!applied) { applied = document.createElement("p"); applied.id = "promo-applied"; applied.className = "promo-applied"; promoBox.before(applied); }
+      applied.innerHTML = `Code <strong>${t.promo.code}</strong> ${t.qualifies ? "applied" : "saved (not yet qualifying)"} · <button type="button" class="linklike" id="remove-promo">Remove</button>`;
+      applied.querySelector("#remove-promo").onclick = () => { setPromo(null); try { localStorage.removeItem(PROMO_KEY); } catch {} toast("Promo code removed"); renderCart(); };
+    } else if (applied) applied.remove();
+
+    // Items that can't be delivered to this country block checkout
+    const blocked = items.filter(it => window.VMarket && !window.VMarket.canShip(it.dept));
+    const go = document.getElementById("checkout");
+    if (go) { go.classList.toggle("is-disabled", blocked.length > 0); go.setAttribute("aria-disabled", String(blocked.length > 0)); }
+    let warn = document.getElementById("ship-warning");
+    const host = $("#cart-items")?.parentElement;
+    if (blocked.length && host) {
+      if (!warn) { warn = document.createElement("div"); warn.id = "ship-warning"; warn.className = "notice warn"; host.prepend(warn); }
+      warn.innerHTML = `<strong>${blocked.length} item${blocked.length > 1 ? "s" : ""} can't be delivered to ${m.name}.</strong> Fresh food ships within the UK only. Remove ${blocked.length > 1 ? "them" : "it"}, or change “Deliver to” at the top of the page.`;
+    } else if (warn) warn.remove();
+  }
+
+  /* ========================= Promo UI (cart + checkout) ========================= */
+  function initPromoUI() {
+    $("#apply-promo")?.addEventListener("click", () => applyPromo($("#promo")?.value));
+    $("#promo")?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        $("#apply-promo")?.click();
+      }
+    });
+    $("#promo-form")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      applyPromo($("#promo-code")?.value);
+    });
+  }
+
+  /* ========================= Orders storage/helpers ========================= */
+  function readLocalOrders() {
+    try { return JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]"); }
+    catch { return []; }
+  }
+  function writeOrders(list) {
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(list || []));
+  }
+  function addOrderToHistory(o) {
+    const list = readLocalOrders();
+    list.push(o);
+    writeOrders(list);
+  }
+  function formatGBP(n){ return GBP.format(Number(n||0)); }
+  function fmtDate(iso){ return new Date(iso).toLocaleString("en-GB",{year:"numeric",month:"short",day:"2-digit"}); }
+
+  // (Optional) demo data so Orders page isn't empty during dev
+  function seedOrdersIfEmpty(){
+    const have = readLocalOrders();
+    if (have.length) return;
+    writeOrders([
+      {
+        id: "ORD-240812-0012",
+        createdAt: new Date(Date.now()-1000*60*60*24*9).toISOString(),
+        status: "Delivered",
+        subtotal: 74.97, shipping: 1.00, discount: 7.50, total: 68.47,
+        items: [
+          { id:"SKU-TSHIRT-001", name:"Classic Tee", qty:1, price:19.99 },
+          { id:"SKU-MUG-002",    name:"Ceramic Mug", qty:2, price:12.99 },
+          { id:"SKU-CABLE-USB",  name:"USB-C Cable 2m", qty:1, price:28.00 }
+        ],
+        address: { name:"P. C. Chilukuri", line1:"221B Baker St", city:"London", postcode:"NW1 6XE", country:"UK" }
+      },
+      {
+        id: "ORD-240818-0044",
+        createdAt: new Date(Date.now()-1000*60*60*24*3).toISOString(),
+        status: "Shipped",
+        subtotal: 129.98, shipping: 1.00, discount: 0, total: 130.98,
+        items: [
+          { id:"SKU-HDST-009", name:"Wireless Headset", qty:1, price:89.99 },
+          { id:"SKU-MOUSE-003", name:"Ergo Mouse", qty:1, price:39.99 }
+        ],
+        address: { name:"Triveni Kandimalla", line1:"10 Downing St", city:"London", postcode:"SW1A 2AA", country:"UK" }
+      },
+      {
+        id: "ORD-240820-0102",
+        createdAt: new Date(Date.now()-1000*60*60*24*1).toISOString(),
+        status: "Processing",
+        subtotal: 59.99, shipping: 1.00, discount: 6.00, total: 54.99,
+        items: [
+          { id:"SKU-LED-STRIP", name:"LED Strip Light (5m)", qty:1, price:19.99 },
+          { id:"SKU-KEYB-004", name:"Mechanical Keyboard", qty:1, price:40.00 }
+        ],
+        address: { name:"V-STORE Customer", line1:"5 Market St", city:"Manchester", postcode:"M1 1AA", country:"UK" }
+      }
+    ]);
+  }
+
+  /* ========================= Checkout (payment UI + submit) ========================= */
+  function initCheckout() {
+    const payRadios = $$('input[name="payment-method"]');
+    const ccBox  = $("#credit-card-details");
+    const ppBox  = $("#paypal-details");
+    const upiBox = $("#upi-details");
+
+    if (payRadios.length) {
+      const showBox = (which) => {
+        if (ccBox)  ccBox.style.display  = which==="credit-card" ? "" : "none";
+        if (ppBox)  ppBox.style.display  = which==="paypal"     ? "" : "none";
+        if (upiBox) upiBox.style.display = which==="upi"        ? "" : "none";
+        const codBox = $("#cod-details"); if (codBox) codBox.style.display = which==="cod" ? "" : "none";
+      };
+      const sel = payRadios.find(r => r.checked) || payRadios[0];
+      sel.checked = true; showBox(sel.value);
+      payRadios.forEach(r => r.addEventListener("change", () => showBox(r.value)));
+    }
+
+    // ---- Compatible selectors (works across old/new ids) ----
+    const numEl = $("#card-number") || $("#cardNumber") || $("input[autocomplete='cc-number']");
+    const expEl = $("#expiry-date") || $("#card-expiry") || $("#card-exp") || $("input[autocomplete='cc-exp']");
+    const cvvEl = $("#cvv") || $("#card-cvc") || $("#cardCvc") || $("input[autocomplete='cc-csc']");
+    let   brandEl = $("#card-brand");
+    if (!brandEl && $("#credit-card-details")) {
+      brandEl = document.createElement("span");
+      brandEl.id = "card-brand";
+      brandEl.className = "chip";
+      brandEl.style.display = "none";
+      $("#credit-card-details").appendChild(brandEl);
+    }
+
+    // Formatting + validation helpers
+    const detectBrand = (panDigits) => {
+      const s = (panDigits||"").replace(/\D/g,"");
+      if (/^4\d{6,}/.test(s)) return { brand:"Visa", cvcLen:3 };
+      if (/^(5[1-5]\d{4}|2(2[2-9]\d{3}|[3-6]\d{4}|7[01]\d{3}|720\d{2}))/.test(s)) return { brand:"Mastercard", cvcLen:3 };
+      if (/^3[47]\d{5,}/.test(s)) return { brand:"American Express", cvcLen:4 };
+      if (/^(6011|65|64[4-9]|622(12[6-9]|1[3-9]\d|[2-8]\d{2}|9[01]\d|92[0-5]))/.test(s)) return { brand:"Discover", cvcLen:3 };
+      if (/^(508[5-9]|606985|607|608|65|81|82|35)/.test(s)) return { brand:"RuPay", cvcLen:3 };
+      return { brand:null, cvcLen:3 };
+    };
+    const luhnOk = (panDigits) => {
+      const s = (panDigits||"").replace(/\D/g,"");
+      let sum=0, alt=false;
+      for (let i=s.length-1;i>=0;i--){
+        let n=+s[i];
+        if (alt){ n*=2; if(n>9) n-=9; }
+        sum+=n; alt=!alt;
+      }
+      return s.length>=12 && (sum%10===0);
+    };
+    const expiryOk = (mmYY) => {
+      const m = (mmYY||"").trim();
+      if (!/^\d{2}\/\d{2}$/.test(m)) return false;
+      let [MM, YY] = m.split("/").map(n=>+n);
+      if (MM<1 || MM>12) return false;
+      const now = new Date();
+      const yearBase = 2000 + YY;
+      const exp = new Date(yearBase, MM, 0, 23,59,59,999);
+      return exp >= now;
+    };
+    const sanitizeDigits = (el, max=19) => (el?.value||"").replace(/\D/g,"").slice(0,max);
+    const formatCardNumber = (digits) => {
+      if (/^3[47]/.test(digits)){ // AmEx 4-6-5
+        return digits.slice(0,15).replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, (__,a,b,c)=>[a,b,c].filter(Boolean).join(" "));
+      }
+      return digits.slice(0,19).replace(/(\d{4})(?=\d)/g, "$1 ").trim();
+    };
+
+    // Bind formatting (if fields exist)
+    numEl?.addEventListener("input", () => {
+      const digits = sanitizeDigits(numEl, 19);
+      const { brand, cvcLen } = detectBrand(digits);
+      numEl.value = formatCardNumber(digits);
+      if (brandEl) {
+        if (brand){ brandEl.style.display = "inline-flex"; brandEl.textContent = brand; }
+        else { brandEl.style.display = "none"; brandEl.textContent = ""; }
+      }
+      if (cvvEl) { cvvEl.maxLength = cvcLen; cvvEl.placeholder = "•".repeat(cvcLen) || "123"; }
+    });
+    expEl?.addEventListener("input", () => {
+      let v = expEl.value.replace(/\D/g,"").slice(0,4);
+      if (v.length >= 3) v = v.slice(0,2) + "/" + v.slice(2);
+      expEl.value = v;
+    });
+    cvvEl?.addEventListener("input", () => {
+      cvvEl.value = cvvEl.value.replace(/\D/g,"").slice(0,4);
+    });
+
+    // UPI detection/validation
+    const upiIdEl = $("#upi-id");
+    const upiWrap = $("#upi-platform-display");
+    const upiName = $("#upi-platform-name");
+    const upiIcon = $("#upi-platform-icon");
+
+    const detectUPI = (handle) => {
+      const s = (handle||"").toLowerCase();
+      if (!/@/.test(s)) return null;
+      const dom = s.split("@")[1] || "";
+      if (/(ybl|phonepe)/.test(dom))      return { name:"PhonePe", icon:"🟪" };
+      if (/(ok|google)/.test(dom))        return { name:"Google Pay", icon:"🟦" };
+      if (/paytm/.test(dom))              return { name:"Paytm", icon:"🟦" };
+      if (/(oksbi|sbi)/.test(dom))        return { name:"SBI UPI", icon:"🔵" };
+      if (/okicici|icici|ibl/.test(dom))  return { name:"ICICI UPI", icon:"🟧" };
+      if (/okaxis|axis/.test(dom))        return { name:"Axis UPI", icon:"🟥" };
+      if (/okhdfcbank|hdfc/.test(dom))    return { name:"HDFC UPI", icon:"🟦" };
+      return { name: dom.toUpperCase(), icon:"💳" };
+    };
+    const upiValid = (v) => /^[a-z0-9.\-_]{2,}@[a-z0-9.\-_]{2,}$/i.test(v||"");
+
+    upiIdEl?.addEventListener("input", () => {
+      const info = detectUPI(upiIdEl.value);
+      if (!info) { if (upiWrap) upiWrap.style.display="none"; return; }
+      if (upiWrap) {
+        upiWrap.style.display = "inline-flex";
+        if (upiName) upiName.textContent = info.name;
+        if (upiIcon) upiIcon.textContent = info.icon;
+      }
+    });
+
+    // Submit order
+    $("#checkout-form")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = e.currentTarget.querySelector('[type="submit"]');
+
+      const items = window.cart.get();
+      if (!items.length) { toast("Your cart is empty"); return; }
+
+      const name = ($("#name")?.value || "").trim();
+      const addr = ($("#address")?.value || "").trim();
+      if (name.length < 2){ toast("Enter your full name"); return; }
+      if (addr.length < 5){ toast("Enter a valid address"); return; }
+
+      const mkt = window.VMarket ? window.VMarket.market() : null;
+      if (mkt) {
+        const blockedItems = items.filter(it => !window.VMarket.canShip(it.dept));
+        if (blockedItems.length) { toast(`${blockedItems.map(i => i.name).join(", ")} can't be delivered to ${mkt.name}. Remove ${blockedItems.length > 1 ? "them" : "it"} from your cart.`, 4500); return; }
+        const pc = ($("#zip")?.value || "").trim();
+        if (!new RegExp(mkt.postcode.pattern).test(pc)) { toast(`Enter a valid ${mkt.postcode.label} for ${mkt.name}, e.g. ${mkt.postcode.example}`, 4000); $("#zip")?.focus(); return; }
+      }
+
+      const method = document.querySelector('input[name="payment-method"]:checked')?.value;
+      if (!method){ toast("Choose a payment method"); return; }
+      if (mkt && !mkt.payments.includes(method === "credit-card" ? "card" : method)) { toast(`That payment method isn't available in ${mkt.name}`); return; }
+
+      let payMeta = { method };
+
+      if (method === "credit-card") {
+        const rawDigits = (numEl?.value||"").replace(/\D/g,"");
+        const brandInfo = detectBrand(rawDigits);
+        if (!luhnOk(rawDigits)){ toast("Invalid card number"); return; }
+        if (!expiryOk(expEl?.value || "")){ toast("Invalid expiry"); return; }
+        const cvcNeeded = brandInfo.cvcLen || 3;
+        if (!new RegExp(`^\\d{${cvcNeeded}}$`).test((cvvEl?.value || "").trim())){ toast(`CVC must be ${cvcNeeded} digits`); return; }
+        payMeta = { method:"card", brand: brandInfo.brand || "Card", last4: rawDigits.slice(-4) };
+      } else if (method === "upi") {
+        const id = (upiIdEl?.value || "").trim();
+        if (!upiValid(id)) { toast("Enter a valid UPI ID"); return; }
+        const info = detectUPI(id) || { name:"UPI" };
+        payMeta = { method:"upi", handle:id, platform:info.name };
+      } else if (method === "paypal") {
+        payMeta = { method:"paypal" };
+      }
+
+      const customer = {
+        name,
+        address: addr,
+        email:   $("#email")?.value?.trim() || "",
+        phone:   $("#phone")?.value?.trim() || "",
+        city:    $("#city")?.value?.trim() || "",
+        state:   $("#state")?.value?.trim() || "",
+        zip:     $("#zip")?.value?.trim() || "",
+        country: mkt ? mkt.name : ($("#country")?.value?.trim() || ""),
+      };
+      try { sessionStorage.setItem(CKOUT_INFO, JSON.stringify(customer)); } catch {}
+
+      // ---- Server checkout (when the API is running) ----
+      const VS = window.VStore;
+      if (VS && await VS.online) {
+        if (!VS.auth.requireLogin("Sign in to place your order — your cart is saved.")) return;
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.textContent; submitBtn.textContent = "Placing order…"; }
+        try {
+          const srv = await VS.api.post("/orders", {
+            items: items.map(it => ({ id: it.id, qty: +it.qty || 1 })),
+            promoCode: getPromo()?.code || undefined,
+            deliverySlot: document.getElementById("delivery-slot")?.value || undefined,
+            market: mkt ? mkt.code : "GB",
+            shippingAddress: {
+              name: customer.name, email: customer.email, phone: customer.phone,
+              line1: customer.address, city: customer.city, state: customer.state,
+              postcode: customer.zip, country: customer.country
+            },
+            payment: { method: payMeta.method === "credit-card" ? "card" : payMeta.method, brand: payMeta.brand, last4: payMeta.last4, handle: payMeta.handle }
+          });
+          const receipt = {
+            id: srv.orderNumber, serverId: srv._id, createdAt: srv.createdAt, deliverySlot: srv.deliverySlot,
+            currency: srv.currency, deliveryEstimate: srv.deliveryEstimate,
+            items: srv.items.map(i => ({ id: i.sku, name: i.name, price: i.price, qty: i.qty, img: i.image })),
+            totals: { subtotal: srv.subtotal, discount: srv.discount, shipping: srv.shipping, tax: srv.tax, taxIncluded: srv.taxIncluded, total: srv.total, promo: srv.promoCode ? { code: srv.promoCode } : null },
+            customer, payment: payMeta
+          };
+          try { sessionStorage.setItem(ORDER_KEY, JSON.stringify(receipt)); } catch {}
+          window.cart.clear();
+          try { localStorage.removeItem(PROMO_KEY); } catch {}
+          toast("Order placed ✅");
+          setTimeout(() => { window.location.href = "thank-you.html"; }, 700);
+        } catch (err) {
+          toast(err.message || "Couldn't place your order", 4000);
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitBtn.dataset.label || "Place order"; }
+        }
+        return;
+      }
+
+      // ---- Offline demo checkout (no backend, e.g. GitHub Pages) ----
+      const totals = computeTotals(items);
+      const order = {
+        currency: totals.currency || "GBP",
+        id: "ORD-" + Date.now(),
+        createdAt: new Date().toISOString(),
+        items: items.map(it => ({ id:it.id, name:it.name, price:shelf(+it.price||0), qty:+it.qty||1, img:it.img||null })),        totals,
+        customer,
+        payment: payMeta
+      };
+
+      // Persist to Orders history (used by orders.html)
+      const normalized = {
+        id: order.id,
+        createdAt: order.createdAt,
+        status: "Processing",
+        subtotal: +(totals.subtotal||0),
+        shipping: +(totals.shipping||0),
+        discount: +(totals.discount||0),
+        total: +(totals.total||0),
+        currency: order.currency,
+        items: order.items.map(i => ({ id:i.id, name:i.name, qty:i.qty, price:i.price })),
+        address: {
+          name: customer.name,
+          line1: customer.address,
+          city: customer.city,
+          postcode: customer.zip,
+          country: customer.country
+        }
+      };
+      addOrderToHistory(normalized);
+
+      // Save full order for thank-you page
+      try { sessionStorage.setItem(ORDER_KEY, JSON.stringify(order)); }
+      catch { localStorage.setItem(ORDER_KEY, JSON.stringify(order)); }
+
+      // Clear cart & promo AFTER saving
+      window.cart.clear();
+      try { localStorage.removeItem(PROMO_KEY); } catch {}
+
+      toast("Payment successful ✅");
+      setTimeout(()=>{ window.location.href = "thank-you.html"; }, 800);
+    });
+  }
+
+  /* ========================= Order summary block (payment page) ========================= */
+  function initOrderSummaryInline() {
+    if (!$("#order-summary")) return;
+    const items = readCart();
+    const list = $("#order-summary");
+    list.innerHTML = "";
+    for (const it of items){
+      const li = document.createElement("li");
+      li.className = "card";
+      li.innerHTML = `
+        <div style="display:grid;grid-template-columns:72px 1fr auto;gap:.6rem;align-items:center;">
+          <div class="media" style="aspect-ratio:1/1;">${it.img ? `<img src="${it.img}" alt="">` : ""}</div>
+          <div><strong>${it.name||"Item"}</strong><div class="muted">${money(shelf(it.price))} × ${it.qty||1}</div></div>
+          <div style="font-weight:700">${money(shelf(it.price) * (it.qty||0))}</div>
+        </div>`;
+      list.appendChild(li);
+    }
+    updateSummariesOnly(items);
+  }
+
+  /* ========================= Orders page controller ========================= */
+  function initOrdersPage(){
+    const els = {
+      count: $("#orders-count"),
+      body: $("#orders-body"),
+      empty: $("#empty-orders"),
+      card: $("#orders-card"),
+      prev: $("#prev"),
+      next: $("#next"),
+      pageInfo: $("#page-info"),
+      exportCsv: $("#export-csv"),
+      filtersForm: $("#filters"),
+      resetFilters: $("#reset-filters"),
+      q: $("#q"),
+      status: $("#status"),
+      from: $("#from"),
+      to: $("#to"),
+    };
+    if (!els.body && !els.empty && !els.exportCsv) return; // not on orders.html
+
+    // Signed in + API available → real orders from the server; otherwise local demo history
+    const VS = window.VStore;
+    let serverMode = false, serverOrders = [];
+    const fromServer = (o) => ({
+      id: o.orderNumber, _id: o._id, createdAt: o.createdAt, status: o.status,
+      currency: o.currency || "GBP", tax: o.tax || 0, taxIncluded: o.taxIncluded || 0, deliveryEstimate: o.deliveryEstimate,
+      deliverySlot: o.deliverySlot, shippedAt: o.shippedAt, deliveredAt: o.deliveredAt, cancelledAt: o.cancelledAt, paymentMethod: o.payment?.method,
+      subtotal: o.subtotal, shipping: o.shipping, discount: o.discount, total: o.total,
+      items: (o.items || []).map(i => ({ id: i.sku, name: i.name, qty: i.qty, price: i.price })),
+      address: { name: o.shippingAddress?.name, line1: o.shippingAddress?.line1, city: o.shippingAddress?.city, postcode: o.shippingAddress?.postcode, country: o.shippingAddress?.country }
+    });
+    const readOrders = () => serverMode ? serverOrders : readLocalOrders();
+    async function loadServerOrders() {
+      if (!VS || !VS.auth.isLoggedIn() || !(await VS.online)) return;
+      try {
+        serverOrders = (await VS.api.get("/orders/mine")).map(fromServer);
+        serverMode = true;
+        render();
+      } catch (err) { toast(err.message); }
+    }
+
+    const badges = {
+      Processing: "badge processing",
+      Shipped:    "badge shipped",
+      Delivered:  "badge success",
+      Cancelled:  "badge danger",
+    };
+
+    const state = { page: 1, filtered: [] };
+
+    function matchFilters(o){
+      const q = (els.q?.value || "").trim().toLowerCase();
+      const st = els.status?.value || "";
+      const from = els.from?.value ? new Date(els.from.value) : null;
+      const to   = els.to?.value   ? new Date(els.to.value)   : null;
+
+      if (st && o.status !== st) return false;
+      if (from && new Date(o.createdAt) < from) return false;
+      if (to) {
+        const end = new Date(to); end.setHours(23,59,59,999);
+        if (new Date(o.createdAt) > end) return false;
+      }
+      if (q) {
+        const inId = o.id.toLowerCase().includes(q);
+        const inItems = (o.items||[]).some(it => (it.name||"").toLowerCase().includes(q));
+        if (!inId && !inItems) return false;
+      }
+      return true;
+    }
+
+    function paginate(){
+      const start = (state.page-1)*ORDERS_PAGE_SIZE;
+      return state.filtered.slice(start, start + ORDERS_PAGE_SIZE);
+    }
+
+    function render(){
+      const orders = readOrders().sort((a,b) => (a.createdAt > b.createdAt ? -1 : 1));
+      state.filtered = orders.filter(matchFilters);
+
+      if (els.count) els.count.textContent = `${state.filtered.length} ${state.filtered.length===1?"order":"orders"}`;
+
+      if (els.empty && els.card) {
+        const empty = state.filtered.length === 0;
+        els.empty.style.display = empty ? "" : "none";
+        els.card.style.display  = empty ? "none" : "";
+      }
+      if (!els.body) return;
+
+      els.body.innerHTML = "";
+      paginate().forEach(o => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${o.id}</strong></td>
+          <td>${fmtDate(o.createdAt)}</td>
+          <td>${(o.items||[]).map(i => `${i.name} ×${i.qty}`).join(", ")}</td>
+          <td style="text-align:right;">${money(o.total, o.currency || "GBP")}</td>
+          <td><span class="${badges[o.status]||"badge"}">${o.status}</span></td>
+          <td>
+            <button class="btn-ghost view" data-id="${o.id}">View</button>
+            ${o.status === "Processing" ? `<button class="btn-ghost cancel" data-id="${o.id}">Cancel</button>` : ""}
+          </td>
+        `;
+        els.body.appendChild(tr);
+      });
+
+      const pages = Math.max(1, Math.ceil(state.filtered.length / ORDERS_PAGE_SIZE));
+      if (els.prev) els.prev.disabled = state.page <= 1;
+      if (els.next) els.next.disabled = state.page >= pages;
+      if (els.pageInfo) els.pageInfo.textContent = `Page ${state.page} / ${pages}`;
+    }
+
+    function exportCSV(){
+      const rows = [['Order ID','Date','Status','Subtotal','Discount','Shipping','Total','Items']];
+      readOrders().filter(matchFilters).forEach(o => {
+        rows.push([
+          o.id,
+          new Date(o.createdAt).toISOString(),
+          o.status,
+          o.subtotal,
+          o.discount,
+          o.shipping,
+          o.total,
+          (o.items||[]).map(i => `${i.name} x${i.qty}`).join('; ')
+        ]);
+      });
+      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type:"text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "vstore-orders.csv"; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function viewOrder(id){
+      const o = readOrders().find(x => x.id === id); if (!o) return;
+      if (window.VStoreShop) return window.VStoreShop.showOrder(o);
+      const lines = (o.items||[]).map(i => `• ${i.name} ×${i.qty} — ${money((i.price||0)*(i.qty||0), o.currency||"GBP")}`).join("\n");
+      alert(
+`Order ${o.id}
+
+Date: ${fmtDate(o.createdAt)}
+Status: ${o.status}
+
+Items:
+${lines}
+
+Subtotal: ${money(o.subtotal, o.currency||"GBP")}
+Discount: −${money(o.discount, o.currency||"GBP")}
+Shipping: ${money(o.shipping, o.currency||"GBP")}
+Total: ${money(o.total, o.currency||"GBP")}
+
+Ship to:
+${o.address?.name||""}
+${o.address?.line1||""}, ${o.address?.city||""}
+${o.address?.postcode||""}, ${o.address?.country||""}`
+      );
+    }
+
+    async function cancelOrder(id){
+      if (serverMode) {
+        const o = serverOrders.find(x => x.id === id);
+        if (!o || !confirm("Cancel this order? Items go back into stock.")) return;
+        try { await VS.api.put(`/orders/${o._id}/cancel`); toast("Order cancelled"); await loadServerOrders(); }
+        catch (err) { toast(err.message); }
+        return;
+      }
+      const list = readOrders();
+      const idx = list.findIndex(o => o.id === id);
+      if (idx === -1) return;
+      if (!confirm("Cancel this order?")) return;
+      list[idx].status = "Cancelled";
+      writeOrders(list);
+      toast("Order cancelled");
+      render();
+    }
+
+    // Events
+    els.prev?.addEventListener("click", () => { state.page = Math.max(1, state.page-1); render(); });
+    els.next?.addEventListener("click", () => { state.page = state.page+1; render(); });
+    els.exportCsv?.addEventListener("click", exportCSV);
+    els.filtersForm?.addEventListener("submit", (e)=>{ e.preventDefault(); state.page = 1; render(); });
+    els.resetFilters?.addEventListener("click", ()=>{ els.filtersForm?.reset(); state.page=1; render(); });
+
+    // Delegated row actions
+    els.body?.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (btn.classList.contains("view")) return viewOrder(id);
+      if (btn.classList.contains("cancel")) return cancelOrder(id);
+    });
+
+    render();
+    loadServerOrders();
+  }
+
+  /* ========================= Thank-You page (receipt) ========================= */
+  function initThankYou(){
+    const host = $("#thank-you");
+    if (!host) return;
+
+    let o = null;
+    try { o = JSON.parse(sessionStorage.getItem(ORDER_KEY) || "null"); } catch {}
+    if (!o) { try { o = JSON.parse(localStorage.getItem(ORDER_KEY) || "null"); } catch {} }
+    if (!o) { host.innerHTML = `<p class="muted">No recent order found.</p>`; return; }
+
+    $("#thank-order-id") && ($("#thank-order-id").textContent = o.id);
+    $("#thank-order-date") && ($("#thank-order-date").textContent = fmtDate(o.createdAt));
+    $("#thank-order-total") && ($("#thank-order-total").textContent = money(o.totals?.total||0, o.currency||"GBP"));
+    $("#thank-shipping-name") && ($("#thank-shipping-name").textContent = o.customer?.name || "");
+    $("#thank-shipping-addr") && ($("#thank-shipping-addr").textContent = [
+      o.customer?.address, o.customer?.city, o.customer?.state, o.customer?.zip, o.customer?.country
+    ].filter(Boolean).join(", "));
+
+    const list = $("#thank-items");
+    if (list) {
+      list.innerHTML = "";
+      (o.items||[]).forEach(it => {
+        const li = document.createElement("li");
+        li.className = "card";
+        li.innerHTML = `
+          <div style="display:grid;grid-template-columns:72px 1fr auto;gap:.6rem;align-items:center;">
+            <div class="media" style="aspect-ratio:1/1;">
+              <img src="${it.img||'https://via.placeholder.com/120?text=Item'}" alt="">
+            </div>
+            <div>
+              <strong>${it.name||"Item"}</strong>
+              <div class="muted">${money(it.price||0, o.currency||"GBP")} × ${it.qty||1}</div>
+            </div>
+            <div style="font-weight:700">${money((it.price||0)*(it.qty||0), o.currency||"GBP")}</div>
+          </div>`;
+        list.appendChild(li);
+      });
+    }
+
+    $("#thank-subtotal") && ($("#thank-subtotal").textContent = money(o.totals?.subtotal||0, o.currency||"GBP"));
+    $("#thank-discount") && ($("#thank-discount").textContent = "– " + money(o.totals?.discount||0, o.currency||"GBP"));
+    $("#thank-shipping") && ($("#thank-shipping").textContent = (o.totals?.shipping||0) === 0 ? "Free" : money(o.totals?.shipping||0, o.currency||"GBP"));
+    $("#thank-total")    && ($("#thank-total").textContent    = money(o.totals?.total||0, o.currency||"GBP"));
+
+    $("#thank-print")?.addEventListener("click", () => window.print());
+    $("#thank-view-orders")?.addEventListener("click", () => { window.location.href = `orders.html`; });
+  }
+
+  /* ========================= Debug helpers (optional) ========================= */
+  window.vstoreDebug = {
+    listOrders: () => JSON.parse(localStorage.getItem(ORDERS_KEY)||"[]"),
+    seedOrders: () => { localStorage.removeItem(ORDERS_KEY); seedOrdersIfEmpty(); console.log("Seeded demo orders."); }
+  };
+
+  /* ========================= Chat Assistant (site-wide search + links + health) ========================= */
+
+  // -------- Normalizers to make search forgiving (apples vs apple, accents, punctuation) ------
+  const normalize = (s) => String(s||"")
+    .toLowerCase()
+    .normalize("NFKD").replace(/[\u0300-\u036f]/g,"") // strip accents
+    .replace(/&/g," and ")
+    .replace(/[^a-z0-9\s]/g," ") // remove punctuation
+    .replace(/\s+/g," ")
+    .trim();
+
+  const singularize = (w) => {
+    if (w.endsWith("ies")) return w.slice(0,-3) + "y";
+    if (w.endsWith("ses") || w.endsWith("xes") || w.endsWith("zes") || w.endsWith("ches") || w.endsWith("shes")) return w.slice(0,-2);
+    if (w.endsWith("s") && w.length > 3) return w.slice(0,-1);
+    return w;
+  };
+
+  const tokenize = (s) => {
+    const n = normalize(s);
+    const words = n.split(" ").filter(Boolean);
+    const set = new Set(words.concat(words.map(singularize)));
+    return Array.from(set);
+  };
+
+  // Build link for a product if none provided
+  function productLink(p) {
+    if (p.link) return withBase(p.link);
+    return withBase(`product.html?id=${encodeURIComponent(p.id)}`);
+  }
+
+  // Parse HTML into Document to scrape cards
+  function parseHTML(htmlText) {
+    const parser = new DOMParser();
+    return parser.parseFromString(htmlText, "text/html");
+  }
+
+  // Scrape .product-item cards from a *document* (page or parsed HTML)
+  function scrapeProductsFromDoc(doc) {
+    return [...doc.querySelectorAll('.product-item')].map(el => {
+      const id = el.getAttribute('data-id') || slugify(el.getAttribute('data-name'));
+      const name = el.getAttribute('data-name') || el.querySelector('.product-title')?.textContent?.trim() || 'Item';
+      const category = el.getAttribute('data-category') || (doc.querySelector('h1,.page-title')?.textContent?.trim() || '');
+      const price = parseFloat(el.getAttribute('data-price')) || 0;
+      const img = el.querySelector('img')?.src || '';
+      const linkEl = el.querySelector('a[href*=".html"], a[href*="?id="]');
+      const link = linkEl ? linkEl.getAttribute('href') : productLink({ id, name });
+      const tags = (el.getAttribute('data-tags')||"").split(",").map(x=>x.trim()).filter(Boolean);
+      return { id, name, category, price, img, link, tags };
+    });
+  }
+
+  function initChatAssistant(){
+    const chatOpen = $("#chat-open");
+    const chatBox  = $("#chat-box");
+    const chatClose= $("#chat-close");
+    const chatLog  = $("#chat-log");
+    const chatForm = $("#chat-form");
+    const chatInput= $("#chat-input");
+
+    // ---------- 1) SITE INDEX (pages) ----------
+    let SITE_INDEX = [
+      { title:"Home",       url:"/index.html",           keywords:["home","start","v-store"] },
+      { title:"Categories", url:"/categories.html",      keywords:["categories","browse","shop by category"] },
+      { title:"Fruits",     url:"/fruits.html",          keywords:["fruit","fruits","fresh fruits"] },
+      { title:"Vegatables", url:"/vegatables.html",      keywords:["veg","vegetable","vegatables"] },
+      { title:"sea food",   url:"/sea food.html",        keywords:["sea","sea food","live"] },
+      { title:"backery",    url:"/backery.html",         keywords:["backery","fresh","bread"] },
+      { title:"Groceries",  url:"/groceries.html",       keywords:["grocery","staples","pantry"] },
+      { title:"Pantry",     url:"/pantry.html",          keywords:["pantry","pantery"] },
+      { title:"Dairy",      url:"/dairy.html",           keywords:["dairy","milk","diary"] },
+      { title:"Eggs",       url:"/eggs.html",            keywords:["eggs","egges"] },
+      { title:"Beverages",  url:"/beverages.html",       keywords:["drinks","beverage"] },
+      { title:"Home",       url:"/home.html",            keywords:["home supplies","home goods"] },
+      { title:"Electronics",url:"/electronics.html",     keywords:["electronics","gadgets"] },
+      { title:"Meat",       url:"/meat.html",            keywords:["meat","butcher"] },
+      { title:"Cart",       url:"/cart.html",            keywords:["cart","basket","bag","checkout"] },
+      { title:"Orders",     url:"/orders.html",          keywords:["orders","order history","track","status"] },
+      { title:"Contact",    url:"/contact.html",         keywords:["contact","support","help","customer service"] },
+      { title:"Shipping",   url:"/shipping.html",        keywords:["shipping","delivery","postage"] },
+      { title:"Returns",    url:"/returns.html",         keywords:["returns","refund","exchange"] },
+      { title:"Gadgets Under £50", url:"/gadgets-under-50.html", keywords:["gadgets","electronics","under 50"] },
+      { title:"Home Refresh",      url:"/home-refresh.html",     keywords:["home","refresh","decor"] },
+      { title:"Summer Essentials", url:"/summer-essentials.html",keywords:["summer","apparel","essentials"] },
+    ];
+
+    // Also learn links from your current nav
+    $$("#nav-menu a[href]").forEach(a => {
+      const url = a.getAttribute("href");
+      const title = a.textContent.trim();
+      if (!url) return;
+      if (!SITE_INDEX.some(p => p.url === url)) {
+        SITE_INDEX.push({ title, url, keywords:[normalize(title)] });
+      }
+    });
+
+    // ---------- 2) PRODUCT CATALOG ----------
+    const CATALOG_SOURCES = [
+      "/index.html",
+      "/categories.html",
+      "/fruits.html",
+      "/groceries.html",
+      "/electronics.html",
+      "/home.html",
+      "/vegatables.html",
+      "/sea food.html",
+      "/pantery.html",
+      "/meat.html",
+      "/beverages.html",
+      "/Diary.html",
+      "/eggs.html",
+      "/backery.html"
+    ];
+
+    let CATALOG = [];
+
+    // ---------- 3) SEARCH ----------
+    function searchPages(q) {
+      const tokens = tokenize(q);
+      const scored = SITE_INDEX.map(p => {
+        const hay = normalize(p.title + " " + (p.keywords||[]).join(" "));
+        let score = 0;
+        if (tokens.every(tok => hay.includes(tok))) score += 5;
+        else if (tokens.some(tok => hay.includes(tok))) score += 3;
+        return { p, score };
+      }).filter(r => r.score > 0);
+      return scored.sort((a,b)=>b.score-a.score).map(r => r.p).slice(0,6);
+    }
+
+    function searchProducts(q, cap=null) {
+      const tokens = tokenize(q);
+      const match = (s) => {
+        const hay = normalize(s);
+        return tokens.every(tok => hay.includes(tok));
+      };
+      let list = CATALOG.filter(p =>
+        match(p.name) || match(p.category||"") || (p.tags||[]).some(match)
+      );
+      if (cap != null) list = list.filter(p => (p.price||0) <= cap);
+
+      const nQ = normalize(q);
+      list.sort((a,b) => {
+        const aStart = normalize(a.name).startsWith(nQ) ? 1 : 0;
+        const bStart = normalize(b.name).startsWith(nQ) ? 1 : 0;
+        return bStart - aStart;
+      });
+
+      return list.slice(0, 10);
+    }
+
+    // ---------- 4) CHAT UI helpers ----------
+    function logMsg(role, text){
+      if (!chatLog || !text) return;
+      const d = document.createElement('div');
+      d.className = `chat-msg ${role}`;
+      d.textContent = text;
+      chatLog.appendChild(d);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function renderPagesInChat(pages){
+      if (!chatLog) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg bot';
+      if (!pages.length) {
+        wrap.textContent = "No relevant pages found.";
+      } else {
+        const list = document.createElement('ul');
+        list.style.listStyle = 'none';
+        list.style.padding = '0';
+        list.style.margin = '0';
+        pages.forEach(pg => {
+          const li = document.createElement('li');
+          li.style.margin = '6px 0';
+          li.innerHTML = `
+            <a href="${withBase(pg.url)}" style="text-decoration:underline" target="_self" rel="noopener">
+              ${pg.title}
+            </a>`;
+          list.appendChild(li);
+        });
+        wrap.appendChild(list);
+      }
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function renderProductsInChat(list){
+      if (!chatLog) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg bot';
+
+      if (!list.length) {
+        wrap.textContent = "No products matched that.";
+      } else {
+        const box = document.createElement('div');
+        box.style.display = 'grid';
+        box.style.gap = '8px';
+        box.style.maxWidth = '100%';
+
+        list.slice(0,5).forEach(p => {
+          const card = document.createElement('div');
+          card.style.border = '1px solid var(--border)';
+          card.style.borderRadius = '10px';
+          card.style.padding = '8px';
+          card.style.display = 'grid';
+          card.style.gridTemplateColumns = '56px 1fr auto';
+          card.style.alignItems = 'center';
+          card.style.gap = '8px';
+          card.innerHTML = `
+            <img src="${p.img||'https://via.placeholder.com/80'}" alt="${p.name}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;">
+            <div>
+              <div style="font-weight:600">${p.name}</div>
+              <div class="muted" style="font-size:.9rem">${p.category||''}</div>
+              <a href="${productLink(p)}" target="_self" rel="noopener" style="font-size:.9rem;text-decoration:underline">View</a>
+            </div>
+            <div style="text-align:right;">
+              <div>£${(p.price||0).toFixed(2)}</div>
+              <button data-chat-add="${p.id}" style="margin-top:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer">Add</button>
+            </div>
+          `;
+          box.appendChild(card);
+        });
+
+        wrap.appendChild(box);
+      }
+
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    // --- tips renderer + product aggregation (NEW) ---
+    function renderTipsInChat(lines){
+      if (!chatLog) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg bot';
+      const ul = document.createElement('ul');
+      ul.style.margin = '0';
+      ul.style.paddingLeft = '1em';
+      lines.forEach(t => {
+        const li = document.createElement('li');
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+      const note = document.createElement('div');
+      note.className = 'muted';
+      note.style.marginTop = '6px';
+      note.style.fontSize = '.9rem';
+      note.textContent = 'This is general wellness advice, not a diagnosis. Seek medical care if symptoms worsen, last >48 hours, or include chest pain, confusion, severe dehydration, or temperature ≥39.5°C.';
+      wrap.appendChild(ul);
+      wrap.appendChild(note);
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    function productsForKeywords(keywords, cap=null){
+      const seen = new Map();
+      keywords.forEach(kw => {
+        searchProducts(kw, cap).forEach(p => {
+          if (!seen.has(p.id)) seen.set(p.id, p);
+        });
+      });
+      return Array.from(seen.values()).slice(0, 10);
+    }
+
+// --- mini health knowledge base (NEW) ---
+    const HEALTH_KB = {
+      fever: {
+        aliases: ['fever','feaver','high temperature','temperature','pyrexia','running temperature'],
+        tips: [
+          'Rest and avoid overexertion.',
+          'Drink plenty of fluids (water, oral rehydration, clear soups).',
+          'Wear light clothing and keep the room cool; apply a cool damp cloth to forehead/neck.',
+          'Eat easy foods if hungry (toast/bread, soups, yogurt, fruits).',
+          'Consider OTC fever reducers as directed on the label (e.g., paracetamol/acetaminophen). Avoid taking multiple medicines with the same ingredient.'
+        ],
+        keywords: ['water','electrolyte','oral rehydration','ORS','juice','soup','broth','bread','toast','milk','yogurt','paracetamol','acetaminophen','ibuprofen','thermometer']
+      },
+
+      cold: {
+        aliases: ['cold','common cold','runny nose','blocked nose','stuffy nose','sneezing','sore throat','chills'],
+        tips: [
+          'Stay hydrated with warm fluids like tea, broth, or warm water.',
+          'Use honey with warm water or tea to soothe the throat.',
+          'Inhale steam or use a humidifier to ease congestion.',
+          'Rest well to support your immune system.',
+          'Use lozenges or throat sprays for temporary relief.',
+          'Avoid cold drinks or exposure to chilled environments if they worsen symptoms.'
+        ],
+        keywords: ['honey','ginger','herbal tea','lozenge','throat spray','cough drops','steam','soup','broth','warm water','humidifier']
+      },
+
+      cough: {
+        aliases: ['cough','coughing','dry cough','wet cough'],
+        tips: [
+          'Sip warm water with honey and ginger to soothe irritation.',
+          'Keep hydrated to thin mucus and ease coughing.',
+          'Use lozenges or cough drops for quick relief.',
+          'Elevate your head when sleeping to reduce coughing at night.',
+          'Seek medical advice if cough persists more than 2 weeks or worsens.'
+        ],
+        keywords: ['honey','ginger','lozenge','cough drops','herbal tea','warm water','humidifier','syrup']
+      },
+
+      flu: {
+        aliases: ['flu','influenza','seasonal flu'],
+        tips: [
+          'Get plenty of rest to allow your body to recover.',
+          'Stay hydrated with water, ORS, and warm fluids.',
+          'Eat light meals like soups, broth, and fruits.',
+          'Use OTC fever reducers (paracetamol/ibuprofen) if needed.',
+          'Seek medical help if you have difficulty breathing, chest pain, or severe dehydration.'
+        ],
+        keywords: ['water','ORS','juice','broth','soup','paracetamol','ibuprofen','thermometer','blanket']
+      },
+
+      headache: {
+        aliases: ['headache','migraine','head pain','tension headache'],
+        tips: [
+          'Rest in a quiet, dark room and avoid bright screens.',
+          'Drink water — dehydration is a common cause.',
+          'Apply a cold or warm compress to your head or neck.',
+          'Avoid skipping meals; eat something light.',
+          'Seek medical help if you experience sudden, severe headache or vision changes.'
+        ],
+        keywords: ['water','snack','paracetamol','ibuprofen','coffee','tea','compress']
+      },
+
+      stomach: {
+        aliases: ['stomach','stomach ache','stomach pain','diarrhea','loose motions','food poisoning','upset stomach'],
+        tips: [
+          'Drink small sips of water or ORS to stay hydrated.',
+          'Eat bland foods like rice, toast, bananas, and yogurt.',
+          'Avoid spicy, oily, or heavy foods until you recover.',
+          'Rest and avoid unnecessary exertion.',
+          'Seek medical help if pain is severe, persistent, or includes blood in stool.'
+        ],
+        keywords: ['ORS','water','rice','banana','toast','bread','yogurt','soup','ginger tea']
+      },
+
+      dehydration: {
+        aliases: ['dehydration','dehydrated','lack of fluids','fluid loss'],
+        tips: [
+          'Sip water frequently in small amounts.',
+          'Use oral rehydration salts (ORS) to replace electrolytes.',
+          'Avoid alcohol, caffeine, and very sugary drinks.',
+          'Eat water-rich foods like fruits (watermelon, cucumber, oranges).',
+          'Seek immediate medical care if symptoms include confusion, fainting, or very low urine output.'
+        ],
+        keywords: ['water','ORS','juice','coconut water','electrolyte drink','fruit','hydration']
+      }
+    };
+
+    // clicks on product "Add" inside chat
+    chatLog?.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-chat-add]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-chat-add');
+      const p  = CATALOG.find(x => String(x.id) === String(id));
+      if (!p) return;
+      window.cart.add({ id:p.id, name:p.name, price:p.price, qty:1, img:p.img });
+      logMsg('bot', `Added 1 × ${p.name} to your cart.`);
+    });
+
+    // ---------- 5) Intent parsing ----------
+    const WORD_TO_NUM = { one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10 };
+    const numberFrom = (text, def=1) => {
+      const n = text.match(/\b(\d+)\b/); if(n) return parseInt(n[1],10);
+      for (const [w,v] of Object.entries(WORD_TO_NUM)){ if (new RegExp(`\\b${w}\\b`,'i').test(text)) return v; }
+      return def;
+    };
+    const priceCapFrom = (text) => {
+      const m = text.match(/(?:under|below|<=?|less than)\s*£?\s*(\d+(?:\.\d{1,2})?)/i);
+      return m ? parseFloat(m[1]) : null;
+    };
+
+    function bestPageFor(term){
+      const results = searchPages(term);
+      return results[0] || null;
+    }
+
+    function parseIntent(text){
+      const s = (text||"").trim();
+
+      // Health intents (NEW)
+      for (const [topic, cfg] of Object.entries(HEALTH_KB)) {
+        const hay = normalize(s);
+        if (cfg.aliases.some(a => hay.includes(normalize(a)))) {
+          return { type: 'health', topic };
+        }
+      }
+
+      // Navigation intents
+      if (/^(open|go to|take me to)\s+/i.test(s)) {
+        const q = s.replace(/^(open|go to|take me to)\s+/i,'').trim();
+        return { type:'nav', page: bestPageFor(q) || { title:q, url:q } };
+      }
+
+      if (/^(show|what('| )?s)\s+(in\s+)?(my\s+)?cart$/i.test(s)) return { type:'show_cart' };
+      if (/^(empty|clear)\s+cart$/i.test(s)) return { type:'clear_cart' };
+
+      // add 2 product 1 | add earbuds
+      let m = s.match(/^add\s+(?:(\d+|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b)\s*)?(?:product\s+(\w+)|(.+))$/i);
+      if (m) {
+        const qty = numberFrom(m[1]||"", 1);
+        const term = (m[2] || m[3] || "").trim();
+        return { type:'add', qty, term };
+      }
+
+      // remove 1 product 2 | remove earbuds
+      m = s.match(/^remove\s+(?:(\d+|\bone\b|\btwo\b|\bthree\b|\bfour\b|\bfive\b|\bsix\b|\bseven\b|\beight\b|\bnine\b|\bten\b)\s*)?(?:product\s+(\w+)|(.+))$/i);
+      if (m) {
+        const qty = numberFrom(m[1]||"", 1);
+        const term = (m[2] || m[3] || "").trim();
+        return { type:'remove', qty, term };
+      }
+
+      // "<category> under £price" or just "under £price"
+      m = s.match(/^(?:(\w+)\s+)?under\s+£?\s*(\d+(?:\.\d{1,2})?)$/i);
+      if (m) {
+        return { type:'search', query: (m[1]||'').trim(), cap: parseFloat(m[2]) };
+      }
+
+      // Generic: do both page + product search
+      return { type:'search_all', query: s, cap: priceCapFrom(s) };
+    }
+
+    function handleIntent(i){
+      // Health (NEW)
+      if(i.type === 'health'){
+        const cfg = HEALTH_KB[i.topic];
+        if (!cfg) return "I can share some general tips and items.";
+        logMsg('bot', `Here are some self-care tips for ${i.topic}:`);
+        renderTipsInChat(cfg.tips);
+        const list = productsForKeywords(cfg.keywords);
+        if (list.length) {
+          logMsg('bot', 'You might also find these helpful:');
+          renderProductsInChat(list);
+          return "Tap View to open a page, or Add to put it in your cart.";
+        } else {
+          return "I couldn’t find matching items right now, but staying hydrated (water/ORS) and light foods usually help.";
+        }
+      }
+
+      if(i.type==='nav'){
+        if (i.page?.url) {
+          renderPagesInChat([i.page]);
+          window.location.href = withBase(i.page.url); // base-aware navigation
+          return `Opening ${i.page.title || i.page.url}…`;
+        }
+        return "I couldn't find that page.";
+      }
+      if(i.type==='show_cart'){
+        const cart = window.cart.get();
+        if(!cart.length) return "Your cart is empty.";
+        const lines = cart.map(x=>`${x.qty} × ${x.name} (£${x.price.toFixed(2)})`).join('\n');
+        const total = cart.reduce((s,x)=>s+(x.price||0)*(x.qty||0),0).toFixed(2);
+        return `In your cart:\n${lines}\nTotal: £${total}`;
+      }
+      if(i.type==='clear_cart'){ window.cart.clear(); return "Cart cleared."; }
+
+      if(i.type==='add'){
+        const byId = i.term && /^\w+$/.test(i.term) && CATALOG.find(p => String(p.id)===String(i.term));
+        if (byId) {
+          window.cart.add({ id:byId.id, name:byId.name, price:byId.price, qty:i.qty||1, img:byId.img });
+          return `Added ${i.qty||1} × ${byId.name} to your cart.`;
+        }
+        const list = searchProducts(i.term);
+        if(!list.length) return `I couldn't find "${i.term}".`;
+        const p = list[0];
+        window.cart.add({ id:p.id, name:p.name, price:p.price, qty:i.qty||1, img:p.img });
+        return `Added ${i.qty||1} × ${p.name} to your cart.`;
+      }
+
+      if(i.type==='remove'){
+        const s = String(i.term||"").toLowerCase().trim();
+        const items = window.cart.get();
+        const byId = items.find(x => String(x.id)===s);
+        const byName = items.find(x => (x.name||"").toLowerCase().includes(s));
+        const it = byId || byName;
+        if (!it) return `I couldn't find "${i.term}" in your cart.`;
+        const newQty = (it.qty||1) - (i.qty||1);
+        if (newQty > 0) window.cart.setQty(it.id, newQty);
+        else window.cart.remove(it.id);
+        return `Removed ${i.qty||1} × ${it.name} from your cart.`;
+      }
+
+      if(i.type==='search'){
+        const products = searchProducts(i.query || "", i.cap ?? null);
+        renderProductsInChat(products);
+        if (!products.length) return "No products found.";
+        const capMsg = i.cap != null ? ` under £${i.cap}` : "";
+        return `Here are some options${capMsg}.`;
+      }
+
+      if(i.type==='search_all'){
+        const pages = searchPages(i.query);
+        const products = searchProducts(i.query, i.cap ?? null);
+        if (pages.length) {
+          logMsg('bot', `Pages matching “${i.query}” :`);
+          renderPagesInChat(pages);
+        }
+        if (products.length) {
+          logMsg('bot', `Products matching “${i.query}” :`);
+          renderProductsInChat(products);
+          return "Tap View to open a page, or Add to put it in your cart.";
+        }
+        return "No pages or products matched that. Try a different phrase.";
+      }
+
+      return "Sorry, I didn't catch that.";
+    }
+
+    // ---------- 6) Wire UI ----------
+    chatOpen?.addEventListener("click", ()=> chatBox && (chatBox.hidden=false));
+    chatClose?.addEventListener("click", ()=> chatBox && (chatBox.hidden=true));
+    chatForm?.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const text = (chatInput?.value || "").trim();
+      if(!text) return;
+      logMsg('user', text);
+      if (CATALOG.length === 0) await loadCatalog();
+      const intent = parseIntent(text);
+      const reply = handleIntent(intent);
+      if (reply) logMsg('bot', reply);
+      if (chatInput) chatInput.value = '';
+    });
+
+    // Preload quietly so first search is snappy
+    loadCatalog();
+
+    async function loadCatalog(){
+      const collected = [];
+
+      // 1) Try products.json first (if you maintain one)
+      try{
+        const res = await fetch(withBase('products.json'), { cache: 'no-store' });
+        if(!res.ok) throw new Error('no products.json');
+        const raw = await res.json();
+        raw.forEach(p => {
+          collected.push({
+            id: p.id ?? p.slug ?? slugify(p.name),
+            name: p.name,
+            category: p.category ?? "",
+            price: Number(p.price||0),
+            img: p.img || p.image || "",
+            link: p.link || p.url || productLink({ id: p.id ?? p.slug, name: p.name }),
+            tags: p.tags || []
+          });
+        });
+      } catch(_) {
+        // optional: ignore if missing
+      }
+
+      // 2) Always scrape the current page (quick win)
+      collected.push(...scrapeProductsFromDoc(document));
+
+      // 3) Fetch and scrape other known product pages (skip current path)
+      const here = withBase(location.pathname).replace(/\/+$/, '').toLowerCase();
+      const toFetch = CATALOG_SOURCES
+        .map(u => withBase(u).replace(/\/+$/, '').toLowerCase())
+        .filter(u => u && u !== here);
+
+      const results = await Promise.allSettled(
+        toFetch.map(async (url) => {
+          try {
+            const res = await fetch(url, { cache: 'no-store' });
+            if (!res.ok) throw new Error(`Fetch failed: ${url}`);
+            const text = await res.text();
+            const doc = parseHTML(text);
+            return scrapeProductsFromDoc(doc);
+          } catch {
+            return []; // tolerate 404s or typos
+          }
+        })
+      );
+
+      results.forEach(r => { if (r.status === 'fulfilled') collected.push(...r.value); });
+
+      // 4) De-duplicate (prefer first occurrence)
+      const seen = new Map();
+      for (const p of collected) {
+        const key = String(p.id || slugify(p.name));
+        if (!seen.has(key)) seen.set(key, { ...p, id: key });
+      }
+      CATALOG = Array.from(seen.values());
+    }
+  }
+  const API_BASE = "http://localhost:5173/api"; // change to your deployed backend later
+
+async function api(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+    ...options
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Request failed: ${res.status}`);
+  return data;
+}
+
+// Products example
+async function loadProducts() {
+  const products = await api("/products");
+  // TODO: render product cards using your existing DOM code
+  console.log(products);
+}
+
+// Auth example
+async function login(email, password) {
+  const data = await api("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password })
+  });
+  localStorage.setItem("token", data.token);
+  return data;
+}
+
+// Order example
+async function createOrder(items) {
+  const token = localStorage.getItem("token");
+  return await api("/orders", {
+    method: "POST",
+    headers: { "X-Auth-Token": token },
+    body: JSON.stringify({ items }) // [{product_id, quantity, price_each}]
+  });
+}
+
+})();

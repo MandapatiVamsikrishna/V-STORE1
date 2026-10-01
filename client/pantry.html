@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — Pantry</title>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a aria-current="page" href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation -->
+<!-- Page Hero -->
+<header class="page-hero">
+<div class="hero-inner"><p class="crumbs"><a href="index.html">Home</a> / <a href="categories.html">All departments</a> / Pantry</p>
+<h1>Pantry Essentials</h1>
+<p class="muted">Filter by type, price, and rating — or search for anything.</p>
+<div class="row">
+<form aria-label="Search products" class="search" id="search-form" role="search">
+<input autocomplete="off" id="search-input" placeholder="Search pantry…" type="search"/>
+<button type="submit">Search</button>
+</form>
+<label class="sort">
+<span class="visually-hidden">Sort</span>
+<select aria-label="Sort results" id="sort-select">
+<option value="relevance">Sort: Relevance</option>
+<option value="price-asc">Price: Low → High</option>
+<option value="price-desc">Price: High → Low</option>
+<option value="name-asc">Name: A → Z</option>
+<option value="name-desc">Name: Z → A</option>
+<option value="rating-desc">Rating: High → Low</option>
+</select>
+</label>
+</div>
+</div>
+</header>
+<!-- Department quick links -->
+<main class="container" id="main">
+<!-- Filters -->
+<aside aria-label="Filters" class="filters"><details class="filters-details" open=""><summary class="filters-title">Filters</summary>
+<section>
+<h3>Type</h3>
+<ul class="checklist">
+<li><label><input checked="" name="cat" type="checkbox" value="pasta"/> Pasta</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="rice"/> Rice &amp; Grains</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="oils"/> Oils &amp; Vinegars</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="canned"/> Canned Goods</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="sauces"/> Sauces &amp; Spreads</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="baking"/> Baking</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="cereal"/> Breakfast &amp; Cereal</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="spices"/> Spices</label></li>
+</ul>
+</section>
+<section>
+<h3>Price</h3>
+<div class="range">
+<label for="min-price">Min £</label>
+<input id="min-price" min="0" step="0.01" type="number" value="0"/>
+<label for="max-price">Max £</label>
+<input id="max-price" min="0" step="0.01" type="number" value="9999"/>
+</div>
+</section>
+<section>
+<h3>Rating</h3>
+<ul class="checklist">
+<li><label><input checked="" name="rating" type="radio" value="all"/> All ratings</label></li>
+<li><label><input name="rating" type="radio" value="4.5"/> 4.5★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="4"/> 4★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="3"/> 3★ &amp; up</label></li>
+</ul>
+</section>
+<div class="filter-actions">
+<button class="btn-ghost" id="clear-filters" type="button">Clear</button>
+<button class="btn-primary" id="apply-filters" type="button">Apply</button>
+</div>
+</details></aside>
+<!-- Results -->
+<section aria-live="polite" class="results">
+<div class="toolbar">
+<span id="result-count">0 items</span>
+<div aria-label="Active filters" class="chips" id="active-chips"></div>
+</div>
+<!-- Product Grid -->
+<div class="grid" id="product-grid">
+<!-- Pasta -->
+<article class="card product-item" data-category="pasta" data-dept="Pantry" data-id="p-spaghetti" data-name="Spaghetti" data-price="1.99" data-rating="4.5">
+<button aria-label="Add Spaghetti to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-spaghetti" tabindex="-1"><img alt="Spaghetti" src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-spaghetti">Spaghetti</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.99 / 500g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-spaghetti"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="pasta" data-dept="Pantry" data-id="p-penne" data-name="Penne Pasta" data-price="2.29" data-rating="4.2">
+<button aria-label="Add Penne Pasta to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-penne" tabindex="-1"><img alt="Penne Pasta" src="https://images.unsplash.com/photo-1546549039-49d79c6a62b9?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-penne">Penne Pasta</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.29 / 500g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-penne"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Rice & Grains -->
+<article class="card product-item" data-category="rice" data-dept="Pantry" data-id="p-basmati" data-name="Basmati Rice" data-price="3.99" data-rating="4.6">
+<button aria-label="Add Basmati Rice to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−20%</span>
+<a aria-hidden="true" href="product.html?id=p-basmati" tabindex="-1"><img alt="Basmati Rice" src="https://images.unsplash.com/photo-1604908176997-43162fdf9431?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-basmati">Basmati Rice</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£4.99</s><span class="price">£3.99 / 1kg</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-basmati"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="rice" data-dept="Pantry" data-id="p-brown-rice" data-name="Brown Rice" data-price="2.99" data-rating="4.1">
+<button aria-label="Add Brown Rice to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-brown-rice" tabindex="-1"><img alt="Brown Rice" src="https://images.unsplash.com/photo-1472140595223-dc71d3d2b52d?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-brown-rice">Brown Rice</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / 1kg</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-brown-rice"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Oils & Vinegars -->
+<article class="card product-item" data-category="oils" data-dept="Pantry" data-id="p-olive-oil" data-name="Extra Virgin Olive Oil" data-price="6.99" data-rating="4.7">
+<button aria-label="Add Extra Virgin Olive Oil to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span>
+<a aria-hidden="true" href="product.html?id=p-olive-oil" tabindex="-1"><img alt="Extra Virgin Olive Oil" src="https://images.unsplash.com/photo-1510626176961-4b37d6af1c4e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-olive-oil">Extra Virgin Olive Oil</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£9.99</s><span class="price">£6.99 / 500ml</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-olive-oil"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="oils" data-dept="Pantry" data-id="p-sunflower-oil" data-name="Sunflower Oil" data-price="4.49" data-rating="4.0">
+<button aria-label="Add Sunflower Oil to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-sunflower-oil" tabindex="-1"><img alt="Sunflower Oil" src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-sunflower-oil">Sunflower Oil</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.49 / 1L</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-sunflower-oil"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Canned -->
+<article class="card product-item" data-category="canned" data-dept="Pantry" data-id="p-crushed-tomatoes" data-name="Crushed Tomatoes" data-price="1.29" data-rating="4.3">
+<button aria-label="Add Crushed Tomatoes to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-crushed-tomatoes" tabindex="-1"><img alt="Crushed Tomatoes" src="https://images.unsplash.com/photo-1506806732259-39c2d0268443?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-crushed-tomatoes">Crushed Tomatoes</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.29 / 400g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-crushed-tomatoes"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="canned" data-dept="Pantry" data-id="p-chickpeas" data-name="Canned Chickpeas" data-price="0.99" data-rating="4.2">
+<button aria-label="Add Canned Chickpeas to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-chickpeas" tabindex="-1"><img alt="Canned Chickpeas" src="https://images.unsplash.com/photo-1586201375754-1421e0aa2fda?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-chickpeas">Canned Chickpeas</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£0.99 / 400g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-chickpeas"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Sauces & Spreads -->
+<article class="card product-item" data-category="sauces" data-dept="Pantry" data-id="p-marinara" data-name="Pasta Sauce — Marinara" data-price="2.49" data-rating="4.4">
+<button aria-label="Add Pasta Sauce — Marinara to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-marinara" tabindex="-1"><img alt="Marinara Sauce" src="https://images.unsplash.com/photo-1566843972141-7c2e9ee4a76b?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-marinara">Pasta Sauce — Marinara</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / 500g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-marinara"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="sauces" data-dept="Pantry" data-id="p-peanut-butter" data-name="Peanut Butter (Smooth)" data-price="2.99" data-rating="4.1">
+<button aria-label="Add Peanut Butter (Smooth) to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-peanut-butter" tabindex="-1"><img alt="Peanut Butter" src="https://images.unsplash.com/photo-1587049352851-8d1a03d2a11e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-peanut-butter">Peanut Butter (Smooth)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / 340g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-peanut-butter"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Baking -->
+<article class="card product-item" data-category="baking" data-dept="Pantry" data-id="p-flour" data-name="All-Purpose Flour" data-price="2.79" data-rating="4.5">
+<button aria-label="Add All-Purpose Flour to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-flour" tabindex="-1"><img alt="All-Purpose Flour" src="https://images.unsplash.com/photo-1586201375754-1421e0aa2fda?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-flour">All-Purpose Flour</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.79 / 1.5kg</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-flour"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="baking" data-dept="Pantry" data-id="p-baking-powder" data-name="Baking Powder" data-price="0.99" data-rating="4.0">
+<button aria-label="Add Baking Powder to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-baking-powder" tabindex="-1"><img alt="Baking Powder" src="https://images.unsplash.com/photo-1586201375761-83865001e31b?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-baking-powder">Baking Powder</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£0.99 / 100g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-baking-powder"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Breakfast & Cereal -->
+<article class="card product-item" data-category="cereal" data-dept="Pantry" data-id="p-cereal-wholegrain" data-name="Wholegrain Cereal" data-price="2.99" data-rating="4.2">
+<button aria-label="Add Wholegrain Cereal to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-cereal-wholegrain" tabindex="-1"><img alt="Wholegrain Cereal" src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-cereal-wholegrain">Wholegrain Cereal</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / 375g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-cereal-wholegrain"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Spices -->
+<article class="card product-item" data-category="spices" data-dept="Pantry" data-id="p-black-pepper" data-name="Black Peppercorns" data-price="1.79" data-rating="4.3">
+<button aria-label="Add Black Peppercorns to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-black-pepper" tabindex="-1"><img alt="Black Peppercorns" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-black-pepper">Black Peppercorns</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.79 / 50g</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-black-pepper"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+</div>
+<nav aria-label="More departments" class="related-depts">
+<h2>More in Cupboard &amp; drinks</h2>
+<div class="dept-links"><a href="beverages.html">Beverages</a><a class="deal" href="deals.html">Deals</a></div>
+<h2>Other departments</h2>
+<div class="dept-links"><a href="fruits.html">Fruits</a><a href="vegetables.html">Vegetables</a><a href="dairy.html">Dairy</a><a href="eggs.html">Eggs</a><a href="meat.html">Meat</a><a href="seafood.html">Seafood</a><a href="bakery.html">Bakery</a><a href="electronics.html">Electronics</a><a href="gadgets-under-50.html">Gadgets under £50</a><a href="home-essentials.html">Home essentials</a><a href="home-refresh.html">Home refresh</a><a href="summer-essentials.html">Summer essentials</a><a href="categories.html">All departments</a></div>
+</nav></section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- Global helpers + page logic -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

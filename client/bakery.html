@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — Bakery</title>
+<!-- Icons -->
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a aria-current="page" href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation -->
+<!-- Page Hero -->
+<header class="page-hero">
+<div class="hero-inner"><p class="crumbs"><a href="index.html">Home</a> / <a href="categories.html">All departments</a> / Bakery</p>
+<h1>Fresh Bakery</h1>
+<p class="muted">Filter by type, price, and rating — or search for anything.</p>
+<!-- Search + Sort -->
+<div class="row">
+<form aria-label="Search products" class="search" id="search-form" role="search">
+<input autocomplete="off" id="search-input" placeholder="Search bakery…" type="search"/>
+<button type="submit">Search</button>
+</form>
+<label class="sort">
+<span class="visually-hidden">Sort</span>
+<select aria-label="Sort results" id="sort-select">
+<option value="relevance">Sort: Relevance</option>
+<option value="price-asc">Price: Low → High</option>
+<option value="price-desc">Price: High → Low</option>
+<option value="name-asc">Name: A → Z</option>
+<option value="name-desc">Name: Z → A</option>
+<option value="rating-desc">Rating: High → Low</option>
+</select>
+</label>
+</div>
+</div>
+</header>
+<!-- Department Quick Links -->
+<main class="container" id="main">
+<!-- Sidebar Filters -->
+<aside aria-label="Filters" class="filters"><details class="filters-details" open=""><summary class="filters-title">Filters</summary>
+<section>
+<h3>Type</h3>
+<ul class="checklist">
+<li><label><input checked="" name="cat" type="checkbox" value="bread"/> Bread</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="bagels"/> Bagels</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="croissant"/> Croissants</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="cookies"/> Cookies</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="cake"/> Cakes</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="muffins"/> Muffins</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="pastries"/> Pastries</label></li>
+</ul>
+</section>
+<section>
+<h3>Price</h3>
+<div class="range">
+<label for="min-price">Min £</label>
+<input id="min-price" min="0" step="0.01" type="number" value="0"/>
+<label for="max-price">Max £</label>
+<input id="max-price" min="0" step="0.01" type="number" value="9999"/>
+</div>
+</section>
+<section>
+<h3>Rating</h3>
+<ul class="checklist">
+<li><label><input checked="" name="rating" type="radio" value="all"/> All ratings</label></li>
+<li><label><input name="rating" type="radio" value="4.5"/> 4.5★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="4"/> 4★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="3"/> 3★ &amp; up</label></li>
+</ul>
+</section>
+<div class="filter-actions">
+<button class="btn-ghost" id="clear-filters" type="button">Clear</button>
+<button class="btn-primary" id="apply-filters" type="button">Apply</button>
+</div>
+</details></aside>
+<!-- Results -->
+<section aria-live="polite" class="results">
+<div class="toolbar">
+<span id="result-count">0 items</span>
+<div aria-label="Active filters" class="chips" id="active-chips"></div>
+</div>
+<!-- Product Grid -->
+<div class="grid" id="product-grid">
+<!-- Bread -->
+<article class="card product-item" data-category="bread" data-dept="Bakery" data-id="b-bread-ww" data-name="Whole Wheat Bread" data-price="3.49" data-rating="4.5">
+<button aria-label="Add Whole Wheat Bread to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-bread-ww" tabindex="-1"><img alt="Whole Wheat Bread" src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-bread-ww">Whole Wheat Bread</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / loaf</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-bread-ww"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="bread" data-dept="Bakery" data-id="b-sourdough" data-name="Sourdough Loaf" data-price="3.99" data-rating="4.7">
+<button aria-label="Add Sourdough Loaf to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−31%</span>
+<a aria-hidden="true" href="product.html?id=b-sourdough" tabindex="-1"><img alt="Sourdough Loaf" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-sourdough">Sourdough Loaf</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£5.79</s><span class="price">£3.99 / loaf</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-sourdough"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Bagels -->
+<article class="card product-item" data-category="bagels" data-dept="Bakery" data-id="b-bagels-everything" data-name="Everything Bagels" data-price="4.49" data-rating="4.3">
+<button aria-label="Add Everything Bagels to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-bagels-everything" tabindex="-1"><img alt="Everything Bagels" src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-bagels-everything">Everything Bagels</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.49 / 6-pack</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-bagels-everything"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Croissants -->
+<article class="card product-item" data-category="croissant" data-dept="Bakery" data-id="b-croissant-butter" data-name="Butter Croissants" data-price="2.49" data-rating="4.6">
+<button aria-label="Add Butter Croissants to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-croissant-butter" tabindex="-1"><img alt="Butter Croissants" src="https://images.unsplash.com/photo-1509440159598-8b09d1e8be0d?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-croissant-butter">Butter Croissants</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price">£2.49 / each</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-croissant-butter"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="croissant" data-dept="Bakery" data-id="b-croissant-almond" data-name="Almond Croissant" data-price="2.99" data-rating="4.4">
+<button aria-label="Add Almond Croissant to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-croissant-almond" tabindex="-1"><img alt="Almond Croissant" src="https://images.unsplash.com/photo-1541592553160-82008b127ccb?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-croissant-almond">Almond Croissant</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / each</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-croissant-almond"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Cookies -->
+<article class="card product-item" data-category="cookies" data-dept="Bakery" data-id="b-cookie-chocchip" data-name="Chocolate Chip Cookies" data-price="5.49" data-rating="4.5">
+<button aria-label="Add Chocolate Chip Cookies to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-cookie-chocchip" tabindex="-1"><img alt="Chocolate Chip Cookies" src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-cookie-chocchip">Chocolate Chip Cookies</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£5.49 / dozen</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-cookie-chocchip"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="cookies" data-dept="Bakery" data-id="b-cookie-oatmeal" data-name="Oatmeal Raisin Cookies" data-price="4.99" data-rating="4.1">
+<button aria-label="Add Oatmeal Raisin Cookies to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-cookie-oatmeal" tabindex="-1"><img alt="Oatmeal Raisin Cookies" src="https://images.unsplash.com/photo-1599785209793-65f215f3d9bd?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-cookie-oatmeal">Oatmeal Raisin Cookies</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.99 / dozen</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-cookie-oatmeal"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Cakes -->
+<article class="card product-item" data-category="cake" data-dept="Bakery" data-id="b-cake-choc" data-name="Chocolate Cake" data-price="14.99" data-rating="4.8">
+<button aria-label="Add Chocolate Cake to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−25%</span>
+<a aria-hidden="true" href="product.html?id=b-cake-choc" tabindex="-1"><img alt="Chocolate Cake" src="https://images.unsplash.com/photo-1541782814451-2895710d3b59?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-cake-choc">Chocolate Cake</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£19.99</s><span class="price">£14.99 / whole</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-cake-choc"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Muffins -->
+<article class="card product-item" data-category="muffins" data-dept="Bakery" data-id="b-muffins-blueberry" data-name="Blueberry Muffins" data-price="3.99" data-rating="4.2">
+<button aria-label="Add Blueberry Muffins to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-muffins-blueberry" tabindex="-1"><img alt="Blueberry Muffins" src="https://images.unsplash.com/photo-1542834369-f10ebf06d3cb?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-muffins-blueberry">Blueberry Muffins</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / 4-pack</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-muffins-blueberry"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Pastries -->
+<article class="card product-item" data-category="pastries" data-dept="Bakery" data-id="b-pastry-cinnamon" data-name="Cinnamon Rolls" data-price="2.49" data-rating="4.4">
+<button aria-label="Add Cinnamon Rolls to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-pastry-cinnamon" tabindex="-1"><img alt="Cinnamon Rolls" src="https://images.unsplash.com/photo-1570845201626-6313d78ac1f4?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-pastry-cinnamon">Cinnamon Rolls</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / each</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-pastry-cinnamon"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+</div>
+<nav aria-label="More departments" class="related-depts">
+<h2>More in Fresh food</h2>
+<div class="dept-links"><a href="fruits.html">Fruits</a><a href="vegetables.html">Vegetables</a><a href="dairy.html">Dairy</a><a href="eggs.html">Eggs</a><a href="meat.html">Meat</a><a href="seafood.html">Seafood</a><a class="deal" href="deals.html">Deals</a></div>
+<h2>Other departments</h2>
+<div class="dept-links"><a href="pantry.html">Pantry</a><a href="beverages.html">Beverages</a><a href="electronics.html">Electronics</a><a href="gadgets-under-50.html">Gadgets under £50</a><a href="home-essentials.html">Home essentials</a><a href="home-refresh.html">Home refresh</a><a href="summer-essentials.html">Summer essentials</a><a href="categories.html">All departments</a></div>
+</nav></section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- Global JS (search/sort/filters/cart/qty/wishlist) -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

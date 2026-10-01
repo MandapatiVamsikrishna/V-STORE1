@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — Fresh Fruits</title>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a aria-current="page" href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation -->
+<!-- Page Hero -->
+<header class="page-hero">
+<div class="hero-inner"><p class="crumbs"><a href="index.html">Home</a> / <a href="categories.html">All departments</a> / Fruits</p>
+<h1>Fresh Fruits</h1>
+<p class="muted">Filter by category, price, and rating — or search for anything.</p>
+<!-- Search + Sort -->
+<div class="row">
+<form aria-label="Search products" class="search" id="search-form" role="search">
+<input autocomplete="off" id="search-input" placeholder="Search fruits…" type="search"/>
+<button type="submit">Search</button>
+</form>
+<label class="sort">
+<span class="visually-hidden">Sort</span>
+<select aria-label="Sort results" id="sort-select">
+<option value="relevance">Sort: Relevance</option>
+<option value="price-asc">Price: Low → High</option>
+<option value="price-desc">Price: High → Low</option>
+<option value="name-asc">Name: A → Z</option>
+<option value="name-desc">Name: Z → A</option>
+<option value="rating-desc">Rating: High → Low</option>
+</select>
+</label>
+</div>
+</div>
+</header>
+<!-- Department quick links -->
+<!-- Optional visual dept grid -->
+<main class="container" id="main">
+<!-- Sidebar Filters -->
+<aside aria-label="Filters" class="filters"><details class="filters-details" open=""><summary class="filters-title">Filters</summary>
+<section>
+<h3>Category</h3>
+<ul class="checklist">
+<li><label><input checked="" name="cat" type="checkbox" value="fruits"/> Fruits</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="citrus"/> Citrus</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="berries"/> Berries</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="grapes"/> Grapes</label></li>
+</ul>
+</section>
+<section>
+<h3>Price</h3>
+<div class="range">
+<label for="min-price">Min £</label>
+<input id="min-price" min="0" step="0.01" type="number" value="0"/>
+<label for="max-price">Max £</label>
+<input id="max-price" min="0" step="0.01" type="number" value="9999"/>
+</div>
+</section>
+<section>
+<h3>Rating</h3>
+<ul class="checklist">
+<li><label><input checked="" name="rating" type="radio" value="all"/> All ratings</label></li>
+<li><label><input name="rating" type="radio" value="4.5"/> 4.5★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="4"/> 4★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="3"/> 3★ &amp; up</label></li>
+</ul>
+</section>
+<div class="filter-actions">
+<button class="btn-ghost" id="clear-filters" type="button">Clear</button>
+<button class="btn-primary" id="apply-filters" type="button">Apply</button>
+</div>
+</details></aside>
+<!-- Results -->
+<section aria-live="polite" class="results">
+<div class="toolbar">
+<span id="result-count">0 items</span>
+<div aria-label="Active filters" class="chips" id="active-chips"></div>
+</div>
+<!-- Product Grid -->
+<div class="grid" id="product-grid">
+<!-- Use data-* for filtering/sorting -->
+<article class="card product-item" data-category="fruits" data-dept="Fruits" data-id="p-apple" data-name="Red Apples" data-price="2.99" data-rating="4.6">
+<button aria-label="Add Red Apples to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-apple" tabindex="-1"><img alt="Red Apples" src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-apple">Red Apples</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price">£2.99 / lb</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-apple"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="fruits" data-dept="Fruits" data-id="p-banana" data-name="Bananas" data-price="0.69" data-rating="3.8">
+<button aria-label="Add Bananas to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-banana" tabindex="-1"><img alt="Bananas" src="https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-banana">Bananas</a></h3>
+<div class="meta"><span class="rating">★★★☆☆</span><span class="price">£0.69 / lb</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-banana"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="citrus" data-dept="Fruits" data-id="p-orange" data-name="Navel Oranges" data-price="3.49" data-rating="4.2">
+<button aria-label="Add Navel Oranges to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-orange" tabindex="-1"><img alt="Oranges" src="https://images.unsplash.com/photo-1547514701-42782101795e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-orange">Navel Oranges</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / lb</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-orange"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="berries" data-dept="Fruits" data-id="p-straw" data-name="Strawberries" data-price="4.99" data-rating="4.8">
+<button aria-label="Add Strawberries to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span>
+<a aria-hidden="true" href="product.html?id=p-straw" tabindex="-1"><img alt="Strawberries" src="https://www.gardentech.com/-/media/project/oneweb/gardentech/images/blog/how-to-grow-your-own-tasty-strawberries/strawberries-header-og.jpg"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-straw">Strawberries</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£5.89</s><span class="price">£4.99 / lb</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-straw"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="grapes" data-dept="Fruits" data-id="p-grapes" data-name="Red Grapes" data-price="3.99" data-rating="4.1">
+<button aria-label="Add Red Grapes to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=p-grapes" tabindex="-1"><img alt="Grapes" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFFZRn0s7cAU2c_dBoK5iqapNcKqa4OwaC_g&amp;s"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-grapes">Red Grapes</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / lb</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-grapes"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="berries" data-dept="Fruits" data-id="p-blue" data-name="Blueberries" data-price="5.99" data-rating="4.9">
+<button aria-label="Add Blueberries to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−20%</span>
+<a aria-hidden="true" href="product.html?id=p-blue" tabindex="-1"><img alt="Blueberries" src="https://www.healthyfood.com/wp-content/uploads/2017/03/Why_we_like_blueberries.jpg"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=p-blue">Blueberries</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£7.49</s><span class="price">£5.99 / pint</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="p-blue"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+</div>
+<nav aria-label="More departments" class="related-depts">
+<h2>More in Fresh food</h2>
+<div class="dept-links"><a href="vegetables.html">Vegetables</a><a href="dairy.html">Dairy</a><a href="eggs.html">Eggs</a><a href="meat.html">Meat</a><a href="seafood.html">Seafood</a><a href="bakery.html">Bakery</a><a class="deal" href="deals.html">Deals</a></div>
+<h2>Other departments</h2>
+<div class="dept-links"><a href="pantry.html">Pantry</a><a href="beverages.html">Beverages</a><a href="electronics.html">Electronics</a><a href="gadgets-under-50.html">Gadgets under £50</a><a href="home-essentials.html">Home essentials</a><a href="home-refresh.html">Home refresh</a><a href="summer-essentials.html">Summer essentials</a><a href="categories.html">All departments</a></div>
+</nav></section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- Global helpers (theme, nav burger, etc.) if you have them -->
+<!-- Page-specific logic -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

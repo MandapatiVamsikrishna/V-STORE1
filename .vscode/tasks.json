@@ -1,0 +1,7 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "V-STORE: dev (API + website)", "type": "npm", "script": "dev", "isBackground": true, "problemMatcher": [], "group": { "kind": "build", "isDefault": true } },
+    { "label": "V-STORE: API tests", "type": "npm", "script": "test:api", "problemMatcher": [] }
+  ]
+}

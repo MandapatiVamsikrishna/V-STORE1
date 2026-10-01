@@ -1,0 +1,385 @@
+{
+ "_about": "Country rules for V-STORE. Catalogue prices are UK prices in GBP including 20% UK VAT. For another market: remove UK VAT, convert with fx, then add local tax if prices there are shown tax-inclusive (otherwise tax is added at checkout). Fees and free-delivery thresholds are in the local currency. Discount codes live in the database (Admin → Discounts); their amounts are converted like prices. Exchange rates are fixed demo rates, not live.",
+ "base": {
+  "currency": "GBP",
+  "vat": 0.2
+ },
+ "perishableDepartments": [
+  "Fruits",
+  "Vegetables",
+  "Dairy",
+  "Eggs",
+  "Meat",
+  "Seafood",
+  "Bakery"
+ ],
+ "markets": {
+  "GB": {
+   "name": "United Kingdom",
+   "currency": "GBP",
+   "locale": "en-GB",
+   "fx": 1,
+   "tax": 0.2,
+   "taxName": "VAT",
+   "taxInclusive": true,
+   "fee": 1.99,
+   "freeThreshold": 49,
+   "perishables": true,
+   "slots": true,
+   "delivery": "Next day — choose a 2-hour slot",
+   "deliveryDays": [
+    1,
+    1
+   ],
+   "payments": [
+    "card",
+    "paypal",
+    "cod"
+   ],
+   "postcode": {
+    "label": "Postcode",
+    "pattern": "^[A-Za-z]{1,2}\\d[A-Za-z\\d]?\\s*\\d[A-Za-z]{2}$",
+    "example": "SW1A 1AA"
+   },
+   "phone": "+44"
+  },
+  "IE": {
+   "name": "Ireland",
+   "locale": "en-IE",
+   "tax": 0.23,
+   "taxName": "VAT",
+   "currency": "EUR",
+   "fx": 1.18,
+   "fee": 4.99,
+   "freeThreshold": 60,
+   "perishables": false,
+   "slots": false,
+   "delivery": "2–4 working days",
+   "deliveryDays": [
+    2,
+    4
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "taxInclusive": true,
+   "postcode": {
+    "label": "Eircode",
+    "pattern": "^[A-Za-z]\\d[\\dWw]\\s?[A-Za-z\\d]{4}$",
+    "example": "D02 X285"
+   },
+   "phone": "+353"
+  },
+  "FR": {
+   "name": "France",
+   "locale": "fr-FR",
+   "tax": 0.2,
+   "taxName": "TVA",
+   "currency": "EUR",
+   "fx": 1.18,
+   "fee": 6.99,
+   "freeThreshold": 70,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–5 working days",
+   "deliveryDays": [
+    3,
+    5
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "taxInclusive": true,
+   "postcode": {
+    "label": "Code postal",
+    "pattern": "^\\d{5}$",
+    "example": "75001"
+   },
+   "phone": "+33"
+  },
+  "DE": {
+   "name": "Germany",
+   "locale": "de-DE",
+   "tax": 0.19,
+   "taxName": "MwSt",
+   "currency": "EUR",
+   "fx": 1.18,
+   "fee": 6.99,
+   "freeThreshold": 70,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–5 working days",
+   "deliveryDays": [
+    3,
+    5
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "taxInclusive": true,
+   "postcode": {
+    "label": "Postleitzahl (PLZ)",
+    "pattern": "^\\d{5}$",
+    "example": "10115"
+   },
+   "phone": "+49"
+  },
+  "ES": {
+   "name": "Spain",
+   "locale": "es-ES",
+   "tax": 0.21,
+   "taxName": "IVA",
+   "currency": "EUR",
+   "fx": 1.18,
+   "fee": 6.99,
+   "freeThreshold": 70,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–5 working days",
+   "deliveryDays": [
+    3,
+    5
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "taxInclusive": true,
+   "postcode": {
+    "label": "Código postal",
+    "pattern": "^\\d{5}$",
+    "example": "28001"
+   },
+   "phone": "+34"
+  },
+  "IT": {
+   "name": "Italy",
+   "locale": "it-IT",
+   "tax": 0.22,
+   "taxName": "IVA",
+   "currency": "EUR",
+   "fx": 1.18,
+   "fee": 6.99,
+   "freeThreshold": 70,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–5 working days",
+   "deliveryDays": [
+    3,
+    5
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "taxInclusive": true,
+   "postcode": {
+    "label": "CAP",
+    "pattern": "^\\d{5}$",
+    "example": "00118"
+   },
+   "phone": "+39"
+  },
+  "NL": {
+   "name": "Netherlands",
+   "locale": "nl-NL",
+   "tax": 0.21,
+   "taxName": "BTW",
+   "currency": "EUR",
+   "fx": 1.18,
+   "fee": 6.99,
+   "freeThreshold": 70,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–5 working days",
+   "deliveryDays": [
+    3,
+    5
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "taxInclusive": true,
+   "postcode": {
+    "label": "Postcode",
+    "pattern": "^\\d{4}\\s?[A-Za-z]{2}$",
+    "example": "1011 AB"
+   },
+   "phone": "+31"
+  },
+  "SE": {
+   "name": "Sweden",
+   "currency": "SEK",
+   "locale": "sv-SE",
+   "fx": 13.7,
+   "tax": 0.25,
+   "taxName": "Moms",
+   "taxInclusive": true,
+   "fee": 79,
+   "freeThreshold": 700,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–5 working days",
+   "deliveryDays": [
+    3,
+    5
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "postcode": {
+    "label": "Postnummer",
+    "pattern": "^\\d{3}\\s?\\d{2}$",
+    "example": "111 22"
+   },
+   "phone": "+46"
+  },
+  "PL": {
+   "name": "Poland",
+   "currency": "PLN",
+   "locale": "pl-PL",
+   "fx": 5.0,
+   "tax": 0.23,
+   "taxName": "VAT",
+   "taxInclusive": true,
+   "fee": 29,
+   "freeThreshold": 250,
+   "perishables": false,
+   "slots": false,
+   "delivery": "3–6 working days",
+   "deliveryDays": [
+    3,
+    6
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "postcode": {
+    "label": "Kod pocztowy",
+    "pattern": "^\\d{2}-\\d{3}$",
+    "example": "00-001"
+   },
+   "phone": "+48"
+  },
+  "US": {
+   "name": "United States",
+   "currency": "USD",
+   "locale": "en-US",
+   "fx": 1.28,
+   "tax": 0.08,
+   "taxName": "Estimated sales tax",
+   "taxInclusive": false,
+   "fee": 9.99,
+   "freeThreshold": 75,
+   "perishables": false,
+   "slots": false,
+   "delivery": "5–8 business days",
+   "deliveryDays": [
+    5,
+    8
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "postcode": {
+    "label": "ZIP code",
+    "pattern": "^\\d{5}(-\\d{4})?$",
+    "example": "10001"
+   },
+   "phone": "+1"
+  },
+  "CA": {
+   "name": "Canada",
+   "currency": "CAD",
+   "locale": "en-CA",
+   "fx": 1.74,
+   "tax": 0.13,
+   "taxName": "Estimated GST/HST",
+   "taxInclusive": false,
+   "fee": 12.99,
+   "freeThreshold": 100,
+   "perishables": false,
+   "slots": false,
+   "delivery": "5–8 business days",
+   "deliveryDays": [
+    5,
+    8
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "postcode": {
+    "label": "Postal code",
+    "pattern": "^[A-Za-z]\\d[A-Za-z]\\s?\\d[A-Za-z]\\d$",
+    "example": "K1A 0B1"
+   },
+   "phone": "+1"
+  },
+  "AU": {
+   "name": "Australia",
+   "currency": "AUD",
+   "locale": "en-AU",
+   "fx": 1.95,
+   "tax": 0.1,
+   "taxName": "GST",
+   "taxInclusive": true,
+   "fee": 14.99,
+   "freeThreshold": 120,
+   "perishables": false,
+   "slots": false,
+   "delivery": "6–10 business days",
+   "deliveryDays": [
+    6,
+    10
+   ],
+   "payments": [
+    "card",
+    "paypal"
+   ],
+   "postcode": {
+    "label": "Postcode",
+    "pattern": "^\\d{4}$",
+    "example": "2000"
+   },
+   "phone": "+61"
+  },
+  "IN": {
+   "name": "India",
+   "currency": "INR",
+   "locale": "en-IN",
+   "fx": 106,
+   "tax": 0.18,
+   "taxName": "GST",
+   "taxInclusive": true,
+   "fee": 199,
+   "freeThreshold": 4000,
+   "perishables": false,
+   "slots": false,
+   "delivery": "5–8 business days",
+   "deliveryDays": [
+    5,
+    8
+   ],
+   "payments": [
+    "card",
+    "paypal",
+    "upi",
+    "cod"
+   ],
+   "postcode": {
+    "label": "PIN code",
+    "pattern": "^[1-9]\\d{5}$",
+    "example": "110001"
+   },
+   "phone": "+91"
+  }
+ }
+}

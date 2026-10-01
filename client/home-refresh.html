@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — Home Refresh</title>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a aria-current="page" href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation -->
+<!-- Hero -->
+<header class="page-hero">
+<div class="hero-inner"><p class="crumbs"><a href="index.html">Home</a> / <a href="categories.html">All departments</a> / Home refresh</p>
+<h1>Home Refresh</h1>
+<p class="muted">Cozy upgrades for less — lighting, textiles, storage &amp; décor picks.</p>
+<div class="row">
+<form aria-label="Search home items" class="search" id="search-form" role="search">
+<input autocomplete="off" id="search-input" placeholder="Search throws, lamps, baskets…" type="search"/>
+<button type="submit">Search</button>
+</form>
+<label class="sort">
+<span class="visually-hidden">Sort</span>
+<select aria-label="Sort results" id="sort-select">
+<option value="relevance">Sort: Relevance</option>
+<option value="price-asc">Price: Low → High</option>
+<option value="price-desc">Price: High → Low</option>
+<option value="name-asc">Name: A → Z</option>
+<option value="name-desc">Name: Z → A</option>
+<option value="rating-desc">Rating: High → Low</option>
+</select>
+</label>
+</div>
+</div>
+</header>
+<!-- Quick links -->
+<main class="container" id="main">
+<!-- Sidebar Filters -->
+<aside aria-label="Filters" class="filters"><details class="filters-details" open=""><summary class="filters-title">Filters</summary>
+<section>
+<h3>Category</h3>
+<ul class="checklist">
+<li><label><input checked="" name="cat" type="checkbox" value="lighting"/> Lighting</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="textiles"/> Textiles</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="decor"/> Décor</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="storage"/> Storage</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="kitchen"/> Kitchen</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="bath"/> Bath</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="scent"/> Scent</label></li>
+</ul>
+</section>
+<section>
+<h3>Price</h3>
+<div class="range">
+<label for="min-price">Min £</label>
+<input id="min-price" min="0" step="0.01" type="number" value="0"/>
+<label for="max-price">Max £</label>
+<input id="max-price" min="0" step="0.01" type="number" value="100"/>
+</div>
+</section>
+<section>
+<h3>Rating</h3>
+<ul class="checklist">
+<li><label><input checked="" name="rating" type="radio" value="all"/> All ratings</label></li>
+<li><label><input name="rating" type="radio" value="4.5"/> 4.5★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="4"/> 4★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="3.5"/> 3.5★ &amp; up</label></li>
+</ul>
+</section>
+<div class="filter-actions">
+<button class="btn-ghost" id="clear-filters" type="button">Clear</button>
+<button class="btn-primary" id="apply-filters" type="button">Apply</button>
+</div>
+</details></aside>
+<!-- Results -->
+<section aria-live="polite" class="results">
+<div class="toolbar">
+<span id="result-count">0 items</span>
+<div aria-label="Active filters" class="chips" id="active-chips"></div>
+</div>
+<!-- Product Grid -->
+<div class="grid" id="product-grid">
+<!-- LIGHTING -->
+<article class="card product-item" data-category="lighting" data-dept="Home Refresh" data-id="hr-amber-lamp" data-name="Amber Glass Table Lamp" data-price="24.99" data-rating="4.6">
+<button aria-label="Save Amber Glass Table Lamp" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−20%</span>
+<a aria-hidden="true" href="product.html?id=hr-amber-lamp" tabindex="-1"><img alt="Amber Glass Table Lamp" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-amber-lamp">Amber Glass Table Lamp</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£31.29</s><span class="price">£24.99</span></span></div>
+<div class="actions">
+<div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="lighting" data-dept="Home Refresh" data-id="hr-fairy-lights" data-name="Warm Fairy Lights 10m" data-price="9.99" data-rating="4.3">
+<button aria-label="Save Warm Fairy Lights" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-fairy-lights" tabindex="-1"><img alt="Warm Fairy Lights" src="https://images.unsplash.com/photo-1511389026070-a14ae610a1be?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-fairy-lights">Warm Fairy Lights 10m</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- TEXTILES -->
+<article class="card product-item" data-category="textiles" data-dept="Home Refresh" data-id="hr-knit-throw" data-name="Chunky Knit Throw" data-price="29.99" data-rating="4.5">
+<button aria-label="Save Chunky Knit Throw" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span>
+<a aria-hidden="true" href="product.html?id=hr-knit-throw" tabindex="-1"><img alt="Chunky Knit Throw" src="https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-knit-throw">Chunky Knit Throw</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£35.29</s><span class="price">£29.99</span></span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="textiles" data-dept="Home Refresh" data-id="hr-cotton-cushion" data-name="Cotton Cushion Cover (2-pack)" data-price="12.99" data-rating="4.2">
+<button aria-label="Save Cotton Cushion Cover" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-cotton-cushion" tabindex="-1"><img alt="Cotton Cushion Cover" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-cotton-cushion">Cotton Cushion Cover (2-pack)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£12.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- DÉCOR -->
+<article class="card product-item" data-category="decor" data-dept="Home Refresh" data-id="hr-ceramic-vase" data-name="Matte Ceramic Vase" data-price="14.99" data-rating="4.4">
+<button aria-label="Save Matte Ceramic Vase" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-ceramic-vase" tabindex="-1"><img alt="Matte Ceramic Vase" src="https://images.unsplash.com/photo-1548286978-f218023f8d18?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-ceramic-vase">Matte Ceramic Vase</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£14.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="decor" data-dept="Home Refresh" data-id="hr-wall-frame" data-name="A3 Wood Photo Frame" data-price="9.49" data-rating="4.1">
+<button aria-label="Save A3 Wood Photo Frame" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-wall-frame" tabindex="-1"><img alt="Wood Photo Frame" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-wall-frame">A3 Wood Photo Frame</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.49</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- STORAGE -->
+<article class="card product-item" data-category="storage" data-dept="Home Refresh" data-id="hr-rope-basket" data-name="Cotton Rope Basket" data-price="15.99" data-rating="4.3">
+<button aria-label="Save Cotton Rope Basket" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-rope-basket" tabindex="-1"><img alt="Cotton Rope Basket" src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-rope-basket">Cotton Rope Basket</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£15.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="storage" data-dept="Home Refresh" data-id="hr-underbed-box" data-name="Under-Bed Storage Box" data-price="19.99" data-rating="4.2">
+<button aria-label="Save Under-Bed Storage Box" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-underbed-box" tabindex="-1"><img alt="Under-Bed Storage Box" src="https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-underbed-box">Under-Bed Storage Box</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£19.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- KITCHEN -->
+<article class="card product-item" data-category="kitchen" data-dept="Home Refresh" data-id="hr-bamboo-board" data-name="Bamboo Chopping Board" data-price="11.99" data-rating="4.4">
+<button aria-label="Save Bamboo Chopping Board" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-bamboo-board" tabindex="-1"><img alt="Bamboo Chopping Board" src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-bamboo-board">Bamboo Chopping Board</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£11.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="kitchen" data-dept="Home Refresh" data-id="hr-spice-jars" data-name="Glass Spice Jars (12-pack)" data-price="18.99" data-rating="4.5">
+<button aria-label="Save Glass Spice Jars" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-spice-jars" tabindex="-1"><img alt="Glass Spice Jars" src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-spice-jars">Glass Spice Jars (12-pack)</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price">£18.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- BATH -->
+<article class="card product-item" data-category="bath" data-dept="Home Refresh" data-id="hr-bath-mat" data-name="Memory Foam Bath Mat" data-price="14.49" data-rating="4.2">
+<button aria-label="Save Memory Foam Bath Mat" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-bath-mat" tabindex="-1"><img alt="Memory Foam Bath Mat" src="https://images.unsplash.com/photo-1523419409543-9e4f4e62c67a?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-bath-mat">Memory Foam Bath Mat</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£14.49</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- SCENT -->
+<article class="card product-item" data-category="scent" data-dept="Home Refresh" data-id="hr-soy-candle" data-name="Soy Candle — Vanilla" data-price="8.99" data-rating="4.0">
+<button aria-label="Save Soy Candle — Vanilla" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=hr-soy-candle" tabindex="-1"><img alt="Vanilla Soy Candle" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=hr-soy-candle">Soy Candle — Vanilla</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£8.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+</div>
+<nav aria-label="More departments" class="related-depts">
+<h2>More in Tech &amp; home</h2>
+<div class="dept-links"><a href="electronics.html">Electronics</a><a href="gadgets-under-50.html">Gadgets under £50</a><a href="home-essentials.html">Home essentials</a><a href="summer-essentials.html">Summer essentials</a><a class="deal" href="deals.html">Deals</a></div>
+<h2>Other departments</h2>
+<div class="dept-links"><a href="fruits.html">Fruits</a><a href="vegetables.html">Vegetables</a><a href="dairy.html">Dairy</a><a href="eggs.html">Eggs</a><a href="meat.html">Meat</a><a href="seafood.html">Seafood</a><a href="bakery.html">Bakery</a><a href="pantry.html">Pantry</a><a href="beverages.html">Beverages</a><a href="categories.html">All departments</a></div>
+</nav></section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- Global JS (search/sort/filters/cart) -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

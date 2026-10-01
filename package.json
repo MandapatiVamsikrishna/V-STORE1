@@ -1,61 +1,46 @@
 {
   "name": "v-store",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "V-STORE — Full-stack e-commerce app using React (Vite) + Express + MongoDB.",
-  "main": "server.js",
+  "description": "V-STORE — multi-page storefront (Vite) + Express/MongoDB REST API",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server.js",
+    "dev": "concurrently -n api,web -c blue,green \"npm:server\" \"npm:client\"",
+    "server": "node --watch-path=server server/server.js",
     "client": "vite",
+    "seed": "node server/scripts/seed.js",
+    "seed:reset": "node server/scripts/seed.js --reset",
     "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "start": "node server.js"
+    "start": "node server/server.js",
+    "test:api": "node server/scripts/smoke-test.js",
+    "cloudshell": "git pull && npm install && npm run build && PORT=8080 npm start"
+  },
+  "engines": {
+    "node": ">=20.11"
   },
   "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "cookie-parser": "^1.4.7",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
+    "dotenv": "^16.4.5",
     "express": "^5.1.0",
+    "express-rate-limit": "^7.4.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.18.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "mongoose": "^8.9.0",
+    "morgan": "^1.10.0"
+  },
+  "optionalDependencies": {
+    "mongodb-memory-server": "^10.1.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@types/react": "^18.3.10",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.2",
-    "concurrently": "^9.0.1",
-    "eslint": "^9.11.1",
-    "eslint-plugin-react": "^7.37.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.12",
-    "globals": "^15.9.0",
-    "nodemon": "^3.1.10",
-    "vite": "^5.4.8"
+    "concurrently": "^9.1.0",
+    "vite": "^6.0.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MandapatiVamsikrishna/V-STORE1.git"
   },
-  "keywords": [
-    "ecommerce",
-    "mern",
-    "react",
-    "vite",
-    "express",
-    "mongodb",
-    "jwt"
-  ],
-  "author": "Mandapatii Vamsi krishna",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MandapatiVamsikrishna/V-STORE1/issues"
-  },
-  "homepage": "https://github.com/MandapatiVamsikrishna/V-STORE1#readme"
+  "author": "Mandapati Vamsi Krishna",
+  "license": "ISC"
 }

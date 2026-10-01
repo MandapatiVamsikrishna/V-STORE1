@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — Beverages</title>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a aria-current="page" href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation -->
+<!-- Page Hero -->
+<header class="page-hero">
+<div class="hero-inner"><p class="crumbs"><a href="index.html">Home</a> / <a href="categories.html">All departments</a> / Beverages</p>
+<h1>Beverages</h1>
+<p class="muted">Filter by type, price, and rating — or search for anything.</p>
+<div class="row">
+<form aria-label="Search products" class="search" id="search-form" role="search">
+<input autocomplete="off" id="search-input" placeholder="Search drinks…" type="search"/>
+<button type="submit">Search</button>
+</form>
+<label class="sort">
+<span class="visually-hidden">Sort</span>
+<select aria-label="Sort results" id="sort-select">
+<option value="relevance">Sort: Relevance</option>
+<option value="price-asc">Price: Low → High</option>
+<option value="price-desc">Price: High → Low</option>
+<option value="name-asc">Name: A → Z</option>
+<option value="name-desc">Name: Z → A</option>
+<option value="rating-desc">Rating: High → Low</option>
+</select>
+</label>
+</div>
+</div>
+</header>
+<!-- Department quick links -->
+<main class="container" id="main">
+<!-- Filters -->
+<aside aria-label="Filters" class="filters"><details class="filters-details" open=""><summary class="filters-title">Filters</summary>
+<section>
+<h3>Type</h3>
+<ul class="checklist">
+<li><label><input checked="" name="cat" type="checkbox" value="water"/> Water</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="juice"/> Juice</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="soda"/> Soda</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="coffee"/> Coffee</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="tea"/> Tea</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="energy"/> Energy Drinks</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="sparkling"/> Sparkling</label></li>
+</ul>
+</section>
+<section>
+<h3>Price</h3>
+<div class="range">
+<label for="min-price">Min £</label>
+<input id="min-price" inputmode="decimal" min="0" step="0.01" type="number" value="0"/>
+<label for="max-price">Max £</label>
+<input id="max-price" inputmode="decimal" min="0" step="0.01" type="number" value="9999"/>
+</div>
+</section>
+<section>
+<h3>Rating</h3>
+<ul class="checklist">
+<li><label><input checked="" name="rating" type="radio" value="all"/> All ratings</label></li>
+<li><label><input name="rating" type="radio" value="4.5"/> 4.5★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="4"/> 4★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="3"/> 3★ &amp; up</label></li>
+</ul>
+</section>
+<div class="filter-actions">
+<button class="btn-ghost" id="clear-filters" type="button">Clear</button>
+<button class="btn-primary" id="apply-filters" type="button">Apply</button>
+</div>
+</details></aside>
+<!-- Results -->
+<section aria-live="polite" class="results">
+<div class="toolbar">
+<span id="result-count">0 items</span>
+<div aria-label="Active filters" class="chips" id="active-chips"></div>
+</div>
+<!-- Product Grid -->
+<div class="grid" id="product-grid">
+<!-- Water -->
+<article class="card product-item" data-category="water" data-dept="Beverages" data-id="b-spring-water" data-name="Spring Water (24-pack)" data-price="3.99" data-rating="4.4">
+<button aria-label="Add Spring Water to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-spring-water" tabindex="-1"><img alt="Spring Water 24-pack" src="https://www.discountcoffee.co.uk/cdn/shop/products/highlandspringscrew_grande.jpg?v=1628518538"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-spring-water">Spring Water (24-pack)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.99 / pack</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-spring-water"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="sparkling" data-dept="Beverages" data-id="b-sparkling-water" data-name="Sparkling Water (Lemon)" data-price="2.49" data-rating="4.2">
+<button aria-label="Add Sparkling Water (Lemon) to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-sparkling-water" tabindex="-1"><img alt="Sparkling Water Lemon" src="https://assets.sainsburys-groceries.co.uk/gol/7824805/1/640x640.jpg"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-sparkling-water">Sparkling Water (Lemon)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / 6-pack</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-sparkling-water"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Juice -->
+<article class="card product-item" data-category="juice" data-dept="Beverages" data-id="b-orange-juice" data-name="Orange Juice (No Pulp)" data-price="2.99" data-rating="4.6">
+<button aria-label="Add Orange Juice to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−17%</span>
+<a aria-hidden="true" href="product.html?id=b-orange-juice" tabindex="-1"><img alt="Orange Juice" src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ83wpZpJridODlZMdG0_yfRV6ToCyLuzc1BfIvs1wMbXnbb4jiMkq-Jhtr2sjtdAjxljLWT6qNlCGGUtGHflyp9RC35EhflAXWjoBV_6io8lCd24S4MfykqabNXdnZpOYBx_ZvAyMQfw&amp;usqp=CAc"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-orange-juice">Orange Juice (No Pulp)</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£3.59</s><span class="price">£2.99 / 1L</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-orange-juice"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="juice" data-dept="Beverages" data-id="b-apple-juice" data-name="Cold-Pressed Apple Juice" data-price="2.49" data-rating="4.1">
+<button aria-label="Add Apple Juice to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-apple-juice" tabindex="-1"><img alt="Apple Juice" src="https://assets.iceland.co.uk/i/iceland/iceland_apple_juice_from_concentrate_1_litre_79716.jpg?&amp;fmt=auto$pdpmain_2x$"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-apple-juice">Cold-Pressed Apple Juice</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49 / 1L</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-apple-juice"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Soda -->
+<article class="card product-item" data-category="soda" data-dept="Beverages" data-id="b-cola" data-name="Classic Cola" data-price="4.49" data-rating="4.0">
+<button aria-label="Add Classic Cola to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-cola" tabindex="-1"><img alt="Cola" src="https://assets.iceland.co.uk/i/iceland/coca-cola_original_taste_500ml_218_T1.jpg?&amp;fmt=auto$pdpmain_2x$"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-cola">Classic Cola</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.49 / 12-pack</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-cola"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Coffee -->
+<article class="card product-item" data-category="coffee" data-dept="Beverages" data-id="b-ground-coffee" data-name="Ground Coffee — Medium Roast" data-price="5.99" data-rating="4.5">
+<button aria-label="Add Ground Coffee Medium Roast to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−16%</span>
+<a aria-hidden="true" href="product.html?id=b-ground-coffee" tabindex="-1"><img alt="Ground Coffee Medium Roast" src="https://assets.iceland.co.uk/i/iceland/nescafe_original_instant_coffee_300g_28542_T1.jpg?&amp;fmt=auto$pdpmain_2x$"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-ground-coffee">Ground Coffee — Medium Roast</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price-wrap"><s class="was">£7.09</s><span class="price">£5.99 / 340g</span></span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-ground-coffee"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="coffee" data-dept="Beverages" data-id="b-coffee-pods" data-name="Coffee Pods — Dark Roast (12)" data-price="4.99" data-rating="4.3">
+<button aria-label="Add Coffee Pods Dark Roast to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-coffee-pods" tabindex="-1"><img alt="Coffee Pods Dark Roast" src="https://i.ebayimg.com/images/g/ZHcAAeSwQY5oHNSR/s-l1200.jpg"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-coffee-pods">Coffee Pods — Dark Roast (12)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.99 / box</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-coffee-pods"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Tea -->
+<article class="card product-item" data-category="tea" data-dept="Beverages" data-id="b-green-tea" data-name="Green Tea (20)" data-price="2.29" data-rating="4.4">
+<button aria-label="Add Green Tea to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-green-tea" tabindex="-1"><img alt="Green Tea" src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRTpojXVdBqBZ-qS3WQyMJWZeL3scyXsAgjgPEHvXyfKz8VdWz2QOBB4BqT1C4wVoUoMDfeyBttsPo0x4DI298ZJg8mNMSpQJ0eupDDHlrXsTmhJSt6Voka8qvF9Y5e_8YJuKoJk9c&amp;usqp=CAc"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-green-tea">Green Tea (20)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.29 / box</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-green-tea"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="tea" data-dept="Beverages" data-id="b-black-tea" data-name="English Breakfast Tea (40)" data-price="2.99" data-rating="4.2">
+<button aria-label="Add English Breakfast Tea to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-black-tea" tabindex="-1"><img alt="English Breakfast Tea" src="https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/twn/twn26776/l/50.jpg"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-black-tea">English Breakfast Tea (40)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99 / box</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-black-tea"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- Energy -->
+<article class="card product-item" data-category="energy" data-dept="Beverages" data-id="b-energy-drink" data-name="Energy Drink (Sugar Free)" data-price="1.49" data-rating="3.9">
+<button aria-label="Add Energy Drink Sugar Free to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=b-energy-drink" tabindex="-1"><img alt="Energy Drink Sugar Free" src="https://assets.sainsburys-groceries.co.uk/gol/4130819/1/640x640.jpg"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=b-energy-drink">Energy Drink (Sugar Free)</a></h3>
+<div class="meta"><span class="rating">★★★☆☆</span><span class="price">£1.49 / can</span></div>
+<div class="actions">
+<div class="qty" data-qty-for="b-energy-drink"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+</div>
+<nav aria-label="More departments" class="related-depts">
+<h2>More in Cupboard &amp; drinks</h2>
+<div class="dept-links"><a href="pantry.html">Pantry</a><a class="deal" href="deals.html">Deals</a></div>
+<h2>Other departments</h2>
+<div class="dept-links"><a href="fruits.html">Fruits</a><a href="vegetables.html">Vegetables</a><a href="dairy.html">Dairy</a><a href="eggs.html">Eggs</a><a href="meat.html">Meat</a><a href="seafood.html">Seafood</a><a href="bakery.html">Bakery</a><a href="electronics.html">Electronics</a><a href="gadgets-under-50.html">Gadgets under £50</a><a href="home-essentials.html">Home essentials</a><a href="home-refresh.html">Home refresh</a><a href="summer-essentials.html">Summer essentials</a><a href="categories.html">All departments</a></div>
+</nav></section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- Global JS (search/sort/filters/cart) -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

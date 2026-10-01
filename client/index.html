@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — fresh groceries and everyday tech</title>
+<meta content="Fresh groceries, pantry staples and everyday tech with free delivery over £49." name="description"/>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<main id="main">
+<section class="home-hero"><div class="wrap">
+<div>
+<h1>Your weekly shop, sorted.</h1>
+<p class="lede">Fresh fruit and veg, bakery bread, pantry staples and everyday tech, all in one cart. Free delivery on orders over £49.</p>
+<div class="cta">
+<a class="btn-primary btn-lg" href="fruits.html">Shop fresh produce</a>
+<a class="btn-ghost btn-lg" href="categories.html">Browse all departments</a>
+</div>
+</div>
+<div class="hero-photo">
+<img alt="Fresh vegetables and fruit on a market stall" src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&amp;w=1400&amp;auto=format&amp;fit=crop"/>
+<div class="hero-tag"><strong>145 products</strong>across 14 departments</div>
+</div>
+</div></section>
+<div class="wrap">
+<div class="perks">
+<div class="perk"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"></path><circle cx="7" cy="18" r="1.8"></circle><circle cx="17.5" cy="18" r="1.8"></circle></svg><div><h3>Delivery to 13 countries</h3><p>Next-day slots in the UK, 2–10 days worldwide. <a href="shipping.html">Rates</a></p></div></div>
+<div class="perk"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"></path></svg><div><h3>Change your mind</h3><p>Cancel any order while it's still processing.</p></div></div>
+<div class="perk"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="10" rx="2" width="16" x="4" y="10.5"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg><div><h3>Pay your way</h3><p>Card and PayPal everywhere, plus UPI and cash on delivery where available.</p></div></div>
+</div>
+<section aria-labelledby="dept-h" class="section">
+<div class="section-head"><h2 id="dept-h">Shop by department</h2><a href="categories.html">See all</a></div>
+<div class="dept-tiles home-depts"><a class="dept-tile" href="fruits.html"><div class="ph"><img alt="" loading="lazy" src="https://www.healthyfood.com/wp-content/uploads/2017/03/Why_we_like_blueberries.jpg"/></div>
+<div class="txt"><strong>Fruits</strong><span>6 products</span></div></a><a class="dept-tile" href="vegetables.html"><div class="ph"><img alt="" loading="lazy" src="https://www.ocado.com/images-v3/eafa5127-d256-497b-9609-4869092accd6/fb6e8465-6405-4776-93df-d7d4be1f29b4/1280x1280.webp"/></div>
+<div class="txt"><strong>Vegetables</strong><span>6 products</span></div></a><a class="dept-tile" href="dairy.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Dairy</strong><span>6 products</span></div></a><a class="dept-tile" href="eggs.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1587486913049-53fc8cf5d6a8?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Eggs</strong><span>6 products</span></div></a><a class="dept-tile" href="meat.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Meat</strong><span>8 products</span></div></a><a class="dept-tile" href="seafood.html"><div class="ph"><img alt="" loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkYKfZtY0N6EK5OFtmtxJzlVyQmbaZ_N_nvA&amp;s"/></div>
+<div class="txt"><strong>Seafood</strong><span>12 products</span></div></a><a class="dept-tile" href="bakery.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1541782814451-2895710d3b59?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Bakery</strong><span>10 products</span></div></a><a class="dept-tile" href="pantry.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1510626176961-4b37d6af1c4e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Pantry</strong><span>14 products</span></div></a><a class="dept-tile" href="beverages.html"><div class="ph"><img alt="" loading="lazy" src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ83wpZpJridODlZMdG0_yfRV6ToCyLuzc1BfIvs1wMbXnbb4jiMkq-Jhtr2sjtdAjxljLWT6qNlCGGUtGHflyp9RC35EhflAXWjoBV_6io8lCd24S4MfykqabNXdnZpOYBx_ZvAyMQfw&amp;usqp=CAc"/></div>
+<div class="txt"><strong>Beverages</strong><span>10 products</span></div></a><a class="dept-tile" href="electronics.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Electronics</strong><span>13 products</span></div></a><a class="dept-tile" href="gadgets-under-50.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Gadgets under £50</strong><span>13 products</span></div></a><a class="dept-tile" href="home-essentials.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1626721105746-6868d9ec2b7b?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Home essentials</strong><span>14 products</span></div></a><a class="dept-tile" href="home-refresh.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Home refresh</strong><span>12 products</span></div></a><a class="dept-tile" href="summer-essentials.html"><div class="ph"><img alt="" loading="lazy" src="https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></div>
+<div class="txt"><strong>Summer essentials</strong><span>15 products</span></div></a></div>
+</section>
+<section aria-labelledby="deals-h" class="section">
+<div class="section-head"><h2 id="deals-h">This week's deals</h2><a href="deals.html">See all 28 deals</a></div>
+<div class="product-grid home-shelf"><article class="card product-item" data-category="bread" data-dept="Bakery" data-id="b-sourdough" data-name="Sourdough Loaf" data-price="3.99" data-rating="4.7">
+<button aria-label="Save Sourdough Loaf to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−31%</span><a aria-hidden="true" href="product.html?id=b-sourdough" tabindex="-1"><img alt="Sourdough Loaf" loading="lazy" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=b-sourdough">Sourdough Loaf</a></h3>
+<div class="meta"><span aria-label="Rated 4.7 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£5.79</s><span class="price">£3.99 / loaf</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="beef" data-dept="Meat" data-id="m-ribeye" data-name="Ribeye Steak" data-price="12.99" data-rating="4.7">
+<button aria-label="Save Ribeye Steak to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span><a aria-hidden="true" href="product.html?id=m-ribeye" tabindex="-1"><img alt="Ribeye Steak" loading="lazy" src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=m-ribeye">Ribeye Steak</a></h3>
+<div class="meta"><span aria-label="Rated 4.7 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£18.59</s><span class="price">£12.99 / lb</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="oils" data-dept="Pantry" data-id="p-olive-oil" data-name="Extra Virgin Olive Oil" data-price="6.99" data-rating="4.7">
+<button aria-label="Save Extra Virgin Olive Oil to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span><a aria-hidden="true" href="product.html?id=p-olive-oil" tabindex="-1"><img alt="Extra Virgin Olive Oil" loading="lazy" src="https://images.unsplash.com/photo-1510626176961-4b37d6af1c4e?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=p-olive-oil">Extra Virgin Olive Oil</a></h3>
+<div class="meta"><span aria-label="Rated 4.7 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£9.99</s><span class="price">£6.99 / 500ml</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="milk" data-dept="Dairy" data-id="d-milk-1" data-name="Whole Milk" data-price="3.49" data-rating="4.7">
+<button aria-label="Save Whole Milk to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span><a aria-hidden="true" href="product.html?id=d-milk-1" tabindex="-1"><img alt="Whole Milk" loading="lazy" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=d-milk-1">Whole Milk</a></h3>
+<div class="meta"><span aria-label="Rated 4.7 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£4.99</s><span class="price">£3.49 / 2L</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="chicken" data-dept="Meat" data-id="m-chicken-breast" data-name="Chicken Breast" data-price="5.99" data-rating="4.6">
+<button aria-label="Save Chicken Breast to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span><a aria-hidden="true" href="product.html?id=m-chicken-breast" tabindex="-1"><img alt="Chicken Breast" loading="lazy" src="https://images.unsplash.com/photo-1604908554063-0b6a0d5dcf39?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=m-chicken-breast">Chicken Breast</a></h3>
+<div class="meta"><span aria-label="Rated 4.6 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£8.59</s><span class="price">£5.99 / lb</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="vegetables" data-dept="Vegetables" data-id="v-002" data-name="Broccoli" data-price="2.29" data-rating="4.5">
+<button aria-label="Save Broccoli to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span><a aria-hidden="true" href="product.html?id=v-002" tabindex="-1"><img alt="Broccoli" loading="lazy" src="https://www.ocado.com/images-v3/eafa5127-d256-497b-9609-4869092accd6/fb6e8465-6405-4776-93df-d7d4be1f29b4/1280x1280.webp"/></a></div>
+<h3 class="title"><a href="product.html?id=v-002">Broccoli</a></h3>
+<div class="meta"><span aria-label="Rated 4.5 out of 5" class="rating">★★★★☆</span><span class="price-wrap"><s class="was">£3.29</s><span class="price">£2.29 / lb</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="chicken" data-dept="Eggs" data-id="e-chicken-2" data-name="Organic Chicken Eggs (12)" data-price="3.49" data-rating="4.6">
+<button aria-label="Save Organic Chicken Eggs (12) to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−26%</span><a aria-hidden="true" href="product.html?id=e-chicken-2" tabindex="-1"><img alt="Organic Chicken Eggs (12)" loading="lazy" src="https://images.unsplash.com/photo-1587486913049-53fc8cf5d6a8?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=e-chicken-2">Organic Chicken Eggs (12)</a></h3>
+<div class="meta"><span aria-label="Rated 4.6 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£4.69</s><span class="price">£3.49 / dozen</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="cake" data-dept="Bakery" data-id="b-cake-choc" data-name="Chocolate Cake" data-price="14.99" data-rating="4.8">
+<button aria-label="Save Chocolate Cake to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−25%</span><a aria-hidden="true" href="product.html?id=b-cake-choc" tabindex="-1"><img alt="Chocolate Cake" loading="lazy" src="https://images.unsplash.com/photo-1541782814451-2895710d3b59?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=b-cake-choc">Chocolate Cake</a></h3>
+<div class="meta"><span aria-label="Rated 4.8 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£19.99</s><span class="price">£14.99 / whole</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article></div>
+</section>
+<section aria-labelledby="recent-h" class="section" data-recent="" hidden="" id="recent-section">
+<div class="section-head"><h2 id="recent-h">Recently viewed</h2></div>
+<div class="product-grid home-shelf"></div>
+</section>
+<section aria-labelledby="fresh-h" class="section">
+<div class="section-head"><h2 id="fresh-h">Top-rated fresh food</h2><a href="fruits.html">Shop fresh</a></div>
+<div class="product-grid home-shelf"><article class="card product-item" data-category="berries" data-dept="Fruits" data-id="p-blue" data-name="Blueberries" data-price="5.99" data-rating="4.9">
+<button aria-label="Save Blueberries to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−20%</span><a aria-hidden="true" href="product.html?id=p-blue" tabindex="-1"><img alt="Blueberries" loading="lazy" src="https://www.healthyfood.com/wp-content/uploads/2017/03/Why_we_like_blueberries.jpg"/></a></div>
+<h3 class="title"><a href="product.html?id=p-blue">Blueberries</a></h3>
+<div class="meta"><span aria-label="Rated 4.9 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£7.49</s><span class="price">£5.99 / pint</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="berries" data-dept="Fruits" data-id="p-straw" data-name="Strawberries" data-price="4.99" data-rating="4.8">
+<button aria-label="Save Strawberries to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span><a aria-hidden="true" href="product.html?id=p-straw" tabindex="-1"><img alt="Strawberries" loading="lazy" src="https://www.gardentech.com/-/media/project/oneweb/gardentech/images/blog/how-to-grow-your-own-tasty-strawberries/strawberries-header-og.jpg"/></a></div>
+<h3 class="title"><a href="product.html?id=p-straw">Strawberries</a></h3>
+<div class="meta"><span aria-label="Rated 4.8 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£5.89</s><span class="price">£4.99 / lb</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="cake" data-dept="Bakery" data-id="b-cake-choc" data-name="Chocolate Cake" data-price="14.99" data-rating="4.8">
+<button aria-label="Save Chocolate Cake to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−25%</span><a aria-hidden="true" href="product.html?id=b-cake-choc" tabindex="-1"><img alt="Chocolate Cake" loading="lazy" src="https://images.unsplash.com/photo-1541782814451-2895710d3b59?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=b-cake-choc">Chocolate Cake</a></h3>
+<div class="meta"><span aria-label="Rated 4.8 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£19.99</s><span class="price">£14.99 / whole</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="bread" data-dept="Bakery" data-id="b-sourdough" data-name="Sourdough Loaf" data-price="3.99" data-rating="4.7">
+<button aria-label="Save Sourdough Loaf to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−31%</span><a aria-hidden="true" href="product.html?id=b-sourdough" tabindex="-1"><img alt="Sourdough Loaf" loading="lazy" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=b-sourdough">Sourdough Loaf</a></h3>
+<div class="meta"><span aria-label="Rated 4.7 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£5.79</s><span class="price">£3.99 / loaf</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="milk" data-dept="Dairy" data-id="d-milk-1" data-name="Whole Milk" data-price="3.49" data-rating="4.7">
+<button aria-label="Save Whole Milk to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−30%</span><a aria-hidden="true" href="product.html?id=d-milk-1" tabindex="-1"><img alt="Whole Milk" loading="lazy" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=d-milk-1">Whole Milk</a></h3>
+<div class="meta"><span aria-label="Rated 4.7 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£4.99</s><span class="price">£3.49 / 2L</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="fruits" data-dept="Fruits" data-id="p-apple" data-name="Red Apples" data-price="2.99" data-rating="4.6">
+<button aria-label="Save Red Apples to wishlist" class="wish">♡</button>
+<div class="media"><a aria-hidden="true" href="product.html?id=p-apple" tabindex="-1"><img alt="Red Apples" loading="lazy" src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=p-apple">Red Apples</a></h3>
+<div class="meta"><span aria-label="Rated 4.6 out of 5" class="rating">★★★★★</span><span class="price">£2.99 / lb</span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="croissant" data-dept="Bakery" data-id="b-croissant-butter" data-name="Butter Croissants" data-price="2.49" data-rating="4.6">
+<button aria-label="Save Butter Croissants to wishlist" class="wish">♡</button>
+<div class="media"><a aria-hidden="true" href="product.html?id=b-croissant-butter" tabindex="-1"><img alt="Butter Croissants" loading="lazy" src="https://images.unsplash.com/photo-1509440159598-8b09d1e8be0d?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=b-croissant-butter">Butter Croissants</a></h3>
+<div class="meta"><span aria-label="Rated 4.6 out of 5" class="rating">★★★★★</span><span class="price">£2.49 / each</span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="chicken" data-dept="Eggs" data-id="e-chicken-2" data-name="Organic Chicken Eggs (12)" data-price="3.49" data-rating="4.6">
+<button aria-label="Save Organic Chicken Eggs (12) to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−26%</span><a aria-hidden="true" href="product.html?id=e-chicken-2" tabindex="-1"><img alt="Organic Chicken Eggs (12)" loading="lazy" src="https://images.unsplash.com/photo-1587486913049-53fc8cf5d6a8?q=80&amp;w=800&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=e-chicken-2">Organic Chicken Eggs (12)</a></h3>
+<div class="meta"><span aria-label="Rated 4.6 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£4.69</s><span class="price">£3.49 / dozen</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article></div>
+</section>
+<section aria-labelledby="tech-h" class="section">
+<div class="section-head"><h2 id="tech-h">Tech under £50</h2><a href="gadgets-under-50.html">See all gadgets</a></div>
+<div class="product-grid home-shelf"><article class="card product-item" data-category="computing" data-dept="Electronics" data-id="el-mini-kb" data-name="60% Mechanical Keyboard" data-price="29.99" data-rating="4.6">
+<button aria-label="Save 60% Mechanical Keyboard to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span><a aria-hidden="true" href="product.html?id=el-mini-kb" tabindex="-1"><img alt="60% Mechanical Keyboard" loading="lazy" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=el-mini-kb">60% Mechanical Keyboard</a></h3>
+<div class="meta"><span aria-label="Rated 4.6 out of 5" class="rating">★★★★★</span><span class="price-wrap"><s class="was">£35.29</s><span class="price">£29.99</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="mobile" data-dept="Electronics" data-id="el-20w-usbc" data-name="USB-C Fast Charger 20W" data-price="9.99" data-rating="4.5">
+<button aria-label="Save USB-C Fast Charger 20W to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span><a aria-hidden="true" href="product.html?id=el-20w-usbc" tabindex="-1"><img alt="USB-C Fast Charger 20W" loading="lazy" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=el-20w-usbc">USB-C Fast Charger 20W</a></h3>
+<div class="meta"><span aria-label="Rated 4.5 out of 5" class="rating">★★★★☆</span><span class="price-wrap"><s class="was">£11.79</s><span class="price">£9.99</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="storage" data-dept="Electronics" data-id="el-microsd-64" data-name="MicroSD Card 64GB" data-price="8.99" data-rating="4.5">
+<button aria-label="Save MicroSD Card 64GB to wishlist" class="wish">♡</button>
+<div class="media"><a aria-hidden="true" href="product.html?id=el-microsd-64" tabindex="-1"><img alt="MicroSD Card 64GB" loading="lazy" src="https://images.unsplash.com/photo-1622466377944-2f3b4c340b3a?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=el-microsd-64">MicroSD Card 64GB</a></h3>
+<div class="meta"><span aria-label="Rated 4.5 out of 5" class="rating">★★★★☆</span><span class="price">£8.99</span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="mobile" data-dept="Gadgets" data-id="g-20w-charger" data-name="20W USB-C Fast Charger" data-price="11.49" data-rating="4.5">
+<button aria-label="Save 20W USB-C Fast Charger to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−25%</span><a aria-hidden="true" href="product.html?id=g-20w-charger" tabindex="-1"><img alt="20W USB-C Fast Charger" loading="lazy" src="https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=g-20w-charger">20W USB-C Fast Charger</a></h3>
+<div class="meta"><span aria-label="Rated 4.5 out of 5" class="rating">★★★★☆</span><span class="price-wrap"><s class="was">£15.39</s><span class="price">£11.49</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="cables" data-dept="Gadgets" data-id="g-powerbank-10k" data-name="10,000mAh Power Bank" data-price="22.99" data-rating="4.5">
+<button aria-label="Save 10,000mAh Power Bank to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span><a aria-hidden="true" href="product.html?id=g-powerbank-10k" tabindex="-1"><img alt="10,000mAh Power Bank" loading="lazy" src="https://images.unsplash.com/photo-1587152601230-83d8e91f8fef?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=g-powerbank-10k">10,000mAh Power Bank</a></h3>
+<div class="meta"><span aria-label="Rated 4.5 out of 5" class="rating">★★★★☆</span><span class="price-wrap"><s class="was">£27.09</s><span class="price">£22.99</span></span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="mobile" data-dept="Electronics" data-id="el-powerbank-10k" data-name="Power Bank 10,000mAh" data-price="17.99" data-rating="4.4">
+<button aria-label="Save Power Bank 10,000mAh to wishlist" class="wish">♡</button>
+<div class="media"><a aria-hidden="true" href="product.html?id=el-powerbank-10k" tabindex="-1"><img alt="Power Bank 10,000mAh" loading="lazy" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=el-powerbank-10k">Power Bank 10,000mAh</a></h3>
+<div class="meta"><span aria-label="Rated 4.4 out of 5" class="rating">★★★★☆</span><span class="price">£17.99</span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="accessories" data-dept="Electronics" data-id="el-hdmi-2m" data-name="HDMI Cable 4K (2m)" data-price="6.99" data-rating="4.4">
+<button aria-label="Save HDMI Cable 4K (2m) to wishlist" class="wish">♡</button>
+<div class="media"><a aria-hidden="true" href="product.html?id=el-hdmi-2m" tabindex="-1"><img alt="HDMI Cable 4K (2m)" loading="lazy" src="https://images.unsplash.com/photo-1566026880826-cd565a12c064?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=el-hdmi-2m">HDMI Cable 4K (2m)</a></h3>
+<div class="meta"><span aria-label="Rated 4.4 out of 5" class="rating">★★★★☆</span><span class="price">£6.99</span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article><article class="card product-item" data-category="smart-home" data-dept="Gadgets" data-id="g-smart-plug" data-name="Wi-Fi Smart Plug" data-price="9.99" data-rating="4.4">
+<button aria-label="Save Wi-Fi Smart Plug to wishlist" class="wish">♡</button>
+<div class="media"><a aria-hidden="true" href="product.html?id=g-smart-plug" tabindex="-1"><img alt="Wi-Fi Smart Plug" loading="lazy" src="https://images.unsplash.com/photo-1592833159155-c59ab3b72bdf?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a></div>
+<h3 class="title"><a href="product.html?id=g-smart-plug">Wi-Fi Smart Plug</a></h3>
+<div class="meta"><span aria-label="Rated 4.4 out of 5" class="rating">★★★★☆</span><span class="price">£9.99</span></div>
+<div class="actions"><div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div><button class="add-to-cart">Add to Cart</button></div>
+</article></div>
+</section>
+<section aria-labelledby="codes-h" class="section">
+<div class="section-head"><h2 id="codes-h">Codes you can use today</h2><a href="shipping.html">Delivery details</a></div>
+<div class="codes">
+<div class="code-card"><span class="code">WELCOME10</span><strong>10% off your order</strong><p>Enter it in your cart or at checkout.</p></div>
+<div class="code-card"><span class="code">SAVE15</span><strong>15% off orders of £60 or more</strong><p>Good for a big weekly shop.</p></div>
+<div class="code-card"><span class="code">SAVE5</span><strong>£5 off any order</strong><p>No minimum spend.</p></div>
+<div class="code-card"><span class="code">FREESHIP</span><strong>Free delivery</strong><p>On any order, whatever the size.</p></div>
+</div>
+</section>
+<section aria-labelledby="faq-h" class="section faq">
+<div class="section-head"><h2 id="faq-h">Questions</h2></div>
+<details><summary>How much is delivery?</summary><p>In the UK it's £1.99, and free on orders of £49 or more after discounts. Other countries have their own rates in local currency; see <a href="shipping.html">Shipping &amp; returns</a>.</p></details>
+<details><summary>Do you deliver outside the UK?</summary><p>Yes, to 13 countries. Tech, home and pantry items ship worldwide; fresh food (fruit, vegetables, dairy, eggs, meat, seafood and bakery) is UK-only. Choose your country with “Deliver to” at the top of any page to see prices in your currency.</p></details>
+<details><summary>Can I cancel an order?</summary><p>Yes, from Your orders, as long as it still says “Processing”. The items go straight back into stock.</p></details>
+<details><summary>What if something arrives damaged?</summary><p>Fresh food can't be returned, but tell us within 48 hours through the contact page and we'll refund it.</p></details>
+<details><summary>Do I need an account?</summary><p>You can browse, save a wishlist and fill your cart without one. You'll be asked to sign in when you check out.</p></details>
+</section>
+</div>
+</main>
+<button aria-haspopup="dialog" aria-label="Open shopping assistant" class="chat-open" id="chat-open">Ask the assistant</button>
+<div aria-labelledby="chat-title" aria-modal="true" class="chat-box" hidden="" id="chat-box" role="dialog">
+<div class="chat-header"><strong id="chat-title">Shopping assistant</strong><button aria-label="Close" id="chat-close">✕</button></div>
+<div aria-live="polite" class="chat-log" id="chat-log"></div>
+<form autocomplete="off" class="chat-form" id="chat-form">
+<label class="visually-hidden" for="chat-input">Message</label>
+<input id="chat-input" placeholder="Try “show cart” or “help”" required="" type="text"/>
+<button type="submit">Send</button>
+</form>
+</div>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

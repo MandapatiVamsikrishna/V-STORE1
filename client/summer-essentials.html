@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>V-STORE — Summer Essentials ☀️</title>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="vstore.css" rel="stylesheet"/></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="topstrip"><div class="wrap">
+<p id="topstrip-msg">Free delivery on orders over £49 · New here? Use code <strong>WELCOME10</strong> for 10% off</p>
+<label class="deliver" for="deliver-select">Deliver to <select id="deliver-select"><option value="GB">United Kingdom</option><option value="IE">Ireland</option><option value="FR">France</option><option value="DE">Germany</option><option value="ES">Spain</option><option value="IT">Italy</option><option value="NL">Netherlands</option><option value="SE">Sweden</option><option value="PL">Poland</option><option value="US">United States</option><option value="CA">Canada</option><option value="AU">Australia</option><option value="IN">India</option></select></label>
+<a href="contact.html">Help</a>
+</div></div>
+<header class="site-head">
+<div class="wrap head-row">
+<a aria-label="V-STORE home" class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<form action="search.html" class="site-search" method="get" role="search">
+<label class="visually-hidden" for="site-q">Search products</label>
+<input autocomplete="off" id="site-q" name="q" placeholder="Search fruit, bread, earbuds…" type="search" value=""/>
+<button type="submit"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><span class="label">Search</span></button>
+</form>
+<ul class="head-actions" id="nav-menu">
+<li class="basket-li"><a class="head-link basket" href="cart.html"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"></path><circle cx="10" cy="20.5" r="1.2"></circle><circle cx="17" cy="20.5" r="1.2"></circle></svg><span class="label">Cart</span><span class="count" id="cart-count">0</span></a></li>
+<li><button aria-label="Switch light or dark mode" class="head-link icon-only" id="theme-toggle" title="Light / dark mode" type="button"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></button></li>
+</ul>
+</div>
+<nav aria-label="Departments" class="dept-bar"><div class="wrap"><ul><li><a href="categories.html">All departments</a></li><li><a class="deal-link" href="deals.html">Deals</a></li><li><a href="fruits.html">Fruits</a></li><li><a href="vegetables.html">Vegetables</a></li><li><a href="dairy.html">Dairy</a></li><li><a href="eggs.html">Eggs</a></li><li><a href="meat.html">Meat</a></li><li><a href="seafood.html">Seafood</a></li><li><a href="bakery.html">Bakery</a></li><li><a href="pantry.html">Pantry</a></li><li><a href="beverages.html">Beverages</a></li><li><a href="electronics.html">Electronics</a></li><li><a href="gadgets-under-50.html">Gadgets under £50</a></li><li><a href="home-essentials.html">Home essentials</a></li><li><a href="home-refresh.html">Home refresh</a></li><li><a aria-current="page" href="summer-essentials.html">Summer essentials</a></li></ul></div></nav>
+</header>
+<div aria-live="polite" class="visually-hidden" id="a11y-live" role="status"></div>
+
+<!-- Top Navigation -->
+<!-- Page Hero -->
+<header class="page-hero">
+<div class="hero-inner"><p class="crumbs"><a href="index.html">Home</a> / <a href="categories.html">All departments</a> / Summer essentials</p>
+<h1>Summer Essentials ☀️</h1>
+<p class="muted">Hydration, BBQ must-haves, frozen treats, picnic gear &amp; more.</p>
+<!-- Search + Sort -->
+<div class="row">
+<form aria-label="Search summer essentials" class="search" id="search-form" role="search">
+<input autocomplete="off" id="search-input" placeholder="Search summer items…" type="search"/>
+<button type="submit">Search</button>
+</form>
+<label class="sort">
+<span class="visually-hidden">Sort</span>
+<select aria-label="Sort results" id="sort-select">
+<option value="relevance">Sort: Relevance</option>
+<option value="price-asc">Price: Low → High</option>
+<option value="price-desc">Price: High → Low</option>
+<option value="name-asc">Name: A → Z</option>
+<option value="name-desc">Name: Z → A</option>
+<option value="rating-desc">Rating: High → Low</option>
+</select>
+</label>
+</div>
+</div>
+</header>
+<!-- Quick links -->
+<main class="container" id="main">
+<!-- Sidebar Filters -->
+<aside aria-label="Filters" class="filters"><details class="filters-details" open=""><summary class="filters-title">Filters</summary>
+<section>
+<h3>Category</h3>
+<ul class="checklist">
+<li><label><input checked="" name="cat" type="checkbox" value="hydration"/> Hydration</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="bbq"/> BBQ</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="frozen"/> Frozen Treats</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="fruit"/> Seasonal Fruit</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="snacks"/> Snacks &amp; Dips</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="sun-care"/> Sun Care</label></li>
+<li><label><input checked="" name="cat" type="checkbox" value="picnic"/> Picnic Gear</label></li>
+</ul>
+</section>
+<section>
+<h3>Price</h3>
+<div class="range">
+<label for="min-price">Min £</label>
+<input id="min-price" min="0" step="0.01" type="number" value="0"/>
+<label for="max-price">Max £</label>
+<input id="max-price" min="0" step="0.01" type="number" value="9999"/>
+</div>
+</section>
+<section>
+<h3>Rating</h3>
+<ul class="checklist">
+<li><label><input checked="" name="rating" type="radio" value="all"/> All ratings</label></li>
+<li><label><input name="rating" type="radio" value="4.5"/> 4.5★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="4"/> 4★ &amp; up</label></li>
+<li><label><input name="rating" type="radio" value="3.5"/> 3.5★ &amp; up</label></li>
+</ul>
+</section>
+<div class="filter-actions">
+<button class="btn-ghost" id="clear-filters" type="button">Clear</button>
+<button class="btn-primary" id="apply-filters" type="button">Apply</button>
+</div>
+</details></aside>
+<!-- Results -->
+<section aria-live="polite" class="results">
+<div class="toolbar">
+<span id="result-count">0 items</span>
+<div aria-label="Active filters" class="chips" id="active-chips"></div>
+</div>
+<!-- Product Grid -->
+<div class="grid" id="product-grid">
+<!-- HYDRATION -->
+<article class="card product-item" data-category="hydration" data-dept="Summer Essentials" data-id="s-coconut-water" data-name="Coconut Water 1L" data-price="2.49" data-rating="4.5">
+<button aria-label="Save Coconut Water to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-coconut-water" tabindex="-1"><img alt="Coconut Water 1L" src="https://images.unsplash.com/photo-1615485737657-3c6c1a288e04?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-coconut-water">Coconut Water 1L</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.49</span></div>
+<div class="actions">
+<div class="qty"><button aria-label="Decrease" class="dec" disabled="">−</button><span class="q">1</span><button aria-label="Increase" class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="hydration" data-dept="Summer Essentials" data-id="s-sparkling-lime" data-name="Sparkling Water Lime (12×330ml)" data-price="5.99" data-rating="4.3">
+<button aria-label="Save Sparkling Water Lime to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-sparkling-lime" tabindex="-1"><img alt="Sparkling Water Lime 12-pack" src="https://images.unsplash.com/photo-1541976076758-347942db1970?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-sparkling-lime">Sparkling Water Lime (12×330ml)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£5.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- BBQ -->
+<article class="card product-item" data-category="bbq" data-dept="Summer Essentials" data-id="s-burger-patties" data-name="Beef Burger Patties (4)" data-price="5.49" data-rating="4.6">
+<button aria-label="Save Beef Burger Patties to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span>
+<a aria-hidden="true" href="product.html?id=s-burger-patties" tabindex="-1"><img alt="Beef Burger Patties" src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-burger-patties">Beef Burger Patties (4)</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£6.49</s><span class="price">£5.49</span></span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="bbq" data-dept="Summer Essentials" data-id="s-hotdog-buns" data-name="Hot Dog Buns (8)" data-price="1.99" data-rating="4.2">
+<button aria-label="Save Hot Dog Buns to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-hotdog-buns" tabindex="-1"><img alt="Hot Dog Buns" src="https://images.unsplash.com/photo-1541781286675-09abcb0b8657?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-hotdog-buns">Hot Dog Buns (8)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="bbq" data-dept="Summer Essentials" data-id="s-charcoal-5kg" data-name="Charcoal Briquettes 5kg" data-price="6.99" data-rating="4.4">
+<button aria-label="Save Charcoal to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-charcoal-5kg" tabindex="-1"><img alt="Charcoal Briquettes 5kg" src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-charcoal-5kg">Charcoal Briquettes 5kg</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£6.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- FROZEN -->
+<article class="card product-item" data-category="frozen" data-dept="Summer Essentials" data-id="s-vanilla-icecream" data-name="Vanilla Ice Cream 1L" data-price="3.99" data-rating="4.7">
+<button aria-label="Save Vanilla Ice Cream to wishlist" class="wish">♡</button>
+<div class="media"><span class="sale-badge">−15%</span>
+<a aria-hidden="true" href="product.html?id=s-vanilla-icecream" tabindex="-1"><img alt="Vanilla Ice Cream 1L" src="https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-vanilla-icecream">Vanilla Ice Cream 1L</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price-wrap"><s class="was">£4.69</s><span class="price">£3.99</span></span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="frozen" data-dept="Summer Essentials" data-id="s-ice-pops" data-name="Fruit Ice Pops (12)" data-price="2.79" data-rating="4.3">
+<button aria-label="Save Fruit Ice Pops to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-ice-pops" tabindex="-1"><img alt="Fruit Ice Pops" src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-ice-pops">Fruit Ice Pops (12)</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.79</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- SEASONAL FRUIT -->
+<article class="card product-item" data-category="fruit" data-dept="Summer Essentials" data-id="s-watermelon" data-name="Seedless Watermelon (whole)" data-price="4.99" data-rating="4.6">
+<button aria-label="Save Watermelon to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-watermelon" tabindex="-1"><img alt="Watermelon" src="https://images.unsplash.com/photo-1560807707-8cc77767d783?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-watermelon">Seedless Watermelon (whole)</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price">£4.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="fruit" data-dept="Summer Essentials" data-id="s-strawberries" data-name="Strawberries 400g" data-price="2.99" data-rating="4.5">
+<button aria-label="Save Strawberries to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-strawberries" tabindex="-1"><img alt="Strawberries 400g" src="https://images.unsplash.com/photo-1518635017498-87f514b75143?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-strawberries">Strawberries 400g</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£2.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- SNACKS & DIPS -->
+<article class="card product-item" data-category="snacks" data-dept="Summer Essentials" data-id="s-tortilla-chips" data-name="Tortilla Chips 300g" data-price="1.89" data-rating="4.2">
+<button aria-label="Save Tortilla Chips to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-tortilla-chips" tabindex="-1"><img alt="Tortilla Chips 300g" src="https://images.unsplash.com/photo-1604908554074-0d2a5f508d57?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-tortilla-chips">Tortilla Chips 300g</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.89</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="snacks" data-dept="Summer Essentials" data-id="s-salsa-dip" data-name="Salsa Dip 300g" data-price="1.59" data-rating="4.0">
+<button aria-label="Save Salsa Dip to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-salsa-dip" tabindex="-1"><img alt="Salsa Dip 300g" src="https://images.unsplash.com/photo-1604908553967-8d8fbb0a5b1f?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-salsa-dip">Salsa Dip 300g</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£1.59</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- SUN CARE -->
+<article class="card product-item" data-category="sun-care" data-dept="Summer Essentials" data-id="s-spf50" data-name="Sunscreen SPF50 200ml" data-price="7.99" data-rating="4.4">
+<button aria-label="Save Sunscreen SPF50 to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-spf50" tabindex="-1"><img alt="Sunscreen SPF50 200ml" src="https://images.unsplash.com/photo-1594633313593-bab3825d0caf?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-spf50">Sunscreen SPF50 200ml</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£7.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="sun-care" data-dept="Summer Essentials" data-id="s-aloe" data-name="Aloe After-Sun Gel 200ml" data-price="4.49" data-rating="4.1">
+<button aria-label="Save Aloe Gel to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-aloe" tabindex="-1"><img alt="Aloe After-Sun Gel" src="https://images.unsplash.com/photo-1629198735660-594b51b69f57?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-aloe">Aloe After-Sun Gel 200ml</a></h3>
+<div class="meta"><span class="rating">★★★★☆</span><span class="price">£4.49</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<!-- PICNIC GEAR -->
+<article class="card product-item" data-category="picnic" data-dept="Summer Essentials" data-id="s-cooler-bag" data-name="Cooler Bag 20L" data-price="12.99" data-rating="4.5">
+<button aria-label="Save Cooler Bag to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-cooler-bag" tabindex="-1"><img alt="Cooler Bag 20L" src="https://images.unsplash.com/photo-1600346603460-3f3d06d0f9c9?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-cooler-bag">Cooler Bag 20L</a></h3>
+<div class="meta"><span class="rating">★★★★★</span><span class="price">£12.99</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+<article class="card product-item" data-category="picnic" data-dept="Summer Essentials" data-id="s-paper-plates" data-name="Paper Plates (25)" data-price="1.49" data-rating="3.9">
+<button aria-label="Save Paper Plates to wishlist" class="wish">♡</button>
+<div class="media">
+<a aria-hidden="true" href="product.html?id=s-paper-plates" tabindex="-1"><img alt="Paper Plates pack" src="https://images.unsplash.com/photo-1582810828062-9a1d6b0e2f82?q=80&amp;w=900&amp;auto=format&amp;fit=crop"/></a>
+</div>
+<h3 class="title"><a href="product.html?id=s-paper-plates">Paper Plates (25)</a></h3>
+<div class="meta"><span class="rating">★★★☆☆</span><span class="price">£1.49</span></div>
+<div class="actions">
+<div class="qty"><button class="dec" disabled="">−</button><span class="q">1</span><button class="inc">+</button></div>
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>
+</div>
+<nav aria-label="More departments" class="related-depts">
+<h2>More in Tech &amp; home</h2>
+<div class="dept-links"><a href="electronics.html">Electronics</a><a href="gadgets-under-50.html">Gadgets under £50</a><a href="home-essentials.html">Home essentials</a><a href="home-refresh.html">Home refresh</a><a class="deal" href="deals.html">Deals</a></div>
+<h2>Other departments</h2>
+<div class="dept-links"><a href="fruits.html">Fruits</a><a href="vegetables.html">Vegetables</a><a href="dairy.html">Dairy</a><a href="eggs.html">Eggs</a><a href="meat.html">Meat</a><a href="seafood.html">Seafood</a><a href="bakery.html">Bakery</a><a href="pantry.html">Pantry</a><a href="beverages.html">Beverages</a><a href="categories.html">All departments</a></div>
+</nav></section>
+</main>
+
+<footer class="site-foot">
+<div class="wrap foot-grid">
+<div>
+<a class="brand" href="index.html"><span class="brand-mark"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6" viewbox="0 0 24 24"><path d="m5 6 7 13 7-13"></path></svg></span>V-STORE</a>
+<p>Fresh groceries, pantry staples and everyday tech in one cart. A portfolio project: payments are simulated.</p>
+</div>
+<div><h2>Shop</h2><ul>
+<li><a href="categories.html">All departments</a></li><li><a href="deals.html">Deals</a></li><li><a href="search.html">Search all products</a></li><li><a href="fruits.html">Fruits</a></li>
+<li><a href="bakery.html">Bakery</a></li><li><a href="electronics.html">Electronics</a></li>
+<li><a href="gadgets-under-50.html">Gadgets under £50</a></li></ul></div>
+<div><h2>Your account</h2><ul>
+<li><a href="login.html">Sign in</a></li><li><a href="registration.html">Create account</a></li>
+<li><a href="orders.html">Your orders &amp; tracking</a></li><li><a href="wishlist.html">Wishlist</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+<div><h2>Help</h2><ul>
+<li><a href="contact.html">Contact us</a></li><li><a href="shipping.html">Shipping &amp; returns</a></li>
+<li><a href="terms.html">Terms</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="cookies.html">Cookies</a></li></ul></div>
+</div>
+<div class="wrap foot-legal">© <span id="year"></span> V-STORE</div>
+</footer>
+<div aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
+<!-- Global JS (search/sort/filters/cart) -->
+
+<script defer="" src="api.js"></script>
+<script defer="" src="market.js"></script>
+<script defer="" src="script.js"></script>
+<script defer="" src="shop.js"></script>
+</body>
+</html>

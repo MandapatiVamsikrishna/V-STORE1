@@ -1,0 +1,18 @@
+### Try the API from VS Code (install the "REST Client" extension, then click "Send Request")
+@base = http://localhost:5000/api
+
+GET {{base}}/health
+
+###
+GET {{base}}/products?department=Fruits&sort=price-asc&limit=5
+
+###
+# @name login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@vstore.local", "password": "Admin@12345" }
+
+###
+GET {{base}}/admin/stats
+Authorization: Bearer {{login.response.body.token}}
