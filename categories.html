@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FreshMart — Home</title>
+  <title>All departments — V-STORE</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="store.css" />
   <!-- remove any <link rel="script" href="script.js"> lines — they don’t do anything -->
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="favicon.svg" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body data-page="categories">
 
   <!-- ========================= Site Header (2 rows) ========================= -->
   <header class="site-header">
@@ -57,7 +58,7 @@
       <div class="nav-inner">
         <a class="chip" href="fruits.html">Fruits</a>
         <a class="chip" href="vegatables.html">Vegetables</a>
-        <a class="chip" href="diary.html">Diary</a>
+        <a class="chip" href="Diary.html">Dairy</a>
         <a class="chip" href="eggs.html">Eggs</a>
         <a class="chip" href="meat.html">Meat</a>
         <a class="chip" href="sea food.html">Seafood</a>
@@ -118,47 +119,93 @@
     </div>
   </section>
 
-  <!-- ========================= Shelves (examples) ========================= -->
-  <section class="shelf">
-    <h2 class="section-title">Popular this week</h2>
-    <div class="product-grid">
-      <!-- Example product cards that match your global script -->
-      <article class="product-item card" data-id="p-apple" data-name="Red Apples" data-price="2.99" data-category="fruits" data-rating="4.6">
-        <div class="media"><img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=800&auto=format&fit=crop" alt="Red Apples"></div>
-        <h3 class="product-title">Red Apples</h3>
-        <div class="meta"><span class="rating">★★★★★</span><span class="price">£2.99 / lb</span></div>
-        <div class="actions">
-          <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </article>
+  <!-- ========================= Department hub (filled from products.json by store.js) ========================= -->
+  <section id="deals" class="hub-section" aria-labelledby="deals-title">
+    <h2 class="section-title" id="deals-title">Today’s Deals</h2>
+    <p class="muted">Limited-time collections and savings.</p>
+    <div class="deal-cards">
+      <article class="deal-card"><span class="ribbon">-30%</span><h3>Summer Essentials</h3><p>Save on apparel bundles.</p><a href="summer essiential page.html" class="btn-ghost">Shop now →</a></article>
+      <article class="deal-card"><span class="ribbon">Hot</span><h3>Gadgets Under £50</h3><p>Top electronics steals.</p><a href="gadgets under 50.html" class="btn-ghost">Browse →</a></article>
+      <article class="deal-card"><span class="ribbon">New</span><h3>Home Refresh</h3><p>Cosy upgrades for less.</p><a href="Home Refresh.html" class="btn-ghost">Discover →</a></article>
+    </div>
+  </section>
 
-      <article class="product-item card" data-id="p-orange" data-name="Navel Oranges" data-price="3.49" data-category="citrus" data-rating="4.2">
-        <div class="media"><img src="https://images.unsplash.com/photo-1547514701-42782101795e?q=80&w=800&auto=format&fit=crop" alt="Navel Oranges"></div>
-        <h3 class="product-title">Navel Oranges</h3>
-        <div class="meta"><span class="rating">★★★★☆</span><span class="price">£3.49 / lb</span></div>
-        <div class="actions">
-          <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </article>
+  <section id="groceries" class="hub-section" aria-labelledby="groceries-title">
+    <h2 class="section-title" id="groceries-title">Groceries</h2>
+    <p class="muted">Fresh food and cupboard staples.</p>
+    <div class="dept-tiles">
+        <a class="dept-tile" href="fruits.html"><span class="emoji" aria-hidden="true">🍎</span><strong>Fruits</strong><small data-count-for="fruits.html">&nbsp;</small></a>
+        <a class="dept-tile" href="vegatables.html"><span class="emoji" aria-hidden="true">🥕</span><strong>Vegetables</strong><small data-count-for="vegatables.html">&nbsp;</small></a>
+        <a class="dept-tile" href="Diary.html"><span class="emoji" aria-hidden="true">🥛</span><strong>Dairy</strong><small data-count-for="Diary.html">&nbsp;</small></a>
+        <a class="dept-tile" href="eggs.html"><span class="emoji" aria-hidden="true">🥚</span><strong>Eggs</strong><small data-count-for="eggs.html">&nbsp;</small></a>
+        <a class="dept-tile" href="meat.html"><span class="emoji" aria-hidden="true">🥩</span><strong>Meat</strong><small data-count-for="meat.html">&nbsp;</small></a>
+        <a class="dept-tile" href="sea food.html"><span class="emoji" aria-hidden="true">🦐</span><strong>Seafood</strong><small data-count-for="sea food.html">&nbsp;</small></a>
+        <a class="dept-tile" href="backery.html"><span class="emoji" aria-hidden="true">🥖</span><strong>Bakery</strong><small data-count-for="backery.html">&nbsp;</small></a>
+        <a class="dept-tile" href="pantery.html"><span class="emoji" aria-hidden="true">🧂</span><strong>Pantry</strong><small data-count-for="pantery.html">&nbsp;</small></a>
+        <a class="dept-tile" href="beverages.html"><span class="emoji" aria-hidden="true">🥤</span><strong>Beverages</strong><small data-count-for="beverages.html">&nbsp;</small></a>
+    </div>
+  </section>
 
-      <article class="product-item card" data-id="p-blue" data-name="Blueberries" data-price="5.99" data-category="berries" data-rating="4.9">
-        <div class="media"><img src="https://www.healthyfood.com/wp-content/uploads/2017/03/Why_we_like_blueberries.jpg" alt="Blueberries"></div>
-        <h3 class="product-title">Blueberries</h3>
-        <div class="meta"><span class="rating">★★★★★</span><span class="price">£5.99 / pint</span></div>
-        <div class="actions">
-          <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
-          <button class="add-to-cart">Add to Cart</button>
-        </div>
-      </article>
+  <section id="electronics" class="hub-section" aria-labelledby="electronics-title">
+    <h2 class="section-title" id="electronics-title">Electronics</h2>
+    <div class="dept-tiles">
+        <a class="dept-tile" href="electronics.html"><span class="emoji" aria-hidden="true">🎧</span><strong>Electronics</strong><small data-count-for="electronics.html">&nbsp;</small></a>
+        <a class="dept-tile" href="gadgets under 50.html"><span class="emoji" aria-hidden="true">🔌</span><strong>Gadgets under £50</strong><small data-count-for="gadgets under 50.html">&nbsp;</small></a>
+    </div>
+    <h3 class="section-title">Top rated in electronics</h3>
+    <div class="product-grid" data-shelf="electronics-top"></div>
+  </section>
+
+  <section id="home" class="hub-section" aria-labelledby="home-title">
+    <h2 class="section-title" id="home-title">Home &amp; Kitchen</h2>
+    <div class="dept-tiles">
+        <a class="dept-tile" href="home essentials.html"><span class="emoji" aria-hidden="true">🧽</span><strong>Home Essentials</strong><small data-count-for="home essentials.html">&nbsp;</small></a>
+        <a class="dept-tile" href="Home Refresh.html"><span class="emoji" aria-hidden="true">🛋️</span><strong>Home Refresh</strong><small data-count-for="Home Refresh.html">&nbsp;</small></a>
+        <a class="dept-tile" href="summer essiential page.html"><span class="emoji" aria-hidden="true">☀️</span><strong>Summer Essentials</strong><small data-count-for="summer essiential page.html">&nbsp;</small></a>
+    </div>
+    <h3 class="section-title">Top rated for the home</h3>
+    <div class="product-grid" data-shelf="home-top"></div>
+  </section>
+
+  <section id="best-sellers" class="hub-section" aria-labelledby="best-title">
+    <h2 class="section-title" id="best-title">Best Sellers</h2>
+    <p class="muted">Our highest-rated products across every department.</p>
+    <div class="product-grid" data-shelf="best-sellers"></div>
+  </section>
+
+  <section id="new-releases" class="hub-section" aria-labelledby="new-title">
+    <h2 class="section-title" id="new-title">New Releases</h2>
+    <p class="muted">Fresh in from our latest collections.</p>
+    <div class="product-grid" data-shelf="new-releases"></div>
+  </section>
+
+  <section id="gift-ideas" class="hub-section" aria-labelledby="gift-title">
+    <h2 class="section-title" id="gift-title">Gift Ideas</h2>
+    <p class="muted">Well-rated gadgets and home treats from £10 to £50.</p>
+    <div class="product-grid" data-shelf="gift-ideas"></div>
+  </section>
+
+  <section id="prime" class="hub-section" aria-labelledby="prime-title">
+    <h2 class="section-title" id="prime-title">Prime Picks</h2>
+    <p class="muted">Top-rated everyday buys under £20.</p>
+    <div class="product-grid" data-shelf="prime"></div>
+  </section>
+
+  <section id="voucher" class="hub-section" aria-labelledby="voucher-title">
+    <h2 class="section-title" id="voucher-title">Vouchers</h2>
+    <p class="muted">Apply a code here and it's added to your cart automatically.</p>
+    <div class="voucher-grid">
+      <div class="voucher"><code>WELCOME10</code><p>10% off your order.</p><button type="button" class="btn-primary" data-apply-code="WELCOME10">Apply to cart</button></div>
+      <div class="voucher"><code>SAVE5</code><p>£5 off any order.</p><button type="button" class="btn-primary" data-apply-code="SAVE5">Apply to cart</button></div>
+      <div class="voucher"><code>SAVE15</code><p>15% off orders of £60 or more.</p><button type="button" class="btn-primary" data-apply-code="SAVE15">Apply to cart</button></div>
+      <div class="voucher"><code>FREESHIP</code><p>Free delivery on any order.</p><button type="button" class="btn-primary" data-apply-code="FREESHIP">Apply to cart</button></div>
     </div>
   </section>
 
   <!-- ========================= Footer ========================= -->
   <footer class="footer">
     <div class="footer-inner">
-      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+      <p>© <span id="year"></span> FreshMart. All rights reserved. <a href="shipping.html">Shipping &amp; returns</a> • <a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a></p>
     </div>
   </footer>
 
@@ -167,5 +214,6 @@
 
   <!-- Global JS (contains initNav replacement you added earlier) -->
   <script src="script.js" defer></script>
+  <script src="store.js" defer></script>
 </body>
 </html>

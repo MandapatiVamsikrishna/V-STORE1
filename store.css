@@ -1,0 +1,179 @@
+/* =========================================================
+   V-STORE — store.css
+   Styles for the features added by store.js (search, product
+   page, wishlist, account, content pages, carousels).
+   Uses the colour variables already defined in style.css.
+   ========================================================= */
+
+/* ---------- receipt brand line (thank-you page) shows only when printing ---------- */
+.site-header-inner{display:none}
+@media print{.site-header-inner{display:block}}
+
+/* ---------- footer: keep the dark footer (a later rule in style.css made the background light under white text) ---------- */
+.footer{background:#131921;color:#fff}
+.footer a{color:#cfe3ff}
+.footer .muted,.footer p{color:#c9d2e3}
+.auth-wrap ~ .footer{max-width:none;margin:24px 0 0;padding:16px}
+
+/* ---------- home page FAQ: same width and padding as the other sections ---------- */
+.faq{max-width:var(--container);margin:0 auto;padding:0 clamp(12px,4vw,24px) 16px}
+.faq details{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.7rem 1rem;margin:.5rem 0}
+.faq summary{cursor:pointer;font-weight:600}
+
+/* ---------- carousels: only the current slide shows; arrows + dots ---------- */
+.carousel.is-live .slide:not([aria-current="true"]){display:none}
+.carousel.is-live .slide[aria-current="true"]{display:block}
+.carousel-btn{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:38px;height:38px;border-radius:999px;border:0;cursor:pointer;
+  background:color-mix(in oklab,#000 45%,transparent);color:#fff;font-size:1.5rem;line-height:1
+}
+.carousel-btn.prev{left:10px}
+.carousel-btn.next{right:10px}
+.carousel-btn:hover{background:color-mix(in oklab,#000 65%,transparent)}
+.carousel-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:6px;z-index:2}
+.carousel-dots button{width:9px;height:9px;border-radius:999px;border:0;padding:0;cursor:pointer;background:color-mix(in oklab,#fff 60%,transparent)}
+.carousel-dots button.on{background:var(--brand);width:22px}
+.testimonials .carousel-btn{background:transparent;color:var(--text)}
+.testimonials .carousel{padding-bottom:28px}
+.hero-carousel a{display:block}
+
+/* ---------- product cards: clickable picture + name ---------- */
+.card-link{color:inherit;text-decoration:none}
+.title .card-link:hover,.product-title .card-link:hover{text-decoration:underline}
+.media > a{display:block;width:100%;height:100%}
+.media > a img{width:100%;height:100%;object-fit:cover}
+.dept-tag{margin:.15rem 0 0;font-size:.85rem}
+.dept-tag a{color:var(--accent);text-decoration:none}
+.product-item{position:relative}
+.product-item > .wish,.card > .wish{z-index:3;cursor:pointer}
+.wish.active{color:#e11d48;background:color-mix(in oklab,#e11d48 14%,transparent)}
+.product-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+
+/* ---------- header fixes ---------- */
+/* "Skip to content" is for keyboard users: hidden until it gets focus */
+.skip-link{position:absolute;left:-9999px;top:0}
+.skip-link:focus{left:8px;top:8px;z-index:3000;background:#fff;color:#111;padding:.5rem .8rem;border-radius:8px}
+/* dark top bar: logo + menu text must be light (a later rule in style.css made it dark-on-dark) */
+.utility-bar .logo{white-space:nowrap;color:#fff;text-decoration:none}
+.utility-bar .nav-links{gap:2px}
+.utility-bar .nav-links a,.utility-bar .nav-links button.icon-btn{color:#fff;padding:6px 8px;white-space:nowrap}
+.utility-bar .nav-links a:hover{background:rgba(255,255,255,.12)}
+.utility-bar .deliver-inline{color:#fff;background:transparent;border-color:rgba(255,255,255,.25);white-space:nowrap}
+.utility-bar .deliver-inline select{color:#fff;min-width:0;max-width:150px}
+.utility-bar .deliver-inline option{color:#111}
+.utility-bar .header-search{min-width:240px}
+.nav.utility-bar .nav-inner{max-width:1440px;display:grid;height:auto;min-height:var(--nav-h,56px)}
+.nav-links .account-link,.nav-links .wish-link{white-space:nowrap}
+/* below 1440px: drop the "Deliver to" words (the country picker stays) to give the search box room */
+@media (max-width:1440px){
+  .utility-bar .deliver-inline{font-size:0;gap:0;padding:.3rem .4rem}
+  .utility-bar .deliver-inline select{font-size:14px;max-width:125px}
+  .utility-bar .header-search select{min-width:0;max-width:95px}
+}
+/* below 1320px the dark header's links move into the slide-out menu (☰), like on phones */
+@media (max-width:1320px){
+  .utility-bar .nav-toggle{display:inline-flex;color:#fff;font-size:1.4rem}
+  .utility-bar .nav-links{
+    position:fixed;z-index:1001;top:0;right:0;bottom:0;width:min(80vw,320px);
+    flex-direction:column;align-items:stretch;padding:72px 16px 16px;gap:4px;
+    background:var(--surface-1,#fff);border-left:1px solid var(--border);
+    transform:translateX(100%);transition:transform .25s ease;margin:0
+  }
+  .utility-bar .nav-links.open{transform:translateX(0%)}
+  .utility-bar .nav-links li a,.utility-bar .nav-links li button{display:block;text-align:left;border-radius:12px;padding:12px 14px}
+  .utility-bar .nav-links a,.utility-bar .nav-links button.icon-btn{color:var(--text)}
+  .nav.utility-bar .nav-inner{grid-template-columns:auto auto 1fr auto}
+  .utility-bar .logo{order:1}
+  .utility-bar .deliver-inline{order:2}
+  .utility-bar .header-search{order:3}
+  .utility-bar .nav-toggle{order:4}
+}
+@media (max-width:768px){
+  /* phones: logo + search + menu on one row, country picker on the row below */
+  .nav.utility-bar .nav-inner{grid-template-columns:auto 1fr auto;padding-block:.5rem}
+  .utility-bar .header-search{min-width:0}
+  .utility-bar .deliver-inline{order:5;grid-column:1 / -1;justify-self:start;font-size:13px;gap:.3rem}
+  .nav.utility-bar,.nav.dept-bar{position:static !important}
+}
+/* mobile drawer is light: dark text there */
+@media (max-width:900px){
+  .utility-bar .nav-links a,.utility-bar .nav-links button.icon-btn{color:var(--text)}
+}
+
+/* ---------- live search suggestions ---------- */
+.search-results .suggestion{display:grid;grid-template-columns:44px 1fr auto;gap:.7rem;align-items:center;padding:.55rem .9rem;color:var(--text);text-decoration:none;border-top:1px solid var(--border)}
+.search-results .suggestion:hover,.search-results .suggestion:focus{background:var(--bg-elev)}
+.search-results .suggestion img{width:44px;height:44px;object-fit:cover;border-radius:8px;background:var(--bg-elev)}
+.search-results .suggestion small{display:block;color:var(--muted);font-size:.8rem}
+.search-results .suggestion.all{display:block;font-weight:700;color:var(--accent)}
+.search-results .suggestion.none{display:block;margin:0;color:var(--muted)}
+
+/* ---------- simple pages (search, product, wishlist, account, policies, contact) ---------- */
+.page-wrap{max-width:var(--container);margin:0 auto;padding:1rem clamp(12px,4vw,24px) 2rem}
+.page-wrap h1{margin:.3rem 0 .4rem}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.page-head select{padding:.5rem .7rem;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.empty-state{text-align:center;padding:2.5rem 1rem;border:1px dashed var(--border);border-radius:14px;background:var(--card);margin:1rem 0}
+.empty-state .btn-primary,.empty-state .btn-ghost{display:inline-block;text-decoration:none;margin:.3rem}
+.suggest-chips{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.6rem}
+.suggest-chips button{border:1px solid var(--border);background:var(--chip-bg);color:var(--chip-ink);border-radius:999px;padding:.35rem .8rem;cursor:pointer}
+.small{font-size:.85rem}
+a.btn-primary,a.btn-ghost{display:inline-block;text-decoration:none;color:inherit}
+a.btn-primary{color:#111}
+
+/* ---------- product detail ---------- */
+.breadcrumbs{font-size:.9rem;color:var(--muted);margin:.2rem 0 1rem}
+.breadcrumbs a{color:var(--accent);text-decoration:none}
+.product-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,3vw,36px);align-items:start;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:clamp(12px,2vw,24px);box-shadow:var(--shadow-s)}
+.product-detail .pd-media{aspect-ratio:1/1;margin:0}
+.pd-dept{margin:0}
+.pd-dept a{color:var(--accent);text-decoration:none;font-weight:600}
+.pd-title{font-size:clamp(1.5rem,3vw,2.1rem);margin:.2rem 0 .4rem}
+.pd-price .price{font-size:1.8rem}
+.pd-perks{list-style:none;padding:0;margin:1rem 0;display:grid;gap:.45rem}
+.pd-perks a{color:var(--accent)}
+.pd-actions{justify-content:flex-start;flex-wrap:wrap}
+.pd-actions .add-to-cart{padding:.75rem 1.4rem;font-size:1rem}
+.product-detail .wish.pd-wish{position:static;width:44px;height:44px;font-size:1.2rem;cursor:pointer}
+.pd-buy-now{margin:.8rem 0 0}
+.related{margin-top:2rem}
+@media (max-width:760px){.product-detail{grid-template-columns:1fr}}
+
+/* ---------- forms (contact, account, reset) ---------- */
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:clamp(14px,2vw,22px);box-shadow:var(--shadow-s)}
+.form-card h2{margin-top:0;font-size:1.15rem}
+.stack-form{display:grid;gap:.75rem}
+.stack-form label{display:grid;gap:.3rem;font-weight:600;font-size:.95rem}
+.stack-form input,.stack-form select,.stack-form textarea{font:inherit;padding:.65rem .75rem;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-weight:400}
+.stack-form textarea{min-height:140px;resize:vertical}
+.stack-form input:focus,.stack-form select:focus,.stack-form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab,var(--accent) 22%,transparent)}
+.stack-form .btn-primary{justify-self:start;padding:.7rem 1.3rem;cursor:pointer}
+.form-status{margin:.2rem 0 0;min-height:1.2em;font-weight:600}
+.form-status.ok{color:#15803d}
+.form-status.error{color:#dc2626}
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.info-list{list-style:none;padding:0;margin:0;display:grid;gap:.6rem}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin:1rem 0}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem;text-decoration:none;color:var(--text)}
+.stat b{display:block;font-size:1.6rem}
+.prose{max-width:780px}
+.prose h2{margin-top:1.6rem;font-size:1.2rem}
+.prose li{margin:.3rem 0}
+.notice{border:1px solid color-mix(in oklab,var(--brand) 55%,transparent);background:color-mix(in oklab,var(--brand) 12%,transparent);border-radius:12px;padding:.7rem 1rem;margin:0 0 1rem}
+
+/* ---------- categories hub ---------- */
+.hub-section{max-width:var(--container);margin:0 auto;padding:.5rem clamp(12px,4vw,24px) 1rem;scroll-margin-top:130px}
+.hub-section .section-title{padding:0;margin:1.2rem 0 .3rem}
+.hub-section > p.muted{margin:0 0 .8rem}
+.dept-tiles{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.dept-tile{display:block;padding:1rem;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);text-decoration:none;box-shadow:var(--shadow-s);transition:transform .15s ease,box-shadow .15s ease}
+.dept-tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-m)}
+.dept-tile .emoji{font-size:1.8rem;display:block}
+.dept-tile strong{display:block;margin:.3rem 0 .1rem}
+.dept-tile small{color:var(--muted)}
+.voucher-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.voucher{border:2px dashed color-mix(in oklab,var(--brand) 70%,transparent);border-radius:14px;padding:1rem;background:var(--card)}
+.voucher code{display:inline-block;font-size:1.15rem;font-weight:800;background:var(--chip-bg);padding:.2rem .5rem;border-radius:8px}
+.voucher p{margin:.5rem 0 .7rem}
+.voucher button{cursor:pointer}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff4e0"/>
+      <stop offset="1" stop-color="#ffe0b2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" fill="url(#bg)"/>
+  <circle cx="1000" cy="200" r="160" fill="#ff9900" opacity=".15"/>
+  <text x="80" y="140" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600" fill="#b45309">NEW · HOME REFRESH</text>
+  <text x="80" y="215" font-family="Segoe UI, Arial, sans-serif" font-size="64" font-weight="800" fill="#1f2937">Cosy upgrades for less</text>
+  <text x="80" y="268" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#4b5563">Lamps, throws, storage and kitchen essentials</text>
+  <rect x="80" y="300" width="220" height="54" rx="27" fill="#131921"/>
+  <text x="190" y="335" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle">Discover →</text>
+  <text x="1000" y="235" font-family="Segoe UI, Arial, sans-serif" font-size="120" text-anchor="middle">🛋️</text>
+</svg>

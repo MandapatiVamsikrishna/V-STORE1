@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login — V-STORE</title>
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="favicon.svg" />
   <!-- Page-specific CSS -->
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="authentication.css" />
+  <link rel="stylesheet" href="store.css" />
   <!-- Icons for the password eye toggle (optional) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
@@ -17,7 +18,7 @@
     <div class="nav-inner">
       <a class="logo" href="index.html">V-STORE</a>
       <ul class="nav-links">
-        <li><a href="index.html">Guest</a></li>
+        <li><a href="index.html">Continue as guest</a></li>
         <li><button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle dark mode">🌓</button></li>
       </ul>
     </div>
@@ -67,8 +68,8 @@
 
         <div class="or">or continue with</div>
         <div class="providers">
-          <button type="button" class="btn-social"><i class="fa-brands fa-google"></i> Google</button>
-          <button type="button" class="btn-social"><i class="fa-brands fa-apple"></i> Apple</button>
+          <button type="button" class="btn-social" data-provider="Google"><i class="fa-brands fa-google"></i> Google</button>
+          <button type="button" class="btn-social" data-provider="Apple"><i class="fa-brands fa-apple"></i> Apple</button>
         </div>
 
         <p class="auth-foot">
@@ -84,6 +85,8 @@
   </footer>
 
   <!-- Page-specific JS -->
+  <script src="script.js" defer></script>
+  <script src="store.js" defer></script>
   <script src="login.js" defer></script>
 </body>
 </html>

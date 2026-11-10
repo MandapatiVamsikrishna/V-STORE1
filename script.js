@@ -187,7 +187,8 @@ function initNav() {
     localStorage.setItem('vstore-country', JSON.stringify({code, name}));
     const live = document.getElementById('a11y-live');
     if(live){ live.textContent = `Delivery country set to ${name}`; setTimeout(()=>live.textContent='',1200); }
-    // window.dispatchEvent(new CustomEvent('country:changed',{detail:{code,name}}));
+    // Tell the price converter so every price on the page switches currency straight away
+    window.dispatchEvent(new CustomEvent('country:changed',{detail:{code,name}}));
   });
 })();
   /* ========================= Cart storage API ========================= */
@@ -305,10 +306,11 @@ function initNav() {
     const incl = taxInclusive[countryCode] ?? true;
     const adj = regionalAdj[countryCode] ?? 1;
 
-    // Convert, apply regional adj
-    let local = baseGbp * rate * adj;
+    // Shop prices already include UK VAT (20%), so remove it first; a UK shopper sees exactly the shelf price
+    // and every other country sees the price with its own VAT (or none for tax-exclusive regions).
+    let local = (baseGbp / (1 + (vatRate.GB ?? 0.20))) * rate * adj;
 
-    // If tax-inclusive region, add VAT into display price
+    // If tax-inclusive region, add that country's VAT into the display price
     if (incl && vat > 0) {
       local = local * (1 + vat);
     }
@@ -427,7 +429,8 @@ function initNav() {
       return { currency: out.currency || CURRENCY_MAP[countryCode] || 'GBP', amount: out.amount, formatted: out.formatted };
     }
     const cur = CURRENCY_MAP[countryCode] || 'GBP';
-    let local = baseGbp * (FX[cur] || 1) * (ADJ[countryCode] || 1);
+    // Prices include UK VAT: strip it, convert, then add the destination country's VAT (UK shoppers see the shelf price)
+    let local = (baseGbp / (1 + (VAT.GB ?? 0.20))) * (FX[cur] || 1) * (ADJ[countryCode] || 1);
     if ((TAX_INCL[countryCode] ?? true) && (VAT[countryCode] ?? 0) > 0) local *= (1 + VAT[countryCode]);
     local = Math.round(local * 100) / 100;
     return { currency: cur, amount: local, formatted: fmt(local, cur) };
@@ -680,15 +683,18 @@ function initNav() {
         return;
       }
 
-      // Wishlist heart toggles
+      // Wishlist heart toggles (saved in the browser so wishlist.html can list them)
       const wish = t.closest(".wishlist, .wish");
       if (wish) {
         e.preventDefault();
-        wish.classList.toggle("active");
-        if (/^[♡♥]$/.test(wish.textContent.trim())) {
-          wish.textContent = wish.classList.contains("active") ? "♥" : "♡";
-        }
-        toast(wish.classList.contains("active") ? "Saved to wishlist ♥" : "Removed from wishlist");
+        const card = wish.closest("[data-id]");
+        const on = (window.vstoreWishlist && card)
+          ? window.vstoreWishlist.toggle(card)
+          : !wish.classList.contains("active");
+        wish.classList.toggle("active", on);
+        wish.setAttribute("aria-pressed", String(on));
+        if (/^[♡♥]$/.test(wish.textContent.trim())) wish.textContent = on ? "♥" : "♡";
+        toast(on ? "Saved to wishlist ♥" : "Removed from wishlist");
       }
     });
   }
@@ -700,9 +706,31 @@ function initNav() {
         e.preventDefault();
         const q = form.querySelector('input[type="search"]')?.value?.trim() ?? "";
         const grid = $("#product-grid, .grid");
-        if (!grid) { if (q) toast(`Searching “${q}” 🔎`); return; }
-        currentSearch = q.toLowerCase();
-        filterAndSort();
+        // Department pages ("Search fruits…" box): filter the products on this page
+        if (form.classList.contains("search") && grid) {
+          currentSearch = q.toLowerCase();
+          filterAndSort();
+          let note = $("#search-elsewhere");
+          if (!note) {
+            note = document.createElement("p");
+            note.id = "search-elsewhere";
+            note.className = "muted";
+            grid.before(note);
+          }
+          const shown = $$(".product-item, [data-name]", grid).filter(c => c.style.display !== "none" && !c.hidden).length;
+          note.innerHTML = q && !shown
+            ? `No matches on this page. <a href="search.html?q=${encodeURIComponent(q)}">Search all departments for “${q.replace(/[<>&"]/g, "")}” →</a>`
+            : "";
+          return;
+        }
+        if (!q) { toast("Type something to search 🔎"); return; }
+        // Header search is store-wide: show results from every department on search.html
+        const scope = form.querySelector("select")?.value || "all";
+        if (document.body.dataset.page === "search") {
+          document.dispatchEvent(new CustomEvent("vstore:search", { detail: { q, scope } }));
+          return;
+        }
+        location.href = `search.html?q=${encodeURIComponent(q)}&scope=${encodeURIComponent(scope)}`;
       });
     });
   }
@@ -927,6 +955,13 @@ function initNav() {
 
   /* ========================= Promo UI (cart + checkout) ========================= */
   function initPromoUI() {
+    // Lets other pages (e.g. the Vouchers section) apply a code the same way the cart does
+    window.vstoreApplyPromo = (code) => {
+      const p = normalizePromo(code);
+      if (p) { setPromo(p); toast(`Applied code ${p.code} — it will show in your cart`); }
+      else toast("Invalid promo code");
+      return p;
+    };
     $("#apply-promo")?.addEventListener("click", () => {
       const code = $("#promo")?.value;
       const p = normalizePromo(code);
@@ -1274,8 +1309,7 @@ function initNav() {
       to: $("#to"),
     };
     if (!els.body && !els.empty && !els.exportCsv) return; // not on orders.html
-
-    seedOrdersIfEmpty();
+    // Show the shopper's real orders only (demo orders are no longer seeded).
 
     const badges = {
       Processing: "badge processing",
@@ -1468,7 +1502,7 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     $("#thank-total")    && ($("#thank-total").textContent    = formatGBP(o.totals?.total||0));
 
     $("#thank-print")?.addEventListener("click", () => window.print());
-    $("#thank-view-orders")?.addEventListener("click", () => { window.location.href = `orders.html`; });
+    $("#thank-view-orders")?.addEventListener("click", () => { window.location.href = `order history.html`; });
   }
 
   /* ========================= Debug helpers (optional) ========================= */
@@ -1542,25 +1576,25 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
       { title:"Home",       url:"/index.html",           keywords:["home","start","v-store"] },
       { title:"Categories", url:"/categories.html",      keywords:["categories","browse","shop by category"] },
       { title:"Fruits",     url:"/fruits.html",          keywords:["fruit","fruits","fresh fruits"] },
-      { title:"Vegatables", url:"/vegatables.html",      keywords:["veg","vegetable","vegatables"] },
-      { title:"sea food",   url:"/sea food.html",        keywords:["sea","sea food","live"] },
-      { title:"backery",    url:"/backery.html",         keywords:["backery","fresh","bread"] },
-      { title:"Groceries",  url:"/groceries.html",       keywords:["grocery","staples","pantry"] },
-      { title:"Pantry",     url:"/pantry.html",          keywords:["pantry","pantery"] },
-      { title:"Dairy",      url:"/dairy.html",           keywords:["dairy","milk","diary"] },
+      { title:"Vegetables", url:"/vegatables.html",      keywords:["veg","vegetable","vegatables"] },
+      { title:"Seafood",    url:"/sea food.html",        keywords:["sea","sea food","seafood","fish"] },
+      { title:"Bakery",     url:"/backery.html",         keywords:["bakery","backery","fresh","bread"] },
+      { title:"Pantry",     url:"/pantery.html",         keywords:["pantry","pantery","staples","grocery"] },
+      { title:"Dairy",      url:"/Diary.html",           keywords:["dairy","milk","diary"] },
       { title:"Eggs",       url:"/eggs.html",            keywords:["eggs","egges"] },
       { title:"Beverages",  url:"/beverages.html",       keywords:["drinks","beverage"] },
-      { title:"Home",       url:"/home.html",            keywords:["home supplies","home goods"] },
+      { title:"Home Essentials", url:"/home essentials.html", keywords:["home supplies","home goods","home essentials"] },
       { title:"Electronics",url:"/electronics.html",     keywords:["electronics","gadgets"] },
       { title:"Meat",       url:"/meat.html",            keywords:["meat","butcher"] },
       { title:"Cart",       url:"/cart.html",            keywords:["cart","basket","bag","checkout"] },
-      { title:"Orders",     url:"/orders.html",          keywords:["orders","order history","track","status"] },
+      { title:"Orders",     url:"/order history.html",   keywords:["orders","order history","track","status"] },
+      { title:"Wishlist",   url:"/wishlist.html",        keywords:["wishlist","saved","favourites","favorites"] },
+      { title:"My account", url:"/account.html",         keywords:["account","profile","sign in","login","register"] },
       { title:"Contact",    url:"/contact.html",         keywords:["contact","support","help","customer service"] },
-      { title:"Shipping",   url:"/shipping.html",        keywords:["shipping","delivery","postage"] },
-      { title:"Returns",    url:"/returns.html",         keywords:["returns","refund","exchange"] },
-      { title:"Gadgets Under £50", url:"/gadgets-under-50.html", keywords:["gadgets","electronics","under 50"] },
-      { title:"Home Refresh",      url:"/home-refresh.html",     keywords:["home","refresh","decor"] },
-      { title:"Summer Essentials", url:"/summer-essentials.html",keywords:["summer","apparel","essentials"] },
+      { title:"Shipping & returns", url:"/shipping.html", keywords:["shipping","delivery","postage","returns","refund","exchange"] },
+      { title:"Gadgets Under £50", url:"/gadgets under 50.html", keywords:["gadgets","electronics","under 50"] },
+      { title:"Home Refresh",      url:"/Home Refresh.html",     keywords:["home","refresh","decor"] },
+      { title:"Summer Essentials", url:"/summer essiential page.html",keywords:["summer","apparel","essentials"] },
     ];
 
     // Also learn links from your current nav
@@ -1574,22 +1608,8 @@ ${o.address?.postcode||""}, ${o.address?.country||""}`
     });
 
     // ---------- 2) PRODUCT CATALOG ----------
-    const CATALOG_SOURCES = [
-      "/index.html",
-      "/categories.html",
-      "/fruits.html",
-      "/groceries.html",
-      "/electronics.html",
-      "/home.html",
-      "/vegatables.html",
-      "/sea food.html",
-      "/pantery.html",
-      "/meat.html",
-      "/beverages.html",
-      "/Diary.html",
-      "/eggs.html",
-      "/backery.html"
-    ];
+    // Every department's products are in products.json, so no extra pages need scraping.
+    const CATALOG_SOURCES = [];
 
     let CATALOG = [];
 

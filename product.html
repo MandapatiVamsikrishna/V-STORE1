@@ -1,38 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Page</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product — V-STORE</title>
+  <meta name="description" content="V-STORE — groceries, electronics and home essentials." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="store.css" />
+  <style>
+    .nav.utility-bar{position:sticky;top:0;z-index:1001;}
+    .nav.dept-bar{position:sticky;top:var(--nav-h);z-index:1000;}
+  </style>
 </head>
-<body>
-    <header>
-        <h1>Products</h1>
-        <a href="checkout.html">Checkout</a>
-    </header>
+<body data-page="product">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="products">
-        <div class="product" data-id="1" data-name="Product 1" data-price="10">
-            <h2>Product 1</h2>
-            <p>Price: $10</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
-
-        <div class="product" data-id="2" data-name="Product 2" data-price="20">
-            <h2>Product 2</h2>
-            <p>Price: $20</p>
-            <button class="add-to-cart">Add to Cart</button>
-        </div>
+  <!-- Promo -->
+  <div class="promo" role="status" aria-live="polite">
+    <div class="promo-track">
+      <span>🚚 Free shipping over £49</span>
+      <span>⚡ Flash deals live today</span>
+      <span>💬 24/7 support</span>
+      <span>🛡️ Secure checkout</span>
     </div>
+  </div>
 
-    <div id="cart">
-        <h2>Cart</h2>
-        <ul id="cart-items"></ul>
-        <p>Total: $<span id="total-price">0</span></p>
-        <a href="checkout.html" class="btn">Proceed to Checkout</a>
+  <!-- ================== HEADER (2 rows) ================== -->
+  <header class="site-header" role="banner" aria-label="Site header">
+    <!-- Row 1: Utility bar -->
+    <nav class="nav utility-bar" role="navigation" aria-label="Main">
+      <div class="nav-inner">
+        <a class="logo" href="index.html" aria-label="V-STORE Home">V-STORE</a>
+
+        <!-- Mobile burger -->
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+
+        <!-- Deliver to -->
+        <label class="deliver-inline" for="deliver-select" title="Delivery country">
+          📦 Deliver to
+          <select id="deliver-select" aria-label="Delivery country">
+            <option value="GB">United Kingdom</option>
+            <option value="IE">Ireland</option>
+            <option value="FR">France</option>
+            <option value="DE">Germany</option>
+            <option value="ES">Spain</option>
+            <option value="IT">Italy</option>
+            <option value="NL">Netherlands</option>
+            <option value="SE">Sweden</option>
+            <option value="PL">Poland</option>
+            <option value="US">United States</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="IN">India</option>
+          </select>
+        </label>
+
+        <!-- Big search -->
+        <form id="search-form" class="header-search" role="search" aria-label="Search all" autocomplete="off">
+          <label for="search-input" class="visually-hidden">Search products</label>
+          <select id="search-scope" aria-label="Search category">
+            <option value="all">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="home">Home</option>
+            <option value="groceries">Groceries</option>
+            <option value="apparel">Apparel</option>
+          </select>
+          <input id="search-input" type="search" placeholder="Search V-STORE…" autocomplete="off" />
+          <button type="submit" aria-label="Run search">Search</button>
+        </form>
+
+        <!-- Right links (also used as the mobile drawer) -->
+        <ul id="nav-menu" class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="categories.html">Categories</a></li>
+          <li><a href="order history.html">Orders</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a class="cart-link" href="cart.html">🛒 Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+          <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Row 2: Departments chips -->
+    <nav class="nav dept-bar" role="navigation" aria-label="Departments">
+      <div class="nav-inner">
+        <a class="chip" href="categories.html#deals">Today’s Deals</a>
+        <a class="chip" href="categories.html#electronics">Electronics</a>
+        <a class="chip" href="categories.html#home">Home & Kitchen</a>
+        <a class="chip" href="fruits.html">Fruits</a>
+        <a class="chip" href="vegatables.html">Vegetables</a>
+        <a class="chip" href="Diary.html">Dairy</a>
+        <a class="chip" href="eggs.html">Eggs</a>
+        <a class="chip" href="meat.html">Meat</a>
+        <a class="chip" href="sea food.html">Sea food</a>
+        <a class="chip" href="pantery.html">Pantry</a>
+        <a class="chip" href="beverages.html">Beverages</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- (Optional) overlay for mobile drawer -->
+  <div id="nav-overlay" class="nav-overlay" hidden></div>
+
+  <!-- Inline global search suggestions -->
+  <div id="search-results" class="search-results" hidden></div>
+
+
+  <main id="main" class="page-wrap">
+    <div id="product-detail"><p class="muted">Loading product…</p></div>
+    <section id="related" class="related" hidden>
+      <h2 class="section-title" id="related-title">More from this department</h2>
+      <div id="related-grid" class="product-grid"></div>
+    </section>
+    <section id="also" class="related" hidden>
+      <h2 class="section-title">You may also like</h2>
+      <div id="also-grid" class="product-grid"></div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <h3>V-STORE</h3>
+          <p>Great picks. Better prices.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="categories.html#electronics">Electronics</a></li>
+            <li><a href="categories.html#home">Home</a></li>
+            <li><a href="categories.html#groceries">Groceries</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="shipping.html">Shipping</a></li>
+            <li><a href="order history.html">Returns</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Newsletter</h4>
+          <form class="newsletter" id="newsletter-form" aria-label="Newsletter signup">
+            <label for="newsletter-email" class="visually-hidden">Email</label>
+            <input id="newsletter-email" type="email" placeholder="Join our newsletter" required />
+            <button type="submit">Subscribe</button>
+            <p class="form-hint" aria-live="polite" id="newsletter-hint">No spam. Unsubscribe anytime.</p>
+          </form>
+        </div>
+      </div>
+      <p class="legal">© <span id="year"></span> V-STORE. All rights reserved. <a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a> • <a href="cookies.html">Cookies</a></p>
     </div>
+  </footer>
 
-    <script src="script.js"></script>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="a11y-live" class="visually-hidden" role="status" aria-live="polite"></div>
+
+  <script src="script.js" defer></script>
+  <script src="store.js" defer></script>
 </body>
 </html>

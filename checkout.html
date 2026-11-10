@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Checkout — V-STORE</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="cart" href="cart.html" />
-  <script src="script.js" defer></script>
-
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="store.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 </head>
 <body>
   <!-- Top Navigation (same pattern as your other pages) -->
@@ -78,6 +76,7 @@
       </div>
 
       <form id="checkout-form" class="card" style="padding:1rem;">
+        <p class="notice"><strong>Demo store:</strong> no real payment is taken and nothing is shipped. Please don't use a real card — use the test card <code>4242 4242 4242 4242</code>, any future expiry (e.g. 12/30) and any 3-digit CVC.</p>
         <h2 style="margin:.2rem 0 .6rem;">Shipping Details</h2>
 
         <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem;">
@@ -89,6 +88,11 @@
           <div>
             <label for="phone">Phone</label>
             <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="+44 7700 900123" required
+                   style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" />
+          </div>
+          <div style="grid-column:1 / -1;">
+            <label for="email">Email (for your receipt)</label>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com"
                    style="width:100%;padding:.7rem .9rem;border-radius:12px;border:1px solid color-mix(in oklab,var(--text) 10%,transparent);background:var(--bg-elev);color:var(--text);" />
           </div>
           <div style="grid-column:1 / -1;">
@@ -186,5 +190,6 @@
 
   <!-- ✅ load your unified logic -->
   <script src="script.js" defer></script>
+  <script src="store.js" defer></script>
 </body>
 </html>
