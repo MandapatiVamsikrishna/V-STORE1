@@ -702,7 +702,12 @@
       save("vstore_messages", [...load("vstore_messages", []), { ref, ...data, sentAt: new Date().toISOString() }]);
       form.reset();
       if (me) { form.name.value = me.name; form.email.value = me.email; }
-      msg.innerHTML = `Thanks, ${esc(data.name.split(" ")[0])}! Your message was received. Reference <strong>${ref}</strong>.`;
+      // No server here, so the message is saved in this browser; offer to email it so it reaches the store owner
+      const to = form.dataset.email || "";
+      const mail = to ? `mailto:${to}?subject=${encodeURIComponent(`[V-STORE] ${data.topic} (${ref})`)}&body=${encodeURIComponent(
+        `${data.message}\n\nName: ${data.name}\nEmail: ${data.email}${data.order ? `\nOrder: ${data.order}` : ""}\nReference: ${ref}`)}` : "";
+      msg.innerHTML = `Thanks, ${esc(data.name.split(" ")[0])}! Your message was saved. Reference <strong>${ref}</strong>.` +
+        (mail ? `<br><a class="btn-primary contact-mail" href="${esc(mail)}">✉️ Email it to us</a> <span class="muted small">Opens your email app with the message ready to send.</span>` : "");
       msg.className = "form-status ok";
       toast("Message sent ✅");
     });
