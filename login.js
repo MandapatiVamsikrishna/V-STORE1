@@ -55,10 +55,10 @@
     setTimeout(() => { if (icon && icon.offsetWidth === 0) eye.textContent = "👁️"; }, 800);
   }
 
-  // Google / Apple need a real server to work
-  document.querySelectorAll(".btn-social").forEach((b) =>
+  // Google is handled by google-signin.js. Apple needs a paid Apple Developer account, so it's not set up.
+  document.querySelectorAll('.btn-social[data-provider="Apple"]').forEach((b) =>
     b.addEventListener("click", () => {
-      say(`${b.dataset.provider || "Social"} sign-in needs a server, so it isn't available on this demo store. Please sign in with your email, or create an account.`, false);
+      say("Sign in with Apple isn't available on this store yet. Please use Google or your email.", false);
     })
   );
 

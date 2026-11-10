@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="register.css">
   <link rel="icon" href="favicon.svg">
 </head>
-<body>
+<body data-page="register">
   <!-- Top Nav -->
   <nav class="nav" role="navigation" aria-label="Main">
     <div class="nav-inner">
@@ -34,6 +34,12 @@
       <div class="auth-form-wrap">
         <h1 id="reg-title">Create your account</h1>
         <p class="muted">Shop faster, track orders, and save your favourites.</p>
+
+        <!-- Google sign-up (google-signin.js swaps this for Google's own button) -->
+        <div class="google-slot" data-google-signin>
+          <button type="button" class="btn-social" data-provider="Google">Sign up with Google</button>
+        </div>
+        <div class="or">or create an account with email</div>
 
         <form id="registrationForm" novalidate>
           <!-- Name -->
@@ -115,9 +121,11 @@
     </section>
   </main>
   <!-- Shared store scripts (theme, accounts), then the register page logic -->
+  <script src="config.js" defer></script>
   <script src="script.js" defer></script>
   <script src="store.js" defer></script>
   <script src="registration.js" defer></script>
+  <script src="google-signin.js" defer></script>
 
 </body>
 </html>

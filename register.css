@@ -38,6 +38,12 @@
 .checkbox-group .checkbox{display:flex;gap:.55rem;align-items:flex-start;font-weight:400}
 .checkbox-group a,.auth-link{color:var(--accent)}
 
+.auth-form-wrap .google-slot{margin:1rem 0 .4rem}
+.btn-social{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1rem;border-radius:12px;border:1px solid var(--border);background:#fff;color:#111;cursor:pointer;font:inherit;font-weight:600}
+[data-theme="dark"] .btn-social{background:#0d1116;color:#e7e9ee}
+.or{display:flex;align-items:center;gap:10px;margin:.6rem 0 1rem;color:var(--muted);font-size:.9rem}
+.or::before,.or::after{content:"";height:1px;flex:1;background:var(--border)}
+
 #registerBtn{width:100%;padding:.8rem 1rem;font-size:1rem;cursor:pointer;margin-top:.2rem}
 #registerBtn:disabled{opacity:.55;cursor:not-allowed}
 #formMessage{min-height:1.2em;margin:.6rem 0 0;font-weight:600}

@@ -109,9 +109,13 @@
 
   <main id="main" class="page-wrap">
     <div class="page-head">
-      <div>
-        <h1>Hi, <span id="acc-name">there</span></h1>
-        <p class="muted"><span id="acc-email"></span> · member since <span id="acc-since"></span></p>
+      <div class="acc-head">
+        <img id="acc-avatar" class="acc-avatar" alt="" referrerpolicy="no-referrer" hidden>
+        <div>
+          <h1>Hi, <span id="acc-name">there</span></h1>
+          <p class="muted"><span id="acc-email"></span> · member since <span id="acc-since"></span></p>
+          <p class="acc-provider" id="acc-provider"></p>
+        </div>
       </div>
       <button type="button" class="btn-ghost" id="sign-out">Sign out</button>
     </div>
@@ -131,9 +135,10 @@
         </form>
       </section>
       <section class="form-card">
-        <h2>Change password</h2>
+        <h2 id="pw-title">Change password</h2>
+        <p class="muted small" id="pw-note" hidden>You sign in with Google. Set a password only if you also want to sign in with your email.</p>
         <form id="password-form" class="stack-form" novalidate>
-          <label>Current password <input name="current" type="password" autocomplete="current-password" required></label>
+          <label id="pw-current-row">Current password <input name="current" type="password" autocomplete="current-password" required></label>
           <label>New password <input name="next" type="password" autocomplete="new-password" minlength="8" required></label>
           <label>Confirm new password <input name="confirm" type="password" autocomplete="new-password" minlength="8" required></label>
           <button class="btn-primary" type="submit">Update password</button>

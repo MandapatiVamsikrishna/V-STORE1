@@ -68,7 +68,9 @@
 
         <div class="or">or continue with</div>
         <div class="providers">
-          <button type="button" class="btn-social" data-provider="Google"><i class="fa-brands fa-google"></i> Google</button>
+          <div class="google-slot" data-google-signin>
+            <button type="button" class="btn-social" data-provider="Google"><i class="fa-brands fa-google"></i> Google</button>
+          </div>
           <button type="button" class="btn-social" data-provider="Apple"><i class="fa-brands fa-apple"></i> Apple</button>
         </div>
 
@@ -85,8 +87,10 @@
   </footer>
 
   <!-- Page-specific JS -->
+  <script src="config.js" defer></script>
   <script src="script.js" defer></script>
   <script src="store.js" defer></script>
   <script src="login.js" defer></script>
+  <script src="google-signin.js" defer></script>
 </body>
 </html>

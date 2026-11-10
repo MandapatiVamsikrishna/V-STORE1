@@ -5,6 +5,9 @@
    Uses the colour variables already defined in style.css.
    ========================================================= */
 
+/* elements marked hidden must stay hidden even when a class gives them display:grid/flex */
+[hidden]{display:none !important}
+
 /* ---------- receipt brand line (thank-you page) shows only when printing ---------- */
 .site-header-inner{display:none}
 @media print{.site-header-inner{display:block}}
@@ -127,6 +130,56 @@ a.btn-primary{color:#111}
 .breadcrumbs a{color:var(--accent);text-decoration:none}
 .product-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,3vw,36px);align-items:start;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:clamp(12px,2vw,24px);box-shadow:var(--shadow-s)}
 .product-detail .pd-media{aspect-ratio:1/1;margin:0}
+
+/* ---------- product photo gallery ---------- */
+.pd-gallery{display:grid;gap:.7rem;min-width:0}
+.pd-stage{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:14px;background:var(--bg-elev);cursor:zoom-in;touch-action:pan-y;outline-offset:3px}
+.pd-stage .pd-main{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease;user-select:none}
+.pd-stage.zooming .pd-main{transition:none}
+.pd-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:40px;height:40px;border-radius:999px;border:0;cursor:pointer;
+  background:color-mix(in oklab,#000 45%,transparent);color:#fff;font-size:1.6rem;line-height:1;opacity:.85}
+.pd-nav:hover{opacity:1}
+.pd-nav.prev{left:10px}
+.pd-nav.next{right:10px}
+.pd-expand{position:absolute;top:10px;right:10px;z-index:2;width:36px;height:36px;border-radius:10px;border:0;cursor:pointer;
+  background:color-mix(in oklab,#000 45%,transparent);color:#fff;font-size:1.1rem}
+.pd-count{position:absolute;left:10px;bottom:10px;z-index:2;padding:.15rem .55rem;border-radius:999px;font-size:.8rem;font-weight:700;
+  background:color-mix(in oklab,#000 55%,transparent);color:#fff}
+.pd-hint{position:absolute;right:10px;bottom:10px;z-index:2;padding:.15rem .55rem;border-radius:999px;font-size:.75rem;
+  background:color-mix(in oklab,#fff 80%,transparent);color:#111;opacity:0;transition:opacity .2s}
+.pd-stage:hover .pd-hint{opacity:1}
+.pd-stage.zooming .pd-nav,.pd-stage.zooming .pd-count,.pd-stage.zooming .pd-hint{opacity:0}
+.pd-credit{margin:-.3rem 0 0;font-size:.78rem;color:var(--muted)}
+.pd-credit a{color:inherit}
+.pd-lightbox figcaption small{opacity:.8}
+.pd-lightbox figcaption a{color:#cfe3ff}
+.pd-thumbs{display:flex;gap:.5rem;overflow-x:auto;padding:2px;scrollbar-width:thin}
+.pd-thumb{position:relative;flex:0 0 auto;width:72px;height:72px;padding:0;border-radius:10px;overflow:hidden;cursor:pointer;
+  border:2px solid var(--border);background:var(--bg-elev)}
+.pd-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pd-thumb.on{border-color:var(--brand);box-shadow:0 0 0 2px color-mix(in oklab,var(--brand) 35%,transparent)}
+.pd-thumb small{position:absolute;left:0;right:0;bottom:0;font-size:.62rem;font-weight:700;padding:1px 0;text-align:center;
+  background:color-mix(in oklab,#000 55%,transparent);color:#fff}
+@media (hover:none){.pd-hint{display:none}}
+
+/* full-screen viewer */
+.pd-lightbox{position:fixed;inset:0;z-index:5000;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;padding:16px;
+  background:rgba(0,0,0,.88);color:#fff}
+.pd-lightbox figure{margin:0;display:grid;gap:10px;justify-items:center;min-width:0}
+.pd-lightbox .lb-frame{overflow:hidden;border-radius:12px;max-width:min(92vw,1100px);max-height:82vh;display:grid;place-items:center}
+.pd-lightbox img{max-width:min(92vw,1100px);max-height:82vh;object-fit:contain;display:block}
+.pd-lightbox figcaption{font-size:.95rem;opacity:.9;text-align:center}
+.pd-lightbox button{border:0;cursor:pointer;color:#fff;background:rgba(255,255,255,.14);border-radius:999px}
+.pd-lightbox button:hover{background:rgba(255,255,255,.28)}
+.lb-nav{width:48px;height:48px;font-size:2rem;line-height:1}
+.lb-close{position:absolute;top:14px;right:14px;width:44px;height:44px;font-size:1.2rem}
+body.lb-open{overflow:hidden}
+@media (max-width:640px){
+  .pd-lightbox{grid-template-columns:1fr;padding:56px 8px 8px}
+  .lb-nav{position:absolute;bottom:18px}
+  .lb-nav.prev{left:18px}
+  .lb-nav.next{right:18px}
+}
 .pd-dept{margin:0}
 .pd-dept a{color:var(--accent);text-decoration:none;font-weight:600}
 .pd-title{font-size:clamp(1.5rem,3vw,2.1rem);margin:.2rem 0 .4rem}
@@ -161,6 +214,13 @@ a.btn-primary{color:#111}
 .prose h2{margin-top:1.6rem;font-size:1.2rem}
 .prose li{margin:.3rem 0}
 .notice{border:1px solid color-mix(in oklab,var(--brand) 55%,transparent);background:color-mix(in oklab,var(--brand) 12%,transparent);border-radius:12px;padding:.7rem 1rem;margin:0 0 1rem}
+
+/* ---------- account header + Google sign-in ---------- */
+.acc-head{display:flex;align-items:center;gap:1rem}
+.acc-avatar{width:64px;height:64px;border-radius:999px;object-fit:cover;border:2px solid var(--border)}
+.acc-provider{margin:.2rem 0 0;font-size:.9rem;font-weight:600;color:var(--accent)}
+.google-slot{display:flex;justify-content:center;align-items:center;min-height:44px}
+.google-slot > .btn-social{width:100%}
 
 /* ---------- categories hub ---------- */
 .hub-section{max-width:var(--container);margin:0 auto;padding:.5rem clamp(12px,4vw,24px) 1rem;scroll-margin-top:130px}
