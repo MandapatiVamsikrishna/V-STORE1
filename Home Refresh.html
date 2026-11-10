@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreshMart — Home Refresh</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">FreshMart</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Home Refresh</h1>
+      <p class="muted">Cozy upgrades for less — lighting, textiles, storage & décor picks.</p>
+
+      <div class="row">
+        <form id="search-form" class="search" role="search" aria-label="Search home items">
+          <input id="search-input" type="search" placeholder="Search throws, lamps, baskets…" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+
+        <label class="sort">
+          <span class="visually-hidden">Sort</span>
+          <select id="sort-select" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="name-asc">Name: A → Z</option>
+            <option value="name-desc">Name: Z → A</option>
+            <option value="rating-desc">Rating: High → Low</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick links -->
+
+
+  <main class="container">
+    <!-- Sidebar Filters -->
+    <aside class="filters" aria-label="Filters">
+      <h2 class="filters-title">Filters</h2>
+
+      <section>
+        <h3>Category</h3>
+        <ul class="checklist">
+          <li><label><input type="checkbox" name="cat" value="lighting" checked> Lighting</label></li>
+          <li><label><input type="checkbox" name="cat" value="textiles" checked> Textiles</label></li>
+          <li><label><input type="checkbox" name="cat" value="decor" checked> Décor</label></li>
+          <li><label><input type="checkbox" name="cat" value="storage" checked> Storage</label></li>
+          <li><label><input type="checkbox" name="cat" value="kitchen" checked> Kitchen</label></li>
+          <li><label><input type="checkbox" name="cat" value="bath" checked> Bath</label></li>
+          <li><label><input type="checkbox" name="cat" value="scent" checked> Scent</label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Price</h3>
+        <div class="range">
+          <label for="min-price">Min £</label>
+          <input id="min-price" type="number" min="0" step="0.01" value="0">
+          <label for="max-price">Max £</label>
+          <input id="max-price" type="number" min="0" step="0.01" value="100">
+        </div>
+      </section>
+
+      <section>
+        <h3>Rating</h3>
+        <ul class="checklist">
+          <li><label><input type="radio" name="rating" value="all" checked> All ratings</label></li>
+          <li><label><input type="radio" name="rating" value="4.5"> 4.5★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="4"> 4★ & up</label></li>
+          <li><label><input type="radio" name="rating" value="3.5"> 3.5★ & up</label></li>
+        </ul>
+      </section>
+
+      <div class="filter-actions">
+        <button id="clear-filters" type="button" class="btn-ghost">Clear</button>
+        <button id="apply-filters" type="button" class="btn-primary">Apply</button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="results" aria-live="polite">
+      <div class="toolbar">
+        <span id="result-count">0 items</span>
+        <div id="active-chips" class="chips" aria-label="Active filters"></div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="product-grid" class="grid">
+        <!-- LIGHTING -->
+        <article class="card product-item"
+          data-id="hr-amber-lamp"
+          data-name="Amber Glass Table Lamp"
+          data-price="24.99"
+          data-category="lighting"
+          data-rating="4.6">
+          <button class="wish" aria-label="Save Amber Glass Table Lamp">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=900&auto=format&fit=crop" alt="Amber Glass Table Lamp">
+          </div>
+          <h3 class="title">Amber Glass Table Lamp</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£24.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec" aria-label="Decrease">−</button><span class="q">1</span><button class="inc" aria-label="Increase">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="hr-fairy-lights"
+          data-name="Warm Fairy Lights 10m"
+          data-price="9.99"
+          data-category="lighting"
+          data-rating="4.3">
+          <button class="wish" aria-label="Save Warm Fairy Lights">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1511389026070-a14ae610a1be?q=80&w=900&auto=format&fit=crop" alt="Warm Fairy Lights">
+          </div>
+          <h3 class="title">Warm Fairy Lights 10m</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- TEXTILES -->
+        <article class="card product-item"
+          data-id="hr-knit-throw"
+          data-name="Chunky Knit Throw"
+          data-price="29.99"
+          data-category="textiles"
+          data-rating="4.5">
+          <button class="wish" aria-label="Save Chunky Knit Throw">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=900&auto=format&fit=crop" alt="Chunky Knit Throw">
+          </div>
+          <h3 class="title">Chunky Knit Throw</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£29.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="hr-cotton-cushion"
+          data-name="Cotton Cushion Cover (2-pack)"
+          data-price="12.99"
+          data-category="textiles"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Cotton Cushion Cover">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=900&auto=format&fit=crop" alt="Cotton Cushion Cover">
+          </div>
+          <h3 class="title">Cotton Cushion Cover (2-pack)</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£12.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- DÉCOR -->
+        <article class="card product-item"
+          data-id="hr-ceramic-vase"
+          data-name="Matte Ceramic Vase"
+          data-price="14.99"
+          data-category="decor"
+          data-rating="4.4">
+          <button class="wish" aria-label="Save Matte Ceramic Vase">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1548286978-f218023f8d18?q=80&w=900&auto=format&fit=crop" alt="Matte Ceramic Vase">
+          </div>
+          <h3 class="title">Matte Ceramic Vase</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£14.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="hr-wall-frame"
+          data-name="A3 Wood Photo Frame"
+          data-price="9.49"
+          data-category="decor"
+          data-rating="4.1">
+          <button class="wish" aria-label="Save A3 Wood Photo Frame">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=900&auto=format&fit=crop" alt="Wood Photo Frame">
+          </div>
+          <h3 class="title">A3 Wood Photo Frame</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£9.49</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- STORAGE -->
+        <article class="card product-item"
+          data-id="hr-rope-basket"
+          data-name="Cotton Rope Basket"
+          data-price="15.99"
+          data-category="storage"
+          data-rating="4.3">
+          <button class="wish" aria-label="Save Cotton Rope Basket">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=900&auto=format&fit=crop" alt="Cotton Rope Basket">
+          </div>
+          <h3 class="title">Cotton Rope Basket</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£15.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="hr-underbed-box"
+          data-name="Under-Bed Storage Box"
+          data-price="19.99"
+          data-category="storage"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Under-Bed Storage Box">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=900&auto=format&fit=crop" alt="Under-Bed Storage Box">
+          </div>
+          <h3 class="title">Under-Bed Storage Box</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£19.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- KITCHEN -->
+        <article class="card product-item"
+          data-id="hr-bamboo-board"
+          data-name="Bamboo Chopping Board"
+          data-price="11.99"
+          data-category="kitchen"
+          data-rating="4.4">
+          <button class="wish" aria-label="Save Bamboo Chopping Board">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=900&auto=format&fit=crop" alt="Bamboo Chopping Board">
+          </div>
+          <h3 class="title">Bamboo Chopping Board</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£11.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <article class="card product-item"
+          data-id="hr-spice-jars"
+          data-name="Glass Spice Jars (12-pack)"
+          data-price="18.99"
+          data-category="kitchen"
+          data-rating="4.5">
+          <button class="wish" aria-label="Save Glass Spice Jars">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?q=80&w=900&auto=format&fit=crop" alt="Glass Spice Jars">
+          </div>
+          <h3 class="title">Glass Spice Jars (12-pack)</h3>
+          <div class="meta"><span class="rating">★★★★★</span><span class="price">£18.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- BATH -->
+        <article class="card product-item"
+          data-id="hr-bath-mat"
+          data-name="Memory Foam Bath Mat"
+          data-price="14.49"
+          data-category="bath"
+          data-rating="4.2">
+          <button class="wish" aria-label="Save Memory Foam Bath Mat">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1523419409543-9e4f4e62c67a?q=80&w=900&auto=format&fit=crop" alt="Memory Foam Bath Mat">
+          </div>
+          <h3 class="title">Memory Foam Bath Mat</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£14.49</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- SCENT -->
+        <article class="card product-item"
+          data-id="hr-soy-candle"
+          data-name="Soy Candle — Vanilla"
+          data-price="8.99"
+          data-category="scent"
+          data-rating="4.0">
+          <button class="wish" aria-label="Save Soy Candle — Vanilla">♡</button>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=900&auto=format&fit=crop" alt="Vanilla Soy Candle">
+          </div>
+          <h3 class="title">Soy Candle — Vanilla</h3>
+          <div class="meta"><span class="rating">★★★★☆</span><span class="price">£8.99</span></div>
+          <div class="actions">
+            <div class="qty"><button class="dec">−</button><span class="q">1</span><button class="inc">+</button></div>
+            <button class="add-to-cart">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> FreshMart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Global JS (search/sort/filters/cart) -->
+  <script src="script.js" defer></script>
+</body>
+</html>

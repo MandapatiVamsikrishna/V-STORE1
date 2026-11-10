@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Payment — MyStore</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+  <!-- Simple nav (keeps cart count in sync) -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">MyStore</a>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Payment</h1>
+      <p class="muted">Review your order and choose a payment method.</p>
+    </div>
+  </header>
+
+  <main class="container" style="grid-template-columns:1fr 380px;">
+    <!-- Left: Order + Payment form -->
+    <section class="results" aria-live="polite">
+      <h2>Order Summary</h2>
+      <ul id="order-summary" style="list-style:none;padding:0;margin:0 0 1rem;display:grid;gap:.6rem"></ul>
+      <p style="font-weight:800">Total: £<span id="total-price-summary">0.00</span></p>
+
+      <h2 style="margin-top:1.2rem">Billing & Payment</h2>
+      <form id="checkout-form" novalidate>
+        <label for="name">Full Name</label>
+        <input id="name" name="name" type="text" required placeholder="Jane Doe" />
+
+        <label for="address">Shipping Address</label>
+        <input id="address" name="address" type="text" required placeholder="221B Baker Street, London" />
+
+        <h3 style="margin-top:1rem">Select Payment Method</h3>
+        <div class="checklist" style="margin:.4rem 0 1rem">
+          <label><input type="radio" name="payment-method" value="credit-card" required> Credit Card</label>
+          <label><input type="radio" name="payment-method" value="paypal"> PayPal</label>
+          <label><input type="radio" name="payment-method" value="upi"> UPI</label>
+        </div>
+
+        <!-- Credit Card -->
+        <div id="credit-card-details" class="card" style="display:none">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem">
+            <strong>Card</strong>
+            <span id="card-brand" class="chip" aria-live="polite" style="display:none"></span>
+          </div>
+          <label for="card-number">Card Number</label>
+          <input id="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" />
+
+          <div class="row" style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+            <div>
+              <label for="expiry-date">Expiry (MM/YY)</label>
+              <input id="expiry-date" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" />
+            </div>
+            <div>
+              <label for="cvv">CVC</label>
+              <input id="cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123" />
+            </div>
+          </div>
+        </div>
+
+        <!-- PayPal -->
+        <div id="paypal-details" class="card" style="display:none">
+          <p>You’ll be redirected to PayPal to complete your payment.</p>
+        </div>
+
+        <!-- UPI -->
+        <div id="upi-details" class="card" style="display:none">
+          <label for="upi-id">UPI ID</label>
+          <input id="upi-id" placeholder="name@bankhandle" />
+          <div id="upi-platform-display" class="chip" style="display:none;align-items:center;gap:.4rem;margin-top:.4rem">
+            <span id="upi-platform-icon" aria-hidden="true"></span>
+            <span id="upi-platform-name"></span>
+          </div>
+          <div class="form-hint" style="margin-top:.4rem">Examples: jane@okicici, arun@ybl, rao@oksbi, me@paytm</div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top:1rem">Submit Payment</button>
+      </form>
+    </section>
+
+    <!-- Right: Totals box -->
+    <aside class="card" aria-label="Totals" style="height:max-content;position:sticky;top:84px">
+      <h2>Totals</h2>
+      <dl style="display:grid;grid-template-columns:1fr auto;gap:.4rem .6rem;margin:0">
+        <dt class="muted">Subtotal</dt><dd id="summary-subtotal">£0.00</dd>
+        <dt class="muted">Discount</dt><dd id="summary-discount">– £0.00</dd>
+        <dt class="muted">Shipping</dt><dd id="summary-shipping">£0.00</dd>
+        <dt>Estimated Total</dt><dd id="summary-total" style="font-weight:800">£0.00</dd>
+      </dl>
+      <p id="shipping-note" class="form-hint" style="margin-top:.6rem"></p>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>&copy; <span id="year"></span> V-STORE. All rights reserved.</p>
+    </div>
+  </footer>

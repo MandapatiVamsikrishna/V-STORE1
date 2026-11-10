@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login — V-STORE</title>
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Page-specific CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="login.css" />
+  <!-- Icons for the password eye toggle (optional) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <!-- Minimal nav -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-STORE</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Guest</a></li>
+        <li><button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-label="Toggle dark mode">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="auth-wrap">
+    <!-- Visual side -->
+    <aside class="auth-art" aria-hidden="true">
+      <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1600&auto=format&fit=crop" alt="">
+      <div class="brand-overlay">
+        <div>
+          <h2>Welcome back</h2>
+          <p>Sign in to continue shopping.</p>
+        </div>
+        <span class="chip">Secure</span>
+      </div>
+    </aside>
+
+    <!-- Form side -->
+    <section class="auth-card">
+      <h1 class="auth-title">Sign in</h1>
+      <p class="auth-sub">Use your email and password.</p>
+
+      <form id="login-form" class="auth-form" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input class="auth-input" type="email" id="email" autocomplete="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="field input-affix">
+          <label for="password">Password</label>
+          <input class="auth-input" type="password" id="password" autocomplete="current-password" minlength="6" placeholder="••••••••" required>
+          <button type="button" class="toggle-visibility" id="toggle-pass" aria-label="Show password">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+
+        <div class="helpers">
+          <label class="remember">
+            <input type="checkbox" id="remember"> Remember me
+          </label>
+          <a class="link" href="forgot-password.html">Forgot password?</a>
+        </div>
+
+        <button class="btn-primary" type="submit">Login</button>
+        <p id="login-message" class="login-message" role="status" aria-live="polite"></p>
+
+        <div class="or">or continue with</div>
+        <div class="providers">
+          <button type="button" class="btn-social"><i class="fa-brands fa-google"></i> Google</button>
+          <button type="button" class="btn-social"><i class="fa-brands fa-apple"></i> Apple</button>
+        </div>
+
+        <p class="auth-foot">
+          Don’t have an account?
+          <a class="link" href="registration.html">Create one</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> V-STORE</p>
+  </footer>
+
+  <!-- Page-specific JS -->
+  <script src="login.js" defer></script>
+</body>
+</html>

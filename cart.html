@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cart — V-STORE</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="script" href="script.js" />
+  <script defer src="pricing.js"></script>
+
+  <li><a href="order history.html">Orders</a></li>
+  <link rel="checkout" href="checkout.html" />
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Optional icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="nav" role="navigation" aria-label="Main">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">V-STORE</a>
+
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">☰</button>
+
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a aria-current="page" href="cart.html">Cart (<span id="cart-count" class="badge">0</span>)</a></li>
+        <li><a href="order history.html">Orders</a></li>
+        <li><button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle theme">🌓</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page hero -->
+  <header class="page-hero">
+    <div class="hero-inner">
+      <h1>Your Cart</h1>
+      <p class="muted">Review items, update quantities, and apply a promo code.</p>
+    </div>
+  </header>
+
+  <!-- Cart layout -->
+  <main class="container" style="grid-template-columns: 1fr 360px;">
+    <!-- Cart list -->
+    <section aria-labelledby="cart-title" class="results">
+      <div class="toolbar" style="justify-content:flex-start; gap:.75rem;">
+        <h2 id="cart-title" style="margin:0;">Items</h2>
+        <span id="item-count" class="muted">0 items</span>
+      </div>
+
+      <!-- Empty state -->
+      <article id="empty-cart" class="card" style="display:none;">
+        <h3 style="margin:.2rem 0 .3rem;">Your cart is empty</h3>
+        <p class="muted" style="margin:.2rem 0 1rem;">Browse categories and add something you love.</p>
+        <a class="btn-ghost" href="categories.html">Go to Categories →</a>
+      </article>
+
+      <!-- Items -->
+      <ul id="cart-items" style="list-style:none; padding:0; margin:0; display:grid; gap:1rem;"></ul>
+
+      <!-- Actions below list -->
+      <div id="list-actions" style="display:flex; gap:.5rem; margin-top:1rem;">
+        <a class="btn-ghost" href="categories.html">Continue shopping</a>
+        <button id="clear-cart" class="btn-ghost" type="button">Clear cart</button>
+      </div>
+    </section>
+
+    <!-- Summary / checkout -->
+    <aside class="card" aria-label="Order summary" style="height:max-content; position:sticky; top:84px;">
+      <h2 style="margin:.2rem 0 1rem;">Order Summary</h2>
+
+      <!-- Promo -->
+      <div style="display:grid; gap:.5rem; margin-bottom:1rem;">
+        <label for="promo" class="muted">Promo code</label>
+        <div style="display:flex; gap:.5rem;">
+          <input id="promo" type="text" placeholder="e.g. WELCOME10"
+                 style="flex:1; padding:.6rem .7rem; border-radius:10px; border:1px solid color-mix(in oklab, var(--text) 12%, transparent); background:var(--bg-elev); color:var(--text);" />
+          <button id="apply-promo" class="btn-primary" type="button">Apply</button>
+        </div>
+        <p id="promo-hint" class="form-hint">Try <strong>WELCOME10</strong> (10% off) or <strong>SAVE15</strong> (15% off £60+)</p>
+      </div>
+
+      <!-- Totals -->
+      <dl style="display:grid; grid-template-columns:1fr auto; gap:.4rem .6rem; margin:0;">
+        <dt class="muted">Subtotal</dt><dd id="summary-subtotal">£0.00</dd>
+        <dt class="muted">Discount</dt><dd id="summary-discount">– £0.00</dd>
+        <dt class="muted">Shipping</dt><dd id="summary-shipping">£1.00</dd>
+        <dt class="muted">Estimated total</dt>
+        <dd id="summary-total" style="font-weight:800;">£0.00</dd>
+      </dl>
+
+      <p id="shipping-note" class="form-hint" style="margin-top:.6rem;"></p>
+
+      <a id="checkout" class="btn-primary" href="checkout.html" style="width:100%; margin-top:1rem;">
+        <i class="fa-solid fa-lock"></i> Proceed to checkout
+      </a>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© <span id="year"></span> V-STORE</p>
+    </div>
+  </footer>
+
+  <!-- Global helpers (theme, nav burger…) if you have them -->
+  <script src="script.js" defer></script>
+  <!-- Cart logic -->
+  <script src="cart.js" defer></script>
+</body>
+</html>
